@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 from ProjectApp.models import Usuarios
 from django.core.urlresolvers import reverse_lazy
 
@@ -13,5 +13,6 @@ class RegistrarUsuario(CreateView):
     model = Usuarios
     success_url = reverse_lazy('listar_usuario')
 
-class ListarUsuario(TemplateView):
+class ListarUsuario(ListView):
     template_name = 'Usuario.html'
+    model = Usuarios

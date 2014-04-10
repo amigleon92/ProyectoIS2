@@ -2,4 +2,13 @@
 {% block title %} ::Administrar Usuario::{% endblock %}
 {% block Content %}
     <h1> Lista de los usuarios </h1>
-{% endblock %}
+    <ul>
+        {% for usuario in object_list%}
+            <li><b>Nombre               </b> {{ usuario.nombre }} </li>
+            <li><b>Apellido             </b> {{ usuario.apellido }} </li>
+            <li><b>Cédula de Identidad  </b> {{ usuario.cedula }} </li>
+            <li><b>E-mail               </b> {{ usuario.email }} </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}i
