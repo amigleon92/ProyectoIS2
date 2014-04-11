@@ -1,17 +1,29 @@
+from django.http import request
 from django.views.generic import TemplateView, CreateView, ListView
 from ProjectApp.models import Usuarios
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import render
+
 
 class login(TemplateView):
     template_name = 'login.html'
 
+
 class inicio(TemplateView):
-    template_name = "inicio.html"
+    def post(self, request, *args, **kwargs):
+        buscar_user = request.POST['user']
+        buscar_password = request.POST['pass']
+        #print Usuarios.objects.all()
+        for i in Usuarios.objects.all():
+            if i.nick == buscar_user and i.password == buscar_password:
+                return render(request, 'inicio.html')
+        return render(request, 'login.html')
 
 class RegistrarUsuario(CreateView):
-    template_name = "CrearUsuario.html"
+    template_name = 'CrearUsuario.html'
     model = Usuarios
     success_url = reverse_lazy('listar_usuario')
+
 
 class ListarUsuario(ListView):
     template_name = 'Usuario.html'

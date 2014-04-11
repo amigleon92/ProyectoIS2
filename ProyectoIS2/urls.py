@@ -12,8 +12,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', login.as_view() ),
-    url(r'^inicio$', inicio.as_view() ),
-    url(r'^inicio/usuario/crear$', RegistrarUsuario.as_view(), name= 'registrar_usuario'),
-    url(r'^inicio/usuario$', ListarUsuario.as_view(), name= 'listar_usuario'),
+    url(r'^$', login.as_view(), name= 'login' ),
+    url(r'^inicio/$', inicio.as_view(), name= 'menu_inicio'),
+    url(r'^inicio/usuario/crear/$', RegistrarUsuario.as_view(), name= 'registrar_usuario'),
+    url(r'^inicio/usuario/$', ListarUsuario.as_view(), name= 'listar_usuario'),
 )
