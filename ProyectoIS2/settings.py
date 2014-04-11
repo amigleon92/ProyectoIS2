@@ -65,9 +65,9 @@ WSGI_APPLICATION = 'ProyectoIS2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'choffis',
-        'PASSWORD': 'choffix'
+        'NAME': 'django_db',
+        'USER': 'django_dev',
+        'PASSWORD': 'rodrigo'
     }
 }
 
