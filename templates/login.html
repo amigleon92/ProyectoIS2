@@ -9,10 +9,10 @@
         <H2><div style="text-align: center;">Login</div></H2>
         <br />
         <br />
-        <form action= "/inicio/" method="POST"> {% csrf_token %} <!Lo hacemos como metodo post.. Se encarga la clase inicio en su metodo post>
+        <form action= "/inicio/" method="POST"> {% csrf_token %}
             <div id="login-box-name" style="margin-top:20px;">Usuario:</div>
             <div id="login-box-field" style="margin-top:20px;">
-                <input name="user" class="form-login" title="Username" value="" size="30" maxlength="2048"  /> <!name= 'user'... lo que le envia a django el valor ingresado>
+                <input name="user" class="form-login" title="Username" value="" size="30" maxlength="2048"  />
             </div>
             <div id="login-box-name">Contrase&ntildea:</div>
            <div id="login-box-field">
