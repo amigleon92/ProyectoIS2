@@ -6,10 +6,7 @@
     <input type="submit" value="Generar informe"><br>
     <input type="submit" value="Crear Proyecto"><br>
     <input type="submit" value="Eliminar"><br>
-    <form action= "/inicio/usuario/" method="get"> {% csrf_token %}
+    <form action= "/inicio/usuario/" method="POST"> {% csrf_token %}
         <input type="submit" value="Administrar Usuarios"><br>
-    </form>
-    <form action= "/" method="get"> {% csrf_token %}
-        <input type="submit" value="<Cerrar Sesión"><br>
     </form>
 {% endblock %}
