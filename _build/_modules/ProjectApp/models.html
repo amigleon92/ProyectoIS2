@@ -47,6 +47,23 @@
           <div class="body">
             
   <h1>Source code for ProjectApp.models</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Django models for ProyectoIS2 project</span>
+
+<span class="sd">    Se crea el modelo Usuarios que es una base de datos definida por nosotros para manejar los usuarios que puedan</span>
+<span class="sd">    ingresar al sistema</span>
+
+<span class="sd">    Estan definidos en la tabla los atributos</span>
+<span class="sd">    nick: Por el cual se va a loguear al sistema</span>
+<span class="sd">    nombre: Nombre del usuario</span>
+<span class="sd">    apellido: Apellido del usuario</span>
+<span class="sd">    password: Contrasenha para el logueo</span>
+<span class="sd">    cedula: Cedula de identidad del usuario</span>
+<span class="sd">    email: Direccion de correo electronico del usuario</span>
+<span class="sd">    estado: ACTIVO: puede ingresar al sistema</span>
+<span class="sd">            INACTIVO: usuario eliminado</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
 <div class="viewcode-block" id="Usuarios"><a class="viewcode-back" href="../../models.html#ProjectApp.models.Usuarios">[docs]</a><span class="k">class</span> <span class="nc">Usuarios</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -56,8 +73,8 @@
     <span class="n">password</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">cedula</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">()</span>
     <span class="n">email</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">estado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#ACTIVO POR DEFECTO</span></div>
-</pre></div>
+    <span class="n">estado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div></div>
 
           </div>
         </div>

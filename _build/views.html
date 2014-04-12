@@ -111,68 +111,68 @@
 59
 60
 61
-62</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll">from django.http import request
-</span>from django.views.generic import TemplateView, CreateView, ListView
-from ProjectApp.models import Usuarios
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import render, render_to_response
+62</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="sd">&quot;&quot;&quot;</span>
+</span><span class="sd">Django views for ProyectoIS2 project</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span><span class="p">,</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">ListView</span>
+<span class="kn">from</span> <span class="nn">ProjectApp.models</span> <span class="kn">import</span> <span class="n">Usuarios</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">render_to_response</span>
 
+<span class="c">#La clase Login es la encargada de la primera vista del proyecto que es un formulario para logueo</span>
+<span class="k">class</span> <span class="nc">login</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;login.html&#39;</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s">&#39;login.html&#39;</span><span class="p">)</span>
 
-class login(TemplateView):
-    template_name = &#39;login.html&#39;
-    def get(self, request, *args, **kwargs):
-        return render(request,&#39;login.html&#39;)
+<span class="c">#La clase inicio es el que maneja el Menu Principal</span>
+<span class="k">class</span> <span class="nc">inicio</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>                           <span class="c">#En el metodo post en la condicion if</span>
+        <span class="k">if</span> <span class="s">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>                                      <span class="c">#preguntamos si la pagina desde donde se lo</span>
+            <span class="n">buscar_user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>                          <span class="c">#llamo es el login:</span>
+            <span class="n">buscar_password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>                      <span class="c">#Verifica el nombre de usuario y la</span>
+            <span class="n">error</span><span class="o">=</span> <span class="s">&quot;&quot;</span>                                                   <span class="c">#contrasenha ingresadas para verificar</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>                            <span class="c">#si existe la entrada en la BD Usuarios</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">estado</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">buscar_user</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">password</span> <span class="o">==</span> <span class="n">buscar_password</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">)</span>
+                        <span class="n">error</span><span class="o">=</span> <span class="s">&quot;Password incorrecto&quot;</span>
+                        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span><span class="n">error</span><span class="p">})</span>
+            <span class="n">error</span><span class="o">=</span> <span class="s">&quot;Usuario incorrecto&quot;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>                                                           <span class="c">#Si no se trata de la pagina de login quien</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">)</span>                       <span class="c">#lo llamo? Entonces no verifica absolutamente</span>
+                                                                        <span class="c">#nada y muestra la pagina solicitada</span>
 
+<span class="c">#La clase RegistrarUsuario se encarga de crear un nuevo usuario</span>
+<span class="k">class</span> <span class="nc">RegistrarUsuario</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>                           <span class="c">#Devuelve la pagina en donde se encuentra el</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;CrearUsuario.html&#39;</span><span class="p">)</span>                     <span class="c">#formulario</span>
 
-class inicio(TemplateView):
-    def post(self, request, *args, **kwargs):
-        if &#39;user&#39; in request.POST:
-            buscar_user = request.POST[&#39;user&#39;]
-            buscar_password = request.POST[&#39;pass&#39;]
-            error= &quot;&quot;
-            for i in Usuarios.objects.all():
-                if i.estado:
-                    if i.nick == buscar_user:
-                        if i.password == buscar_password:
-                            return render(request, &#39;inicio.html&#39;)
-                        error= &quot;Password incorrecto&quot;
-                        return render(request, &#39;login.html&#39;, {&#39;error&#39;:error})
-            error= &quot;Usuario incorrecto&quot;
-            return render(request, &#39;login.html&#39;, {&#39;error&#39;: error})
-        else:
-            return render(request, &#39;inicio.html&#39;)
+<span class="c">#La clase ListarUsuario se encarga de la vista principal de Administracion de Usuarios</span>
+<span class="k">class</span> <span class="nc">ListarUsuario</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>                                      <span class="c">#La pagina quien lo llama es CrearUsuario.html?</span>
+            <span class="n">new_user</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>                              <span class="c">#Comprueba absolutamente todos los datos</span>
+            <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre&#39;</span><span class="p">]</span>                          <span class="c">#ingresados para averiguar si no se trata de</span>
+            <span class="n">new_apellido</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;apellido&#39;</span><span class="p">]</span>                      <span class="c">#un dato vacio el cual genera problemas al</span>
+            <span class="n">new_email</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>                            <span class="c">#intentar guardar en la BD</span>
+            <span class="n">new_cedula</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;cedula&#39;</span><span class="p">]</span>
+            <span class="n">new_password</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">new_user</span> <span class="ow">and</span> <span class="n">new_nombre</span> <span class="ow">and</span> <span class="n">new_email</span> <span class="ow">and</span> <span class="n">new_password</span> <span class="ow">and</span> <span class="n">new_cedula</span><span class="p">:</span>
+                <span class="n">nuevo_usuario</span><span class="o">=</span> <span class="n">Usuarios</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">new_user</span><span class="p">,</span> <span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">,</span> <span class="n">apellido</span><span class="o">=</span> <span class="n">new_apellido</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="n">new_email</span><span class="p">,</span> <span class="n">cedula</span><span class="o">=</span> <span class="n">new_cedula</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span> <span class="n">new_password</span><span class="p">)</span> <span class="c">#insert into values</span>
+                <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>                                    <span class="c">#guardamos en la base de datos</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;CrearUsuario.html&#39;</span><span class="p">)</span>             <span class="c">#Si no logra grabar devuelve a la pagina anterior</span>
+        <span class="n">lista</span><span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Usuario.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">:</span><span class="n">lista</span><span class="p">})</span>     <span class="c">#enviamos al html un diccionario que tiene par &#39;key&#39;:lista_de_Usuarios_Existentes</span>
 
-class RegistrarUsuario(TemplateView):
-    def post(self, request, *args, **kwargs):
-        return render(request, &#39;CrearUsuario.html&#39;)
-
-
-class ListarUsuario(TemplateView):
-    def post(self, request, *args, **kwargs):   #insertamos un usuario en la tabla
-        if &#39;user&#39; in request.POST:
-            new_user= request.POST[&#39;user&#39;]#lo que nos devuelve el html en &#39;user&#39;
-            new_nombre= request.POST[&#39;nombre&#39;]
-            new_apellido= request.POST[&#39;apellido&#39;]
-            new_email= request.POST[&#39;email&#39;]
-            new_cedula= request.POST[&#39;cedula&#39;]
-            new_password= request.POST[&#39;pass&#39;]
-            if new_user and new_nombre and new_email and new_password and new_cedula:
-                nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
-                nuevo_usuario.save()                    #guardamos en la base de datos
-            else:
-                return render(request, &#39;CrearUsuario.html&#39;)
-        lista= Usuarios.objects.all()
-        return render(request, &#39;Usuario.html&#39;, {&#39;lista_usuarios&#39;:lista})     #enviamos al html un diccionario que tiene par &#39;key&#39;:lista_de_Usuarios_Existentes
-
-class CambioEstado(TemplateView):
-    def post(self, request, *args, **kwargs):
-        modif_codigo= request.POST[&#39;codigo&#39;]
-        modificacion= Usuarios.objects.get(id=modif_codigo)
-        modificacion.estado= False
-        modificacion.save()
-        return render(request, &#39;CambioEstado.html&#39;)
-
-class EditarUsuario(TemplateView):
+<span class="c">#La clase Cambio Estado se encarga de una pagina de confirmacion de cambios</span>
+<span class="k">class</span> <span class="nc">CambioEstado</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">modif_codigo</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 </div>
