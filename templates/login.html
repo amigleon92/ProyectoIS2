@@ -1,28 +1,36 @@
 {% extends 'PlantillaBase.html' %}
 {% block title %} ::LOGIN:: {% endblock %}
 {% block import %}
-    <link href="{{ STATIC_URL }}login-box.css" rel="stylesheet" type="text/css" />    <!aca importamos el .css --estilos html-->
+    <script type="text/javascript" src="{{ STATIC_URL }}jconfirmaction.jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.ask').jConfirmAction();
+		});
+	</script>
+	<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}niceforms.js"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}niceforms-default.css" />
 {% endblock %}
 {% block Content %}
-<div style="padding: 100px 0 0 450px;">
-    <div id="login-box">
-        <H2><div style="text-align: center;">Login</div></H2>
-        <br />
-        <br />
-        <form action= "/inicio/" method="POST"> {% csrf_token %}
-            <div id="login-box-name" style="margin-top:20px;">Usuario:</div>
-            <div id="login-box-field" style="margin-top:20px;">
-                <input name="user" class="form-login" title="Username" value="" size="30" maxlength="2048"  />
-            </div>
-            <div id="login-box-name">Contrase&ntildea:</div>
-           <div id="login-box-field">
-               <input name="pass" type="password" class="form-login" title="Password" value="" size="30" maxlength="2048" />
-           </div>
-           <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
-           <br />
-           <br />
-           <br />
-               <input type="image" src="../static/images/login-btn" width="103" height="42" style="margin-bottom:90px;">
+<div id="main_container">
+    <br><br><br><br><br><br><br><br>
+    <div class="login_form">
+        <h3>Panel de Login</h3>
+        <form action= "/inicio/" method="POST" class="niceform"> {% csrf_token %} <!Lo hacemos como metodo post.. Se encarga la clase inicio en su metodo post>
+               <fieldset>
+                   <dl>
+                       <dt><label for="email">Usuario:</label></dt>
+	        	       <dd><input type="text" name="user" id="" size="30" /></dd>
+                   </dl>
+                   <dl>
+	                   <dt><label for="password">Contraseña:</label></dt>
+	             	   <dd><input name="pass" type="password" name="" id="" size="30" /></dd>
+	           	   </dl>
+                   <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
+                   <br><br>
+                   <dl class="submit">
+	               		<input type="submit" name="submit" id="submit" value="Enter" />
+	               </dl>
+               </fieldset>
         </form>
     </div>
 </div>

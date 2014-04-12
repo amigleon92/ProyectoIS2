@@ -1,35 +1,68 @@
 {% extends 'PlantillaBase.html' %}
 {% block title %} ::Crear un nuevo usuario::{% endblock %}
+{% block import %}
+    <script type="text/javascript" src="{{ STATIC_URL }}jconfirmaction.jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.ask').jConfirmAction();
+		});
+	</script>
+	<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}niceforms.js"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}niceforms-default.css" />
+{% endblock %}
 {% block Content %}
-    <h1> Crear Usuario </h1>
-    <form action="/inicio/usuario/" method="post">{% csrf_token %}
-        <div id="login-box-name" style="margin-top: 20px"> Username: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="user" class="form-login" title="Username" value="" size="30" maxlength="2048"/>
-        </div>
-        <div id="login-box-name" style="margin-top: 20px"> Nombre: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="nombre" class="form-login" title="Nombre" value="" size="30" maxlength="2048"/>
-        </div>
-        <div id="login-box-name" style="margin-top: 20px"> Apellido: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="apellido" class="form-login" title="Apellido" value="" size="30" maxlength="2048"/>
-        </div>
-        <div id="login-box-name" style="margin-top: 20px"> Cedula: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="cedula" class="form-login" title="Cedula" value="" size="30" maxlength="2048"/>
-        </div>
-        <div id="login-box-name" style="margin-top: 20px"> Email: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="email" class="form-login" title="Email" value="" size="30" maxlength="2048"/>
-        </div>
-        <div id="login-box-name" style="margin-top: 20px"> Contraseña: </div>
-        <div id="login-box-field" style="margin-top: 20px">
-            <input name="pass" type="password" class="form-login" title="Password" value="" size="30" maxlength="2048"/>
-        </div>
-        <input type="submit" value="Crear">
-    </form>
-    <form action="/inicio/usuario/" method="POST">{% csrf_token %}
-        <input type="submit" value="<Atrás">
-    </form>
+    <div id="main_container">
+		<div class="header">
+            <br>
+		    <br>
+    	</div>
+    	<br>
+		<br>
+    	<div class="main_content">
+    		<div style="text-align: center;"><b><h1><font color="white">CREAR USUARIOS</font></h1></b></div>
+ 			<div class="center_content">
+        		<div class="right_content">
+				<br>
+				<br>
+				        <h2>Formulario Usuario</h2>
+                  		<table id="rounded-corner" summary="2007 Major IT Companies' Profit">
+							<form action="/inicio/usuario/" method="post" class="niceform">{% csrf_token %}
+	 			                <fieldset>
+		                    	    <dl>
+	        	        	            <dt><label for="email">Usuario:</label></dt>
+	        	        	            <dd><input type="text" name="user" id="" size="54" /></dd>
+	        	        	        </dl>
+					                <dl>
+	        	        	            <dt><label for="email">Nombre:</label></dt>
+	        	        	            <dd><input type="text" name="nombre" id="" size="54" /></dd>
+	        	        	        </dl>
+					                <dl>
+	        	        	            <dt><label for="email">Apellido:</label></dt>
+	        	        	            <dd><input type="text" name="apellido" id="" size="54" /></dd>
+	        	        	        </dl>
+					                <dl>
+	        	        	            <dt><label for="email">CI:</label></dt>
+	        	        	            <dd><input type="text" name="cedula" id="" size="54" /></dd>
+	        	        	        </dl>
+					                <dl>
+	        	        	            <dt><label for="email">Email:</label></dt>
+	        	        	            <dd><input type="text" name="email" id="" size="54" /></dd>
+	        	        	        </dl>
+	               			        <dl>
+	                        		    <dt><label for="password">Contraseña:</label></dt>
+	                        		    <dd><input type="text" name="pass" id="" size="54" /></dd>
+	                    		    </dl>
+                                </fieldset>
+                                <input type="submit" value="Crear">
+                            </form>
+						</table>
+                        <form action="/inicio/usuario/" method="POST">{% csrf_token %}
+                            <input type="submit" value="<Atrás">
+                        </form>
+                        <!--a href="#" class="bt_green"><span class="bt_green_lft"></span><strong>canselar</strong><span class="bt_green_r"></span></a>
+     	                <a href="#" class="bt_blue"><span class="bt_blue_lft"></span><strong>aceptar</strong><span class="bt_blue_r"></span></a-->
+  	               </div>   <!--end of center content -->
+    	    <div class="clear"></div>
+        </div> <!--end of main content-->
+    </div>
 {% endblock %}

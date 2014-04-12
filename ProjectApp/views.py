@@ -18,11 +18,12 @@ class inicio(TemplateView):
             buscar_password = request.POST['pass']
             error= ""
             for i in Usuarios.objects.all():
-                if i.nick == buscar_user:
-                    if i.password == buscar_password:
-                        return render(request, 'inicio.html')
-                    error= "Password incorrecto"
-                    return render(request, 'login.html', {'error':error})
+                if i.estado:
+                    if i.nick == buscar_user:
+                        if i.password == buscar_password:
+                            return render(request, 'inicio.html')
+                        error= "Password incorrecto"
+                        return render(request, 'login.html', {'error':error})
             error= "Usuario incorrecto"
             return render(request, 'login.html', {'error': error})
         else:
@@ -36,14 +37,17 @@ class RegistrarUsuario(TemplateView):
 class ListarUsuario(TemplateView):
     def post(self, request, *args, **kwargs):   #insertamos un usuario en la tabla
         if 'user' in request.POST:
-            new_user= request.POST['user']          #lo que nos devuelve el html en 'user'
+            new_user= request.POST['user']#lo que nos devuelve el html en 'user'
             new_nombre= request.POST['nombre']
             new_apellido= request.POST['apellido']
             new_email= request.POST['email']
             new_cedula= request.POST['cedula']
             new_password= request.POST['pass']
-            nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
-            nuevo_usuario.save()                    #guardamos en la base de datos
+            if new_user and new_nombre and new_email and new_password and new_cedula:
+                nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
+                nuevo_usuario.save()                    #guardamos en la base de datos
+            else:
+                return render(request, 'CrearUsuario.html')
         lista= Usuarios.objects.all()
         return render(request, 'Usuario.html', {'lista_usuarios':lista})     #enviamos al html un diccionario que tiene par 'key':lista_de_Usuarios_Existentes
 
@@ -70,6 +74,8 @@ class EditarUsuarioConfirmar(TemplateView):
         modificacion.apellido= request.POST['apellido']
         modificacion.email= request.POST['email']
         modificacion.password= request.POST['pass']
-        modificacion.save()
-        lista= Usuarios.objects.all()
-        return render(request, 'Usuario.html', {'lista_usuarios':lista})
+        if modificacion.nick and modificacion.nombre and modificacion.apellido and modificacion.email and modificacion.cedula and modificacion.password:
+            modificacion.save()
+            return render(request, 'EditarUsuarioConfirmar.html')
+        else:
+            return render(request, 'EditarUsuario.html', {'usuario':modificacion})
