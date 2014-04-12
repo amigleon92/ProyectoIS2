@@ -1,0 +1,8 @@
+{% extends 'PlantillaBase.html' %}
+{% block title %}::Cambios confirmados::{% endblock %}
+{% block Content %}
+    Los cambios han sido guardados exitosamente
+    <form action="/inicio/usuario/" method="POST">{% csrf_token %}
+        <input type="submit" value="Aceptar">
+    </form>
+{% endblock %}

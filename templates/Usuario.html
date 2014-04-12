@@ -3,19 +3,39 @@
 {% block Content %}
     <h1> Lista de los usuarios </h1>
     <ul>
-        {% for usuario in  lista_usuarios %}
-            <li><b>Nombre               </b> {{ usuario.nombre }} </li>
-            <li><b>Apellido             </b> {{ usuario.apellido }} </li>
-            <li><b>Cédula de Identidad  </b> {{ usuario.cedula }} </li>
-            <li><b>E-mail               </b> {{ usuario.email }} </li>
-        {% endfor %} <br>
-        <form action= "/inicio/usuario/crear/" method="POST"> {% csrf_token %}
-            <input type="submit" value="Crear"><br>
-        </form>
-        <input type="submit" value="Cambio de Estado"><br>
-        <input type="submit" value="Editar"><br>
-        <input type="submit" value="Consultar"><br>
-        <form action="/inicio/" method="get">                   <!se encarga la clase inicio en su metodo get>
+
+            {% for usuario in  lista_usuarios %}
+                {% if usuario.estado %}
+                <li><b>Código               </b> {{ usuario.id }}</li>
+                <li><b>Nombre               </b> {{ usuario.nombre }} </li>
+                <li><b>Apellido             </b> {{ usuario.apellido }} </li>
+                <li><b>Cédula de Identidad  </b> {{ usuario.cedula }} </li>
+                <li><b>E-mail               </b> {{ usuario.email }} </li>
+                <li><b>Estado               </b>
+                    {% if usuario.estado %}
+                        ACTIVO
+                    {% else %}
+                        INACTIVO
+                    {% endif %}
+                </li>
+                <form action="/inicio/usuario/cambio_estado/" method="post">{% csrf_token %}
+                    <input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                    <input type="submit" value="Eliminar"><br>
+                </form>
+                <form action="/inicio/usuario/editar/" method="post">{% csrf_token %}
+                    <input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                    <input type="submit" value="Editar"><br>
+                </form>
+                <!form action="/inicio/usuario/consultar/" method="post">
+                    <!input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                    <!input type="submit" value="Consultar"><br>
+                <!/form>
+                {% endif %}
+            {% endfor %} <br>
+            <form action= "/inicio/usuario/crear/" method="POST"> {% csrf_token %}
+                <input type="submit" value="Crear"><br>
+            </form>
+        <form action="/inicio/" method="POST"> {% csrf_token %}
             <input type="submit" value="<Menú Inicio"><br>
         </form>
     </ul>

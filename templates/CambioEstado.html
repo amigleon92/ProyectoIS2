@@ -1,0 +1,8 @@
+{% extends 'PlantillaBase.html' %}
+{% block title %}::Cambio Estado::{% endblock %}
+{% block Content %}
+    El usuario pasó a modo INACTIVO <br>
+    <form action="/inicio/usuario/" method="POST"> {% csrf_token %}
+        <input type="submit" value="Aceptar">
+    </form>
+{% endblock %}
