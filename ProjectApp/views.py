@@ -48,7 +48,7 @@ class ListarUsuario(TemplateView):
             new_email= request.POST['email']                            #intentar guardar en la BD
             new_cedula= request.POST['cedula']
             new_password= request.POST['pass']
-            if new_user and new_nombre and new_email and new_password and new_cedula:
+            if new_user and new_nombre and new_email and new_password and new_cedula!=0:
                 nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
                 nuevo_usuario.save()                                    #guardamos en la base de datos
             else:
@@ -80,10 +80,11 @@ class EditarUsuarioConfirmar(TemplateView):
         modificacion= Usuarios.objects.get(id= modif_codigo)
         modificacion.nick= request.POST['user']
         modificacion.nombre= request.POST['nombre']
+        modificacion.cedula= request.POST['cedula']
         modificacion.apellido= request.POST['apellido']
         modificacion.email= request.POST['email']
         modificacion.password= request.POST['pass']
-        if modificacion.nick and modificacion.nombre and modificacion.apellido and modificacion.email and modificacion.cedula and modificacion.password:
+        if modificacion.nick and modificacion.nombre and modificacion.apellido and modificacion.email and modificacion.cedula!=0 and modificacion.password:
             modificacion.save()
             return render(request, 'EditarUsuarioConfirmar.html')
         else:
