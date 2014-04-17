@@ -43,16 +43,18 @@ class ListarUsuario(TemplateView):
     def post(self, request, *args, **kwargs):
         if 'user' in request.POST:                                      #La pagina quien lo llama es CrearUsuario.html?
             new_user= request.POST['user']                              #Comprueba absolutamente todos los datos
-            new_nombre= request.POST['nombre']                          #ingresados para averiguar si no se trata de
-            new_apellido= request.POST['apellido']                      #un dato vacio el cual genera problemas al
-            new_email= request.POST['email']                            #intentar guardar en la BD
-            new_cedula= request.POST['cedula']
             new_password= request.POST['pass']
-            if new_user and new_nombre and new_email and new_password and new_cedula!=0:
+            if new_user and new_password:
+                if Usuarios.objects.get(nick=new_user):                 #Existe otro usuario con el mismo nick?
+                    return render(request, 'CrearUsuario.html', {'error':'Nombre de usuario ya existe'})
+                new_nombre= request.POST['nombre']                          #ingresados para averiguar si no se trata de
+                new_apellido= request.POST['apellido']                      #un dato vacio el cual genera problemas al
+                new_email= request.POST['email']                            #intentar guardar en la BD
+                new_cedula= request.POST['cedula']
                 nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
                 nuevo_usuario.save()                                    #guardamos en la base de datos
             else:
-                return render(request, 'CrearUsuario.html')             #Si no logra grabar devuelve a la pagina anterior
+                return render(request, 'CrearUsuario.html', {'error':'Complete los campos obligatorios'})             #Si no logra grabar devuelve a la pagina anterior
         lista= Usuarios.objects.all()
         return render(request, 'Usuario.html', {'lista_usuarios':lista})     #enviamos al html un diccionario que tiene par 'key':lista_de_Usuarios_Existentes
 
@@ -79,13 +81,16 @@ class EditarUsuarioConfirmar(TemplateView):
         modif_codigo= request.POST['codigo']
         modificacion= Usuarios.objects.get(id= modif_codigo)
         modificacion.nick= request.POST['user']
-        modificacion.nombre= request.POST['nombre']
-        modificacion.cedula= request.POST['cedula']
-        modificacion.apellido= request.POST['apellido']
-        modificacion.email= request.POST['email']
         modificacion.password= request.POST['pass']
-        if modificacion.nick and modificacion.nombre and modificacion.apellido and modificacion.email and modificacion.cedula!=0 and modificacion.password:
+        if modificacion.nick and modificacion.password:
+            existe= Usuarios.objects.get(nick=modificacion.nick)                #Existe un usuario con el mismo nick?
+            if existe and existe.id!=modificacion.id:
+                return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'error':'Nombre de usuario ya existe'})
+            modificacion.nombre= request.POST['nombre']
+            modificacion.cedula= request.POST['cedula']
+            modificacion.apellido= request.POST['apellido']
+            modificacion.email= request.POST['email']
             modificacion.save()
             return render(request, 'EditarUsuarioConfirmar.html')
         else:
-            return render(request, 'EditarUsuario.html', {'usuario':modificacion})
+            return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'error':'Complete los campos obligatorios'})

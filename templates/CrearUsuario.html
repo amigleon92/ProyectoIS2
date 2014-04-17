@@ -30,7 +30,7 @@
 	 			                <fieldset>
 		                    	    <dl>
 	        	        	            <dt><label for="email">Usuario:</label></dt>
-	        	        	            <dd><input type="text" name="user" id="" size="54" /></dd>
+	        	        	            <dd><input type="text" name="user" id="" size="54" style="background-color:#FF0000"/></dd>
 	        	        	        </dl>
 					                <dl>
 	        	        	            <dt><label for="email">Nombre:</label></dt>
@@ -50,8 +50,9 @@
 	        	        	        </dl>
 	               			        <dl>
 	                        		    <dt><label for="password">Contraseña:</label></dt>
-	                        		    <dd><input type="password" name="pass" id="" size="54" /></dd>
+	                        		    <dd><input type="password" name="pass" id="" size="54" style="background-color:#FF0000"/></dd>
 	                    		    </dl>
+                                    <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
                                 </fieldset>
                                 <input type="submit" value="Crear">
                             </form>
