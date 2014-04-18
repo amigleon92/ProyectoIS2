@@ -52,15 +52,19 @@ class Roles(models.Model):
     modificar_tipodeitem= models.BooleanField(default=False)
     eliminar_tipodeotem= models.BooleanField(default=False)
     crear_lineabase= models.BooleanField(default=False)         #Permisos de Administracion de Lineas Base
+    def __unicode__(self):
+        return self.nombre
 
 class Usuarios(models.Model):
     nick= models.CharField(max_length=15)
-    nombre= models.CharField(max_length=50)
-    apellido= models.CharField(max_length=50)
+    nombre= models.CharField(max_length=50, null=True)
+    apellido= models.CharField(max_length=50, null=True)
     password= models.CharField(max_length=10)
-    cedula= models.PositiveIntegerField()
-    email= models.CharField(max_length=20)
+    cedula= models.PositiveIntegerField(default=0)
+    email= models.CharField(max_length=20, null=True)
     estado= models.BooleanField(default=True)
     permiso= models.ManyToManyField(Roles)                      #El rol asociado al usuario
+    def __unicode__(self):
+        return self.nombre
 
 

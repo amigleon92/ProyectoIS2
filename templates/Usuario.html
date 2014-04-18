@@ -3,11 +3,13 @@
 {% block Content %}
     <div id="main_container">
 		<div class="header">
-            <br>
-		    <br>
+            <div class="right_header"> <!--a href="#" class="messages">Messages</a-->
+                <form action="/" method="get">{% csrf_token %}
+                    <u> Usuario</u>:  {{ logueado.nick }}  ||
+                    <a href="/" class="logout">cerrar sesión</a>
+                </form>
+            </div>
 		</div>
-    	<br>
-		<br>
     	<div class="main_content">
     		<div style="text-align: center;"><b><h1><font color="white">ADMINISTRACION DE USUARIOS</font></h1></b></div>
  		<div class="center_content">
@@ -51,12 +53,14 @@
                             <td>
                                 <form action="/inicio/usuario/editar/" method="post">{% csrf_token %}
                                     <input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                                    <input type="hidden" name='login' value={{ logueado.id }} >
                                     <input type="submit" value="Editar"><br>
                                 </form>
                             </td>
 		                    <td>
                                 <form action="/inicio/usuario/cambio_estado/" method="post">{% csrf_token %}
                                     <input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                                    <input type="hidden" name='login' value={{ logueado.id }} >
                                     <input type="submit" value="Eliminar"><br>
                                 </form>
 		                    </td
@@ -66,9 +70,11 @@
                     </tbody>
 	            </table>
                 <form action= "/inicio/usuario/crear/" method="POST"> {% csrf_token %}
+                    <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="Crear">
                 </form>
                 <form action="/inicio/" method="POST"> {% csrf_token %}
+                    <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="<Menú Inicio"><br>
                 </form>
 	            <!--a href="#" class="bt_green"><span class="bt_green_lft"></span><strong>Crear Usuario</strong><span class="bt_green_r"></span></a>

@@ -2,7 +2,14 @@
 {% block title %}::Cambio Estado::{% endblock %}
 {% block Content %}
     <div id="main_container">
-		    <div class="header"></div>
+		    <div class="header">
+                <div class="right_header"> <!--a href="#" class="messages">Messages</a-->
+                <form action="/" method="get">{% csrf_token %}
+                    <u> Usuario</u>:  {{ logueado.nick }}  ||
+                    <a href="/" class="logout">cerrar sesión</a>
+                </form>
+            </div>
+		    </div>
     		<div class="main_content">
     			<div style="text-align: center;"><b><h1><font color="white">CAMBIO DE ESTADO</font></h1></b></div>
  			    <div class="center_content">
@@ -15,8 +22,9 @@
 
     		    </div> <!--end of main content-->
                 <form action="/inicio/usuario/" method="POST"> {% csrf_token %}
-                        <center><input type="submit" value="Aceptar"></center>
-                    </form>
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <center><input type="submit" value="Aceptar"></center>
+                </form>
 		    </div>
 
     </div>
