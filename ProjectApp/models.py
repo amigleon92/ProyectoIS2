@@ -52,6 +52,8 @@ class Roles(models.Model):
     modificar_tipodeitem= models.BooleanField(default=False)
     eliminar_tipodeotem= models.BooleanField(default=False)
     crear_lineabase= models.BooleanField(default=False)         #Permisos de Administracion de Lineas Base
+    def __unicode__(self):
+        return self.nombre
 
 class Usuarios(models.Model):
     nick= models.CharField(max_length=15, unique=False)
@@ -65,7 +67,7 @@ class Usuarios(models.Model):
     def __unicode__(self):
         return self.nombre
 
-class Proyecto(models.Model):
+class Proyectos(models.Model):
     pass
 
 

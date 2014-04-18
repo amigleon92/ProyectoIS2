@@ -29,14 +29,25 @@ class inicio(TemplateView):
                         return render(request, 'login.html', {'error':error})
             error= "Usuario incorrecto"
             return render(request, 'login.html', {'error': error})
-        else:                                                           #Si no se trata de la pagina de login quien
-            return render(request, 'inicio.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})                       #lo llamo? Entonces no verifica absolutamente
-                                                                        #nada y muestra la pagina solicitada
+        else:                                                                                                                       #Si no se trata de la pagina de login quien
+            return render(request, 'inicio.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
+                                                                                                                                    #nada y muestra la pagina solicitada
 
 #La clase RegistrarUsuario se encarga de crear un nuevo usuario
 class RegistrarUsuario(TemplateView):
-    def post(self, request, *args, **kwargs):                           #Devuelve la pagina en donde se encuentra el
-        return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})                     #formulario
+    def post(self, request, *args, **kwargs):                           #Devuelve la pagina en donde se encuentra el formulario
+        usuario_logueado= Usuarios.objects.get(id= request.POST['login'])   #Obtiene el objeto usuario logueado
+        permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
+        tiene_permiso= False
+        for i in permisos:
+            if i.crear_usuario:
+                tiene_permiso=True
+                break
+        if tiene_permiso:
+            return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista= Usuarios.objects.all()
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
 
 #La clase ListarUsuario se encarga de la vista principal de Administracion de Usuarios
 class ListarUsuario(TemplateView):
@@ -67,19 +78,40 @@ class ListarUsuario(TemplateView):
 #La clase Cambio Estado se encarga de una pagina de confirmacion de cambios
 class CambioEstado(TemplateView):
     def post(self, request, *args, **kwargs):
-        modif_codigo= request.POST['codigo']
-        modificacion= Usuarios.objects.get(id=modif_codigo)
-        modificacion.estado= False
-        modificacion.save()
-        return render(request, 'CambioEstado.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        usuario_logueado= Usuarios.objects.get(id= request.POST['login'])   #Obtiene el objeto usuario logueado
+        permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
+        tiene_permiso= False
+        for i in permisos:
+            if i.crear_usuario:
+                tiene_permiso=True
+                break
+        if tiene_permiso:
+            modif_codigo= request.POST['codigo']
+            modificacion= Usuarios.objects.get(id=modif_codigo)
+            modificacion.estado= False
+            modificacion.save()
+            return render(request, 'CambioEstado.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista= Usuarios.objects.all()
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
 
 #La clase Editar Usuario se encarga de la Edicion de Usuarios
 class EditarUsuario(TemplateView):
     def post(self, request, *args, **kwargs):
-        modif_codigo= request.POST['codigo']
-        modificacion= Usuarios.objects.get(id= modif_codigo)
-        return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'logueado':Usuarios.objects.get(id=request.POST['login'])}) #Devuelve un formulario con lo campos
-                                                                               #completados para modificar
+        usuario_logueado= Usuarios.objects.get(id= request.POST['login'])   #Obtiene el objeto usuario logueado
+        permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
+        tiene_permiso= False
+        for i in permisos:
+            if i.crear_usuario:
+                tiene_permiso=True
+                break
+        if tiene_permiso:                                               #Devuelve un formulario con lo campos
+            modif_codigo= request.POST['codigo']                        #completados para modificar
+            modificacion= Usuarios.objects.get(id= modif_codigo)
+            return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista= Usuarios.objects.all()
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
 
 #La clase EditarUsuarioConfirmar se encarga de una pagina de confirmacion de cambios
 class EditarUsuarioConfirmar(TemplateView):
