@@ -60,7 +60,7 @@ class Usuarios(models.Model):
     password= models.CharField(max_length=10)
     cedula= models.PositiveIntegerField(default=0)
     email= models.CharField(max_length=20, null=False)
-    estado= models.BooleanField(default=False)
+    estado= models.BooleanField(default=True)
     permiso= models.ManyToManyField(Roles)                      #El rol asociado al usuario
     def __unicode__(self):
         return self.nombre

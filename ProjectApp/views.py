@@ -83,15 +83,19 @@ class EditarUsuario(TemplateView):
 
 #La clase EditarUsuarioConfirmar se encarga de una pagina de confirmacion de cambios
 class EditarUsuarioConfirmar(TemplateView):
+    def existe(self,char):                                              #Funcion que devuelve int y comprueba
+        for i in Usuarios.objects.all():                                #si el nick que le pasamos ya existe en la
+            if i.nick==char: return i.id                                #lista de usuarios
+        return 0
     def post(self, request, *args, **kwargs): #Primero verifica si lo que le envio EditarUsuario.html son datos correctos
         modif_codigo= request.POST['codigo']
         modificacion= Usuarios.objects.get(id= modif_codigo)
         modificacion.nick= request.POST['user']
         modificacion.password= request.POST['pass']
         if modificacion.nick and modificacion.password:
-            existe_otro_usuario= ListarUsuario.existe(self, modificacion.nick)
-            if existe_otro_usuario and existe_otro_usuario!=0:
-                return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Nombre de usuario ya existe'})
+            existe_otro_usuario= EditarUsuarioConfirmar.existe(self, modificacion.nick)
+            if existe_otro_usuario and existe_otro_usuario!=modificacion.id:
+                return render(request, 'EditarUsuario.html', {'usuario':modificacion,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Nombre de usuario ya existe'})
             modificacion.nombre= request.POST['nombre']
             if request.POST['cedula']=="": modificacion.cedula=0            #Control para que no intente grabar un campo vacio
             else: modificacion.cedula= request.POST['cedula']
