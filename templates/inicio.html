@@ -67,11 +67,7 @@
                         <input type="hidden" name='login' value={{ logueado.id }} >
      	                <input type="submit" value="Administrar Usuarios">
                     </form>
-                    {% for i in logueado.permiso.all %}
-                        {% if i.crear_usuario%}
-                            {{  }}
-                        {% endif %}
-                    {% endfor %}
+                    
   	        </div> <!right-content>
             <div class="clear"> </div>
         </div>
