@@ -105,3 +105,10 @@ class EditarUsuarioConfirmar(TemplateView):
             return render(request, 'EditarUsuarioConfirmar.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Complete los campos obligatorios'})
+
+        #la clase MostrarUsuario se encarga de mostrar los datos de un usuario especificado
+class MostrarUsuario(TemplateView):
+    def post(self, request, *args, **kwargs):
+        mostrar_codigo= request.POST['codigo']
+        mostrar= Usuarios.objects.get(id= mostrar_codigo)
+        return render(request, 'MostrarUsuario.html', {'usuario':mostrar, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
