@@ -47,7 +47,7 @@ class RegistrarUsuario(TemplateView):
             return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             lista= Usuarios.objects.all()
-            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
 
 #La clase ListarUsuario se encarga de la vista principal de Administracion de Usuarios
 class ListarUsuario(TemplateView):
@@ -93,7 +93,7 @@ class CambioEstado(TemplateView):
             return render(request, 'CambioEstado.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             lista= Usuarios.objects.all()
-            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
 
 #La clase Editar Usuario se encarga de la Edicion de Usuarios
 class EditarUsuario(TemplateView):
@@ -111,7 +111,7 @@ class EditarUsuario(TemplateView):
             return render(request, 'EditarUsuario.html', {'usuario':modificacion, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             lista= Usuarios.objects.all()
-            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede realizar esta accion'})
+            return render(request, 'Usuario.html', {'lista_usuarios': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
 
 #La clase EditarUsuarioConfirmar se encarga de una pagina de confirmacion de cambios
 class EditarUsuarioConfirmar(TemplateView):
