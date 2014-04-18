@@ -36,6 +36,7 @@
 						    <th scope="col" class="rounded">Nombre</th>
 						    <th scope="col" class="rounded">Editar</th>
                             <th scope="col" class="rounded">Eliminar</th>
+                            <th scope="col" class="rounded">Mostrar</th>
 		        		</tr>
  					</thead>
         			<!--tfoot>
@@ -63,7 +64,14 @@
                                     <input type="hidden" name='login' value={{ logueado.id }} >
                                     <input type="submit" value="Eliminar"><br>
                                 </form>
-		                    </td
+		                    </td>
+                            <td>
+                                <form action="/inicio/usuario/mostrar/" method="post">{% csrf_token %}
+                                    <input type="hidden" name='codigo' value="{{ usuario.id }}" >
+                                     <input type="hidden" name='login' value={{ logueado.id }} >
+                                    <input type="submit" value="Mostrar"><br>
+                                </form>
+		                    </td>
 		                </tr>
                         {% endif %}
                         {% endfor %}
