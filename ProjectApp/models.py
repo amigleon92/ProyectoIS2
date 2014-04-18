@@ -18,7 +18,7 @@
 from django.db import models
 
 class Roles(models.Model):
-    nombre= models.CharField(max_length=30)
+    nombre= models.CharField(max_length=30, unique=True)
     crear_usuario= models.BooleanField(default=False)           #Permisos de Administracion de usuarios
     modidificar_usuario= models.BooleanField(default=False)
     eliminar_usuario= models.BooleanField(default=False)
@@ -52,19 +52,20 @@ class Roles(models.Model):
     modificar_tipodeitem= models.BooleanField(default=False)
     eliminar_tipodeotem= models.BooleanField(default=False)
     crear_lineabase= models.BooleanField(default=False)         #Permisos de Administracion de Lineas Base
-    def __unicode__(self):
-        return self.nombre
 
 class Usuarios(models.Model):
-    nick= models.CharField(max_length=15)
-    nombre= models.CharField(max_length=50, null=True)
-    apellido= models.CharField(max_length=50, null=True)
+    nick= models.CharField(max_length=15, unique=False)
+    nombre= models.CharField(max_length=50, null=False)
+    apellido= models.CharField(max_length=50, null=False)
     password= models.CharField(max_length=10)
     cedula= models.PositiveIntegerField(default=0)
-    email= models.CharField(max_length=20, null=True)
-    estado= models.BooleanField(default=True)
+    email= models.CharField(max_length=20, null=False)
+    estado= models.BooleanField(default=False)
     permiso= models.ManyToManyField(Roles)                      #El rol asociado al usuario
     def __unicode__(self):
         return self.nombre
+
+class Proyecto(models.Model):
+    pass
 
 
