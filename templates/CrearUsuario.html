@@ -13,11 +13,11 @@
 {% block Content %}
     <div id="main_container">
 		<div class="header">
-            <br>
-		    <br>
+            <form action="/" method="get">{% csrf_token %}
+                    <u> Usuario</u>:  {{ logueado.nick }}  ||
+                    <a href="/" class="logout">cerrar sesión</a>
+                </form>
     	</div>
-    	<br>
-		<br>
     	<div class="main_content">
     		<div style="text-align: center;"><b><h1><font color="white">CREAR USUARIOS</font></h1></b></div>
  			<div class="center_content">
