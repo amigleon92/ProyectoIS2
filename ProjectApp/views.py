@@ -3,7 +3,7 @@ Django views for ProyectoIS2 project
 """
 from django.http import request
 from django.views.generic import TemplateView, CreateView, ListView
-from ProjectApp.models import Usuarios, Roles
+from ProjectApp.models import Usuarios, Roles, Proyecto
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, render_to_response
 
@@ -146,3 +146,20 @@ class MostrarUsuario(TemplateView):
         mostrar_codigo= request.POST['codigo']
         mostrar= Usuarios.objects.get(id= mostrar_codigo)
         return render(request, 'MostrarUsuario.html', {'usuario':mostrar, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+
+
+#La clase CrearProyecto se encarga de crear un nuevo proyecto
+class CrearProyecto(TemplateView):
+    def post(self, request, *args, **kwargs):                           #Devuelve la pagina en donde se encuentra el formulario
+        usuario_logueado= Usuarios.objects.get(id= request.POST['login'])   #Obtiene el objeto usuario logueado
+        permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
+        tiene_permiso= False
+        for i in permisos:
+            if i.crear_proyecto:
+                tiene_permiso=True
+                break
+        if tiene_permiso:
+            return render(request, 'CrearProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista= Proyecto.objects.all()
+            return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})

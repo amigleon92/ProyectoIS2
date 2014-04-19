@@ -20,5 +20,5 @@ urlpatterns = patterns('',
     url(r'^inicio/usuario/editar/$', EditarUsuario.as_view(), name='editar_usuario'),
     url(r'^inicio/usuario/editar/confirmar/$', EditarUsuarioConfirmar.as_view(), name='editar_usuario_confirmar'),
     url(r'^inicio/usuario/mostrar/$', MostrarUsuario.as_view(), name='mostrar_usuario' ),
-    url(r'^inicio/proyecto/crear/$', CrearProyecto.as_view(), name= 'crear_proyecto'),
+    url(r'^inicio/crear_proyecto/$', CrearProyecto.as_view(), name= 'crear_proyecto'),
 )

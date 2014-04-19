@@ -68,6 +68,10 @@
                         <input type="hidden" name='login' value={{ logueado.id }} >
      	                <input type="submit" value="Administrar Usuarios">
                     </form>
+                    <form action= "/inicio/crear_proyecto/" method="post"> {% csrf_token %}
+                        <input type="hidden" name='login' value={{ logueado.id }} >
+     	                <input type="submit" value="Crear Proyecto">
+                    </form>
 
   	        </div> <!right-content>
             <div class="clear"> </div>
