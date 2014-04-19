@@ -3,7 +3,7 @@ Django views for ProyectoIS2 project
 """
 from django.http import request
 from django.views.generic import TemplateView, CreateView, ListView
-from ProjectApp.models import Usuarios
+from ProjectApp.models import Usuarios, Roles, Proyectos
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, render_to_response
 
@@ -70,6 +70,8 @@ class ListarUsuario(TemplateView):
                 if existe_otro_usuario: return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Nombre de usuario ya existe'})
                 nuevo_usuario= Usuarios(nick= new_user, nombre= new_nombre, apellido= new_apellido, email= new_email, cedula= new_cedula, password= new_password) #insert into values
                 nuevo_usuario.save()                                    #guardamos en la base de datos
+                nuevo_usuario.permiso.add(Roles.objects.get(nombre= 'Sin Permisos'))
+                nuevo_usuario.save()
             else:
                 return render(request, 'CrearUsuario.html', {'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Complete los campos obligatorios'})             #Si no logra grabar devuelve a la pagina anterior
         lista= Usuarios.objects.all()
