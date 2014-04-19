@@ -5,8 +5,8 @@
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:django_db</jdbc-url>
-      <user-name>django_dev</user-name>
-      <user-password>dfd8dfc5dfcedfd8dfc3dfcddfc5</user-password>
+      <user-name>choffis</user-name>
+      <user-password>dfc9dfc2dfc5dfccdfccdfc3dfd2</user-password>
       <libraries />
     </data-source>
   </component>

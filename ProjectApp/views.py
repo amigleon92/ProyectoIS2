@@ -2,8 +2,8 @@
 Django views for ProyectoIS2 project
 """
 from django.http import request
-from django.views.generic import TemplateView, CreateView, ListView
-from ProjectApp.models import Usuarios
+from django.views.generic import TemplateView, ListView
+from ProjectApp.models import Usuarios, Proyecto
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, render_to_response
 
@@ -144,3 +144,9 @@ class MostrarUsuario(TemplateView):
         mostrar_codigo= request.POST['codigo']
         mostrar= Usuarios.objects.get(id= mostrar_codigo)
         return render(request, 'MostrarUsuario.html', {'usuario':mostrar, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+
+#: vistas encargadas de Proyecto
+class  CrearProyecto(TemplateView):
+    template_name = 'proyecto/crear',
+   # def post(self, request, *args, **kwargs):
+   #      return render(request, 'CrearProyecto.html')
