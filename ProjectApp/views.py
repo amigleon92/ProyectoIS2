@@ -24,13 +24,15 @@ class inicio(TemplateView):
                 if i.estado:
                     if i.nick == buscar_user:
                         if i.password == buscar_password:
-                            return render(request, 'inicio.html', {'logueado':i})
+                            listaProyecto= Proyecto.objects.all()
+                            return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':i})
                         error= "Password incorrecto"
                         return render(request, 'login.html', {'error':error})
             error= "Usuario incorrecto"
             return render(request, 'login.html', {'error': error})
-        else:                                                                                                                       #Si no se trata de la pagina de login quien
-            return render(request, 'inicio.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
+        else:
+            listaProyecto= Proyecto.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
+            return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
                                                                                                                                     #nada y muestra la pagina solicitada
 
 #La clase RegistrarUsuario se encarga de crear un nuevo usuario
@@ -159,7 +161,8 @@ class CrearProyecto(TemplateView):
                 tiene_permiso=True
                 break
         if tiene_permiso:
-            return render(request, 'CrearProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+            listaUsuario= Usuarios.objects.all()
+            return render(request, 'CrearProyecto.html', {'lista_usuarios':listaUsuario, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             lista= Proyecto.objects.all()
             return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})

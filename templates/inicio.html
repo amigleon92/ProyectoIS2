@@ -32,7 +32,7 @@
                   	<table id="rounded-corner" summary="2007 Major IT Companies' Profit">
     					<thead>
     					    <tr>
-								<th scope="col" class="rounded-company"></th>
+
        							<th scope="col" class="rounded">Nro.</th>
 							    <th scope="col" class="rounded">Nombre</th>
 							    <th scope="col" class="rounded">Estado</th>
@@ -41,24 +41,21 @@
 								<th scope="col" class="rounded">Fecha Fin</th>
 		        			</tr>
  						</thead>
-						<tfoot>
-		    	            <tr>
-		        	            <td colspan="6" class="rounded-foot-left"><em>Lista de proyectos</em></td>
-		        	            <td class="rounded-foot-right">&nbsp;</td>
-            		        </tr>
-		                </tfoot>
-		                <!--tbody>
-		    	            <tr>
-		        	            <td><input type="checkbox" name="" /></td>
-		                        <!td>1</td>
-		                        <td>NomPro</td>
-		                        <td>iniciado</td>
-		                        <td>Rodrigo</td>
-			                    <td>Fecha Inicio</td>
-			                    <td>Fecha Fin</td>
-		                    </tr>
-		    	            <!NO OLVIDAR... poner en cada fila 'ingresar' y 'generar informr'>
-		                </tbody-->
+						<tbody>
+                        {% for proyecto in lista_proyectos %}
+
+		    	        <tr>
+		                    <td>{{ proyecto.codigo }}</td>
+		                    <td>{{ proyecto.nombre }}</td>
+                            <td>{{ proyecto.estado }}</td>
+                            <td>{{ proyecto.lider }}</td>
+                            <td>{{ proyecto.fechaInicio }}</td>
+                            <td>{{ proyecto.fechaFin }}</td>
+		                </tr>
+
+                        {% endfor %}
+                    </tbody>
+
                         <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
 	                </table>
 	                <!--a href="#" class="bt_green"><span class="bt_green_lft"></span><strong>Crear Proyecto</strong><span class="bt_green_r"></span></a>

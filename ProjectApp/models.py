@@ -97,12 +97,13 @@ class Proyecto(models.Model):
     codigo= models.AutoField(primary_key= True)
     nombre= models.CharField(max_length=50, null=False)
     descripcion= models.TextField(max_length=200)
-    usuarios= models.ManyToManyField(Usuarios)
+    lider=models.OneToOneField(Usuarios)
+    #usuarios= models.ManyToManyField(Usuarios)
     presupuesto= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables )
     costoTemporal= models.PositiveIntegerField(default=0)
     costoMonetario= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    fechaInicio= models.DateField()
+    fechaInicio= models.DateField(auto_now_add=True)
     fechaFin= models.DateField()            #debe de existir un validator que verifique que la fecha no este antes que el inicio
     def __unicode__(self):
         return self.nombre

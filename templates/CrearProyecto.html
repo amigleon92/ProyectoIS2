@@ -35,15 +35,27 @@
                                 <dl>
 	        	                    <dt><label for="email">Nombre:</label></dt>
 	        	                    <dd><input type="text" name="nombre" id="" size="54" /></dd>
-	        	                    </dl>
+	        	                </dl>
+
+                                <dl>
+	        	                    <dt><label for="email">Usuario Líder:</label></dt>
+                                    <dd>
+                                        <select size="1" name="gender" id="">
+
+                                                    <option value="">Seleccione un usuario</option>
+                                                {% for usuario in lista_usuarios %}
+                                                {% if usuario.estado %}
+                                                    <option value="">{{ usuario.nombre }}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </dd>
+	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Descripcion:</label></dt>
 	        	                    <dd><input type="text" name="descripcion" id="" size="54" /></dd>
 	        	                </dl>
-                                <dl>
-	        	                    <dt><label for="email">Usuario:</label></dt>
-	        	                    <dd><input type="text" name="usuarios" id="" size="54" /></dd>
-	        	                </dl>
+
                                 <dl>
 	        	                    <dt><label for="email">Presupuesto:</label></dt>
 	        	                    <dd><input type="text" name="presupuesto" id="" size="54" /></dd>
