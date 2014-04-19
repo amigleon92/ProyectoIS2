@@ -89,12 +89,17 @@ class Proyecto(models.Model):
     - fechaInicio: la fecha en que se iniciara el Proyecto
     - fecchaFin: la fache en la que se debera de dar por terminado el proyecto
     """
+    estados_probables= (
+        ('I','iniciado'),
+        ('D','desarrollo'),
+        ('F','finalizado'),
+    )
     codigo= models.AutoField(primary_key= True)
     nombre= models.CharField(max_length=50, null=False)
     descripcion= models.TextField(max_length=200)
     usuarios= models.ManyToManyField(Usuarios)
     presupuesto= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    estado= models.BooleanField(default=True)
+    estado= models.CharField ( max_length = 1 ,  choices = estados_probables )
     costoTemporal= models.PositiveIntegerField(default=0)
     costoMonetario= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
     fechaInicio= models.DateField()
@@ -117,12 +122,17 @@ class Fase(models.Model):
     - fechaInicio: la fecha en que se iniciara la fase
     - fechaFin: la fecha en la que se debera de dar por terminada la fase
     """
+    estados_probables= (
+        ('I','iniciado'),
+        ('D','desarrollo'),
+        ('F','finalizado'),
+    )
     nombre= models.CharField(max_length=50, null=False)
     numeroSecuencia = models.PositiveIntegerField(default=1) #puede ser auto incremental
     descripcion= models.TextField(max_length=200)
     numero= models.PositiveIntegerField(default=0)
     tipodeItemAsociado = models.PositiveIntegerField(default=0) #esto es por que aun no exite tipos de item, deberia ser generico
-    estado= models.BooleanField(default=True)
+    estado= models.CharField ( max_length = 1 ,  choices = estados_probables )
     fechaInicio= models.DateField()
     fechaFin= models.DateField() #el mismo validator de fecha
     def __unicode__(self):
