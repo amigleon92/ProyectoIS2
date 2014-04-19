@@ -8,8 +8,8 @@
     
     <title>adm/Views_1 &mdash; ProyectoIS2 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../source/_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../source/_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,9 +20,9 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="../source/_static/jquery.js"></script>
+    <script type="text/javascript" src="../source/_static/underscore.js"></script>
+    <script type="text/javascript" src="../source/_static/doctools.js"></script>
     <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
     <link rel="prev" title="Models" href="models.html" /> 
   </head>
@@ -115,8 +115,8 @@
 </span><span class="sd">Django views for ProyectoIS2 project</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">request</span>
-<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span><span class="p">,</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">ListView</span>
-<span class="kn">from</span> <span class="nn">ProjectApp.models</span> <span class="kn">import</span> <span class="n">Usuarios</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span><span class="p">,</span> <span class="n">ListView</span>
+<span class="kn">from</span> <span class="nn">ProjectApp.models</span> <span class="kn">import</span> <span class="n">Usuarios</span><span class="p">,</span> <span class="n">Proyecto</span>
 <span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">render_to_response</span>
 
@@ -137,42 +137,42 @@
                 <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">estado</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">nick</span> <span class="o">==</span> <span class="n">buscar_user</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">password</span> <span class="o">==</span> <span class="n">buscar_password</span><span class="p">:</span>
-                            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;logueado&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">})</span>
                         <span class="n">error</span><span class="o">=</span> <span class="s">&quot;Password incorrecto&quot;</span>
                         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span><span class="n">error</span><span class="p">})</span>
             <span class="n">error</span><span class="o">=</span> <span class="s">&quot;Usuario incorrecto&quot;</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">})</span>
-        <span class="k">else</span><span class="p">:</span>                                                           <span class="c">#Si no se trata de la pagina de login quien</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">)</span>                       <span class="c">#lo llamo? Entonces no verifica absolutamente</span>
-                                                                        <span class="c">#nada y muestra la pagina solicitada</span>
+        <span class="k">else</span><span class="p">:</span>                                                                                                                       <span class="c">#Si no se trata de la pagina de login quien</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;inicio.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;logueado&#39;</span><span class="p">:</span><span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])})</span>                      <span class="c">#lo llamo? Entonces no verifica absolutamente</span>
+                                                                                                                                    <span class="c">#nada y muestra la pagina solicitada</span>
 
 <span class="c">#La clase RegistrarUsuario se encarga de crear un nuevo usuario</span>
 <span class="k">class</span> <span class="nc">RegistrarUsuario</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>                           <span class="c">#Devuelve la pagina en donde se encuentra el</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;CrearUsuario.html&#39;</span><span class="p">)</span>                     <span class="c">#formulario</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>                           <span class="c">#Devuelve la pagina en donde se encuentra el formulario</span>
+        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>   <span class="c">#Obtiene el objeto usuario logueado</span>
+        <span class="n">permisos</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>                                  <span class="c">#Los permisos del usuario</span>
+        <span class="n">tiene_permiso</span><span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">permisos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">crear_usuario</span><span class="p">:</span>
+                <span class="n">tiene_permiso</span><span class="o">=</span><span class="bp">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">tiene_permiso</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;CrearUsuario.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;logueado&#39;</span><span class="p">:</span><span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lista</span><span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Usuario.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">:</span> <span class="n">lista</span><span class="p">,</span><span class="s">&#39;logueado&#39;</span><span class="p">:</span><span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">]),</span> <span class="s">&#39;error&#39;</span><span class="p">:</span><span class="s">&#39;No puedes realizar esta accion&#39;</span><span class="p">})</span>
 
 <span class="c">#La clase ListarUsuario se encarga de la vista principal de Administracion de Usuarios</span>
 <span class="k">class</span> <span class="nc">ListarUsuario</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">existe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">char</span><span class="p">):</span>                                              <span class="c">#Funcion que devuelve int y comprueba</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>                                <span class="c">#si el nick que le pasamos ya existe en la</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">nick</span><span class="o">==</span><span class="n">char</span><span class="p">:</span> <span class="k">return</span> <span class="n">i</span><span class="o">.</span><span class="n">id</span>                                <span class="c">#lista de usuarios</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="s">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>                                      <span class="c">#La pagina quien lo llama es CrearUsuario.html?</span>
             <span class="n">new_user</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>                              <span class="c">#Comprueba absolutamente todos los datos</span>
-            <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre&#39;</span><span class="p">]</span>                          <span class="c">#ingresados para averiguar si no se trata de</span>
-            <span class="n">new_apellido</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;apellido&#39;</span><span class="p">]</span>                      <span class="c">#un dato vacio el cual genera problemas al</span>
-            <span class="n">new_email</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>                            <span class="c">#intentar guardar en la BD</span>
-            <span class="n">new_cedula</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;cedula&#39;</span><span class="p">]</span>
             <span class="n">new_password</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">new_user</span> <span class="ow">and</span> <span class="n">new_nombre</span> <span class="ow">and</span> <span class="n">new_email</span> <span class="ow">and</span> <span class="n">new_password</span> <span class="ow">and</span> <span class="n">new_cedula</span><span class="p">:</span>
-                <span class="n">nuevo_usuario</span><span class="o">=</span> <span class="n">Usuarios</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">new_user</span><span class="p">,</span> <span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">,</span> <span class="n">apellido</span><span class="o">=</span> <span class="n">new_apellido</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="n">new_email</span><span class="p">,</span> <span class="n">cedula</span><span class="o">=</span> <span class="n">new_cedula</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span> <span class="n">new_password</span><span class="p">)</span> <span class="c">#insert into values</span>
-                <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>                                    <span class="c">#guardamos en la base de datos</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;CrearUsuario.html&#39;</span><span class="p">)</span>             <span class="c">#Si no logra grabar devuelve a la pagina anterior</span>
-        <span class="n">lista</span><span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Usuario.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">:</span><span class="n">lista</span><span class="p">})</span>     <span class="c">#enviamos al html un diccionario que tiene par &#39;key&#39;:lista_de_Usuarios_Existentes</span>
-
-<span class="c">#La clase Cambio Estado se encarga de una pagina de confirmacion de cambios</span>
-<span class="k">class</span> <span class="nc">CambioEstado</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">modif_codigo</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 </div>

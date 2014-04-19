@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from ProjectApp.views import login, RegistrarUsuario, inicio, ListarUsuario, CambioEstado, EditarUsuario, EditarUsuarioConfirmar, MostrarUsuario
+from ProjectApp.views import login, RegistrarUsuario, inicio, ListarUsuario, CambioEstado, EditarUsuario, EditarUsuarioConfirmar, MostrarUsuario, CrearProyecto
 
 
 urlpatterns = patterns('',
@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^inicio/usuario/editar/$', EditarUsuario.as_view(), name='editar_usuario'),
     url(r'^inicio/usuario/editar/confirmar/$', EditarUsuarioConfirmar.as_view(), name='editar_usuario_confirmar'),
     url(r'^inicio/usuario/mostrar/$', MostrarUsuario.as_view(), name='mostrar_usuario' ),
+    url(r'^inicio/proyecto/crear/$', CrearProyecto.as_view(), name= 'crear_proyecto'),
 )
