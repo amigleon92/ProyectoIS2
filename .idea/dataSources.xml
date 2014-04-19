@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1520074309">
-    <data-source source="LOCAL" name="Django default" uuid="86fd7edd-e696-4cb1-9535-230c04cf70fd">
+  <component name="DataSourceManagerImpl" format="xml" hash="4083606729">
+    <data-source source="LOCAL" name="Django default" uuid="72baa447-a9dd-4605-b897-de6796720eea">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql:postgres</jdbc-url>
-      <user-name>miguel</user-name>
-      <user-password>dfccdfdadfc7dfc3dfcddfdfdfcfdfc6df93df98</user-password>
+      <jdbc-url>jdbc:postgresql:django_db</jdbc-url>
+      <user-name>postgres</user-name>
+      <user-password>dfdadfc5dfd9dfdedfcddfd8dfcfdfd9</user-password>
       <libraries />
     </data-source>
   </component>
