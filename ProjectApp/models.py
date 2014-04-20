@@ -95,12 +95,12 @@ class Proyecto(models.Model):
         ('F','finalizado'),
     )
     codigo= models.AutoField(primary_key= True)
-    nombre= models.CharField(max_length=50, null=False)
+    nombre= models.CharField(max_length=50, null=False, unique=True )
     descripcion= models.TextField(max_length=200)
-    lider=models.OneToOneField(Usuarios)
-    #usuarios= models.ManyToManyField(Usuarios)
+    lider=models.ForeignKey(Usuarios,related_name='Lider')
+    usuarios= models.ManyToManyField(Usuarios, related_name='UsuarioBase')
     presupuesto= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    estado= models.CharField ( max_length = 1 ,  choices = estados_probables )
+    estado= models.CharField ( max_length = 1 ,  default='I' )
     costoTemporal= models.PositiveIntegerField(default=0)
     costoMonetario= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
     fechaInicio= models.DateField(auto_now_add=True)

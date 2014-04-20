@@ -28,7 +28,10 @@
                 <div class="right_content">
 		           <br>
 		           <br>
-	                <h2>Formulario Proyecto</h2>
+	                <h2>Formulario Proyecto - Fecha Inicio: <script>
+                                                                var f = new Date();
+                                                                document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+                                                            </script></h2>
                     <table id="rounded-corner" summary="2007 Major IT Companies' Profit">
 			            <form action="/inicio/" method="post" class="niceform">{% csrf_token %}
 	 		                <fieldset>
@@ -58,23 +61,19 @@
 
                                 <dl>
 	        	                    <dt><label for="email">Presupuesto:</label></dt>
-	        	                    <dd><input type="text" name="presupuesto" id="" size="54" /></dd>
+	        	                    <dd><input name="presupuesto" step="0.01" id="" type="number" /></dd>
 	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Costo Temporal:</label></dt>
-	        	                    <dd><input type="text" name="costotemporal" id="" size="54" /></dd>
+	        	                    <dd><input name="costotemporal" step="1" id="" type="number" /></dd>
 	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Costo Monetario:</label></dt>
-	        	                    <dd><input type="text" name="costoMonetario" id="" size="54" /></dd>
-	        	                </dl>
-                                <dl>
-	        	                    <dt><label for="email">Fecha Inicio:</label></dt>
-	        	                    <dd><input type="text" name="fechaInicio" id="" size="54" /></dd>
+	        	                    <dd><input name="costoMonetario" step="0.01" id="" type="number" /></dd>
 	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Fecha Fin:</label></dt>
-	        	                    <dd><input type="text" name="fechaFin" id="" size="54" /></dd>
+	        	                    <dd><input type="date" name="fechaFin" id=""  ></dd>
 	        	                </dl>
                             </fieldset>
                              <input type="hidden" name='login' value={{ logueado.id }} >

@@ -28,7 +28,7 @@
 				<br>
 				        <h2>Formulario Usuario</h2>
                   		<table id="rounded-corner" summary="2007 Major IT Companies' Profit">
-							<form action="/inicio/usuario/" method="post" class="niceform">{% csrf_token %}
+							<form action="/inicio/usuario/" method="POST" class="niceform">{% csrf_token %}
 	 			                <fieldset>
 		                    	    <dl>
 	        	        	            <dt><label for="email">Usuario:</label></dt>
@@ -61,7 +61,7 @@
                             </form>
 						</table>
                         <form action="/inicio/usuario/" method="POST">{% csrf_token %}
-                            <input type="hidden" name='login' value={{ logueado.id }} >
+                            <input type="hidden" name='login' value={{ logueado.id }}>
                             <input type="submit" value="<Atrás">
                         </form>
                         <!--a href="#" class="bt_green"><span class="bt_green_lft"></span><strong>canselar</strong><span class="bt_green_r"></span></a>
