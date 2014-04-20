@@ -9,14 +9,15 @@ class Roles(models.Model):
 
     nombre= models.CharField(max_length=30, unique=True)
     crear_usuario= models.BooleanField(default=False)           # - Permisos de Administracion de usuarios
-    modidificar_usuario= models.BooleanField(default=False)
+    modificar_usuario= models.BooleanField(default=False)
     eliminar_usuario= models.BooleanField(default=False)
     crear_rol= models.BooleanField(default=False)               # - Permisos de Administracion de roles
-    modicar_rol= models.BooleanField(default=False)
+    modificar_rol= models.BooleanField(default=False)
     eliminar_rol= models.BooleanField(default=False)
     crear_proyecto= models.BooleanField(default=False)          # - Permisos de Administracion de Proyectos
     iniciar_proyecto= models.BooleanField(default=False)
     finalizar_proyecto= models.BooleanField(default=False)
+    eliminar_proyecto= models.BooleanField(default=False)
     crear_fase= models.BooleanField(default=False)              # - Permisos de Administracion de fases
     modificar_fase= models.BooleanField(default=False)
     cerrar_fase= models.BooleanField(default=False)
@@ -91,20 +92,21 @@ class Proyecto(models.Model):
     """
     estados_probables= (
         ('I','iniciado'),
-        ('D','desarrollo'),
+        ('N','noIniciado'),
         ('F','finalizado'),
     )
     codigo= models.AutoField(primary_key= True)
     nombre= models.CharField(max_length=50, null=False, unique=True )
-    descripcion= models.TextField(max_length=200)
+    descripcion= models.TextField(max_length=200, null=True)
     lider=models.ForeignKey(Usuarios,related_name='Lider')
     usuarios= models.ManyToManyField(Usuarios, related_name='UsuarioBase')
-    presupuesto= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    estado= models.CharField ( max_length = 1 ,  default='I' )
-    costoTemporal= models.PositiveIntegerField(default=0)
-    costoMonetario= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    fechaInicio= models.DateField(auto_now_add=True)
-    fechaFin= models.DateField()            #debe de existir un validator que verifique que la fecha no este antes que el inicio
+    presupuesto= models.PositiveIntegerField(null=True) #decimales positivos nada mas
+    estado= models.CharField ( max_length = 1 ,choices = estados_probables,  default='N' )
+    costoTemporal= models.PositiveIntegerField(default=0, null=True)
+    costoMonetario= models.PositiveIntegerField(null=True) #decimales positivos nada mas
+    fechaInicio= models.DateField(null=True)
+    fechaFin= models.DateField(null=True)            #debe de existir un validator que verifique que la fecha no este antes que el inicio
+    activo= models.BooleanField(default=True)
     def __unicode__(self):
         return self.nombre
 

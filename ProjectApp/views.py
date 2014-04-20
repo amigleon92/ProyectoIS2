@@ -31,6 +31,16 @@ class inicio(TemplateView):
             error= "Usuario incorrecto"
             return render(request, 'login.html', {'error': error})
         else:
+            if 'nombre_proyecto' in request.POST:
+                new_nombre=request.POST['nombre_proyecto']
+                new_lider= Usuarios.objects.get(nombre= request.POST['lider_proyecto'])
+                new_descripcion=request.POST['descripcion_proyecto']
+                new_proyecto=Proyecto(nombre=new_nombre, descripcion=new_descripcion, lider=new_lider)
+                new_proyecto.save()
+                new_proyecto.usuarios.add(new_lider)
+                new_proyecto.save()
+                new_lider.permiso.add(nombre='Lider del Proyecto')
+                new_lider.save()
             listaProyecto= Proyecto.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
             return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
                                                                                                                                     #nada y muestra la pagina solicitada
@@ -86,7 +96,7 @@ class CambioEstado(TemplateView):
         permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
         tiene_permiso= False
         for i in permisos:
-            if i.crear_usuario:
+            if i.eliminar_usuario:
                 tiene_permiso=True
                 break
         if tiene_permiso:
@@ -106,7 +116,7 @@ class EditarUsuario(TemplateView):
         permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
         tiene_permiso= False
         for i in permisos:
-            if i.crear_usuario:
+            if i.modificar_usuario:
                 tiene_permiso=True
                 break
         if tiene_permiso:                                               #Devuelve un formulario con lo campos
@@ -162,22 +172,7 @@ class CrearProyecto(TemplateView):
                 break
         if tiene_permiso:
                 listaUsuario= Usuarios.objects.all()
-                return render(request, 'CrearProyecto.html', {'lista_usuarios':listaUsuario, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
-                new_nombre= request.POST['nombre']                          #ingresados para averiguar si no se trata de
-                new_lider= request.POST['lider']                      #un dato vacio el cual genera problemas al
-                new_descripcion= request.POST['descripcion']                            #intentar guardar en la BD
-                new_usuarios= request.POST['usuarios']
-                new_presupuesto= request.POST['presupuesto']
-                new_estado= request.POST['estado']
-                new_costoTemporal= request.POST['costoTemporal']
-                new_costoMonetario= request.POST['costoMonetario']
-                new_fechaInicio= request.POST['fechaInicio']
-                new_fechaFin= request.POST['fechaFin']
-                nuevo_proyecto= Proyecto(nombre= new_nombre, lider= new_lider, descripcion= new_descripcion, usuarios= new_usuarios, presupuesto=new_presupuesto, estado=new_estado,costoMonetario=new_costoMonetario, costoTemporal= new_costoTemporal, fechaFin=new_fechaFin, fechaInicio= new_fechaInicio) #insert into values
-                nuevo_proyecto.save()
-                lista= Proyecto.objects.all()
-                return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
-
+                return render(request, 'CrearProyecto.html',{'lista_usuarios':listaUsuario, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:
             lista= Proyecto.objects.all()
             return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
@@ -191,9 +186,38 @@ class MenuProyecto(TemplateView):
             return render(request, 'MenuProyecto.html', {'lista_fases':listaFase,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
             #return render(request, 'MenuProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
 
+class EliminarProyecto(TemplateView):
+    def post(self, request, *args, **kwargs):
+        usuario_logueado= Usuarios.objects.get(id= request.POST['login'])   #Obtiene el objeto usuario logueado
+        permisos= usuario_logueado.permiso.all()                                  #Los permisos del usuario
+        tiene_permiso= False
+        for i in permisos:
+            if i.eliminar_proyecto:
+                tiene_permiso=True
+                break
+        if tiene_permiso:
+            proyecto_actual= request.POST['proyecto']
+            if proyecto_actual.estado=='F':
+                return render(request, 'EliminarProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login']), 'proyecto': proyecto_actual} )
+            else:
+                lista= Proyecto.objects.all()
+                return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Proyecto No Finalizado - No se puede eliminar'})
+        else:
+            lista= Proyecto.objects.all()
+            return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
+
+
+
+
+
+
 #Generacion de informe de Proyecto
 class InformeProyecto(TemplateView):
     def post(self, request, *args, **kwargs):
-        mostrar_codigo= request.POST['codigo']
-        mostrar= Proyecto.objects.get(codigo= mostrar_codigo)
-        return render(request, 'InformeProyecto.html', {'proyecto':mostrar, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        mostrar_proyecto= request.POST['proyecto']
+        mostrar_proyecto= Proyecto.objects.get(nombre=mostrar_proyecto)
+        if mostrar_proyecto.estado == 'I' or mostrar_proyecto.estado == 'F' :
+            return render(request, 'InformeProyecto.html', {'proyecto':mostrar_proyecto, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista=Proyecto.objects.all()
+            return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede mostrar proyecto NO-INICIADO'})
