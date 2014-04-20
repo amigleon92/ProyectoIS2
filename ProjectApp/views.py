@@ -3,7 +3,7 @@ Django views for ProyectoIS2 project
 """
 from django.http import request
 from django.views.generic import TemplateView, CreateView, ListView
-from ProjectApp.models import Usuarios, Roles, Proyecto
+from ProjectApp.models import Usuarios, Roles, Proyecto, Fase
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, render_to_response
 
@@ -161,8 +161,39 @@ class CrearProyecto(TemplateView):
                 tiene_permiso=True
                 break
         if tiene_permiso:
-            listaUsuario= Usuarios.objects.all()
-            return render(request, 'CrearProyecto.html', {'lista_usuarios':listaUsuario, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+                listaUsuario= Usuarios.objects.all()
+                return render(request, 'CrearProyecto.html', {'lista_usuarios':listaUsuario, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+                new_nombre= request.POST['nombre']                          #ingresados para averiguar si no se trata de
+                new_lider= request.POST['lider']                      #un dato vacio el cual genera problemas al
+                new_descripcion= request.POST['descripcion']                            #intentar guardar en la BD
+                new_usuarios= request.POST['usuarios']
+                new_presupuesto= request.POST['presupuesto']
+                new_estado= request.POST['estado']
+                new_costoTemporal= request.POST['costoTemporal']
+                new_costoMonetario= request.POST['costoMonetario']
+                new_fechaInicio= request.POST['fechaInicio']
+                new_fechaFin= request.POST['fechaFin']
+                nuevo_proyecto= Proyecto(nombre= new_nombre, lider= new_lider, descripcion= new_descripcion, usuarios= new_usuarios, presupuesto=new_presupuesto, estado=new_estado,costoMonetario=new_costoMonetario, costoTemporal= new_costoTemporal, fechaFin=new_fechaFin, fechaInicio= new_fechaInicio) #insert into values
+                nuevo_proyecto.save()
+                lista= Proyecto.objects.all()
+                return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+
         else:
             lista= Proyecto.objects.all()
             return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
+
+
+#La clase inicio es el que maneja el Menu Principal
+class MenuProyecto(TemplateView):
+    def post(self, request, *args, **kwargs):                           #En el metodo post en la condicion if
+
+            listaFase= Fase.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
+            return render(request, 'MenuProyecto.html', {'lista_fases':listaFase,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
+            #return render(request, 'MenuProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])})
+
+#Generacion de informe de Proyecto
+class InformeProyecto(TemplateView):
+    def post(self, request, *args, **kwargs):
+        mostrar_codigo= request.POST['codigo']
+        mostrar= Proyecto.objects.get(codigo= mostrar_codigo)
+        return render(request, 'InformeProyecto.html', {'proyecto':mostrar, 'logueado':Usuarios.objects.get(id=request.POST['login'])})

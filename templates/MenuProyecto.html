@@ -1,5 +1,5 @@
 {% extends 'PlantillaBase.html' %}
-{% block title %} ::Administrar Usuario::{% endblock %}
+{% block title %} ::Menu Proyecto::{% endblock %}
 {% block Content %}
     <div id="main_container">
 		<div class="header">
@@ -11,7 +11,7 @@
             </div>
 		</div>
     	<div class="main_content">
-    		<div style="text-align: center;"><b><h1><font color="white">ADMINISTRACION DE USUARIOS</font></h1></b></div>
+    		<div style="text-align: center;"><b><h1><font color="white">Menu Proyecto</font></h1></b></div>
  		<div class="center_content">
     	<div class="left_content">
     		<div class="sidebar_box">
@@ -28,56 +28,60 @@
     	<div class="right_content">
 		    <br>
 		    <br>
-		    <h2>Lista de Usuarios</h2>
+		    <h2>Fases del Proyecto</h2>
             	<table id="rounded-corner" summary="2007 Major IT Companies' Profit">
     		    	<thead>
     			        <tr>
-       					    <th scope="col" class="rounded">Código</th>
+       					    <th scope="col" class="rounded">Numero</th>
 						    <th scope="col" class="rounded">Nombre</th>
-						    <th scope="col" class="rounded">Editar</th>
-                            <th scope="col" class="rounded">Eliminar</th>
-                            <th scope="col" class="rounded">Mostrar</th>
+						    <th scope="col" class="rounded">Estado</th>
+                            <th scope="col" class="rounded">Fecha Inicio</th>
+                            <th scope="col" class="rounded">Fecha Fin</th>
+                            <th scope="col" class="rounded"></th>
+                            <th scope="col" class="rounded"></th>
+                            <th scope="col" class="rounded"></th>
 		        		</tr>
  					</thead>
 
                 	<tbody>
-                        {% for usuario in lista_usuarios %}
-                        {% if usuario.estado %}
+                        {% for fase in lista_fases %}
+
 		    	        <tr>
-		                    <td>{{ usuario.id }}</td>
-		                    <td>{{ usuario.nombre }}</td>
+		                    <td>{{ fase.numeroSecuencia }}</td>
+		                    <td>{{ fase.nombre }}</td>
+                             <td>{{ fase.estado }}</td>
+                             <td>{{ fase.fechaInicio }}</td>
+                             <td>{{ fase.fechaFin }}</td>
+
                             <td>
-                                <form action="/inicio/usuario/editar/" method="post">{% csrf_token %}
+                                <form action="/inicio/MenuProyecto" method="post">{% csrf_token %}
                                     <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                                     <input type="hidden" name='login' value={{ logueado.id }} >
                                     <input type="submit" value="Editar"><br>
                                 </form>
                             </td>
 		                    <td>
-                                <form action="/inicio/usuario/cambio_estado/" method="post">{% csrf_token %}
+                                <form action="/inicio/MenuProyecto" method="post">{% csrf_token %}
                                     <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                                     <input type="hidden" name='login' value={{ logueado.id }} >
-                                    <input type="submit" value="Eliminar"><br>
+                                    <input type="submit" value="Informe"><br>
                                 </form>
 		                    </td>
                             <td>
-                                <form action="/inicio/usuario/mostrar/" method="post">{% csrf_token %}
+                                <form action="/inicio/MenuProyecto" method="post">{% csrf_token %}
                                     <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                                      <input type="hidden" name='login' value={{ logueado.id }} >
-                                    <input type="submit" value="Mostrar"><br>
+                                    <input type="submit" value="Cerrar Fase"><br>
                                 </form>
 		                    </td>
 		                </tr>
-                        {% endif %}
+
                         {% endfor %}
                     </tbody>
 	            </table>
                 <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
                 <table>
-                <form action= "/inicio/usuario/crear/" method="POST"> {% csrf_token %}
-                    <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Crear">
-                </form>
+
                 <form action="/inicio/" method="POST"> {% csrf_token %}
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="<Menú Inicio"><br>
