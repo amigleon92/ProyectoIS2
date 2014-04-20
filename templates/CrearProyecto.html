@@ -55,12 +55,13 @@
 	        	                    <dt><label for="email">Descripcion:</label></dt>
 	        	                    <dd><input type="text" name="descripcion_proyecto" id="" size="54" /></dd>
 	        	                </dl>
+                            <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
                             </fieldset>
                              <input type="hidden" name='login' value={{ logueado.id }} >
                              <input type="submit" value="Crear">
                         </form>
                     </table>
-                    <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
+
                     <table>
 
                         <form action="/inicio/" method="POST"> {% csrf_token %}

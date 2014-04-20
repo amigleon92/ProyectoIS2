@@ -15,6 +15,10 @@ class login(TemplateView):
 
 #La clase inicio es el que maneja el Menu Principal
 class inicio(TemplateView):
+    def existe(self,char):                                              #Funcion que devuelve int y comprueba
+        for i in Proyecto.objects.all():                                #si el nick que le pasamos ya existe en la
+            if i.nombre==char: return i.codigo                                #lista de proyectos
+        return 0
     def post(self, request, *args, **kwargs):                           #En el metodo post en la condicion if
         if 'user' in request.POST:                                      #preguntamos si la pagina desde donde se lo
             buscar_user = request.POST['user']                          #llamo es el login:
@@ -33,13 +37,17 @@ class inicio(TemplateView):
         else:
             if 'nombre_proyecto' in request.POST:
                 new_nombre=request.POST['nombre_proyecto']
+                existe_proyecto= inicio.existe(self,new_nombre)
+                if existe_proyecto:
+                    lista= Usuarios.objects.all()
+                    return render(request, 'CrearProyecto.html', {'lista_usuarios':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error': 'Nombre de proyecto ya existe'})
                 new_lider= Usuarios.objects.get(nombre= request.POST['lider_proyecto'])
                 new_descripcion=request.POST['descripcion_proyecto']
                 new_proyecto=Proyecto(nombre=new_nombre, descripcion=new_descripcion, lider=new_lider)
                 new_proyecto.save()
                 new_proyecto.usuarios.add(new_lider)
                 new_proyecto.save()
-                new_lider.permiso.add(nombre='Lider del Proyecto')
+                new_lider.permiso.add(Roles.objects.get(nombre='Lider del Proyecto'))
                 new_lider.save()
             listaProyecto= Proyecto.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
             return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
@@ -196,9 +204,12 @@ class EliminarProyecto(TemplateView):
                 tiene_permiso=True
                 break
         if tiene_permiso:
-            proyecto_actual= request.POST['proyecto']
+            proyecto_actual= request.POST['proyecto']                       #id del proyecto
+            proyecto_actual= Proyecto.objects.get(codigo= proyecto_actual)      #proyecto
             if proyecto_actual.estado=='F':
-                return render(request, 'EliminarProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login']), 'proyecto': proyecto_actual} )
+                proyecto_actual.activo=False
+                proyecto_actual.save()
+                return render(request, 'EliminarProyecto.html', {'logueado':Usuarios.objects.get(id=request.POST['login'])} )
             else:
                 lista= Proyecto.objects.all()
                 return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'Proyecto No Finalizado - No se puede eliminar'})
@@ -215,7 +226,7 @@ class EliminarProyecto(TemplateView):
 class InformeProyecto(TemplateView):
     def post(self, request, *args, **kwargs):
         mostrar_proyecto= request.POST['proyecto']
-        mostrar_proyecto= Proyecto.objects.get(nombre=mostrar_proyecto)
+        mostrar_proyecto= Proyecto.objects.get(codigo= mostrar_proyecto)
         if mostrar_proyecto.estado == 'I' or mostrar_proyecto.estado == 'F' :
             return render(request, 'InformeProyecto.html', {'proyecto':mostrar_proyecto, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
         else:

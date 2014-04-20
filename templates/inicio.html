@@ -46,22 +46,22 @@
 						<tbody>
                         {% for proyecto in lista_proyectos %}
                             {% if proyecto.activo %}
-                            {%  for usuario in proyecto.usuarios.all %}
-                                {% ifequal usuario.id logueado.id %}
-		    	                    <tr>
+                                {%  for usuario in proyecto.usuarios.all %}
+                                    {% ifequal usuario.id logueado.id %}
+		    	                        <tr>
 
                                         <td>{{ proyecto.codigo }}</td>
                                         <td>{{ proyecto.nombre }}</td>
                                         <td>{{ proyecto.estado }}</td>
                                         <td>{{ proyecto.lider }}</td>
                                         <td><form action= "/inicio/eliminar_proyecto/" method="post"> {% csrf_token %}
-                                                <input type="hidden" name='proyecto' value={{ proyecto }} >
+                                                <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
                                                 <input type="hidden" name='login' value={{ logueado.id }} >
                                                 <input type="submit" value="Eliminar">
                                             </form>
                                         </td>
                                         <td><form action= "/inicio/InformeProyecto/" method="post"> {% csrf_token %}
-                                                <input type="hidden" name='proyecto' value={{ proyecto }} >
+                                                <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
                                                 <input type="hidden" name='login' value={{ logueado.id }} >
                                                 <input type="submit" value="Informe">
                                             </form>
@@ -77,10 +77,10 @@
                                             </form>
                                         </td>
 
-		                            </tr>
-                                {% endifequal %}
-                            {% endfor %}
-                        {% endif %}
+		                                </tr>
+                                    {% endifequal %}
+                                {% endfor %}
+                            {% endif %}
                         {% endfor %}
                     </tbody>
 
