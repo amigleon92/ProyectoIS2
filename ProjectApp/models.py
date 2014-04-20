@@ -12,7 +12,7 @@ class Roles(models.Model):
     modidificar_usuario= models.BooleanField(default=False)
     eliminar_usuario= models.BooleanField(default=False)
     crear_rol= models.BooleanField(default=False)               # - Permisos de Administracion de roles
-    modificar_rol= models.BooleanField(default=False)
+    modicar_rol= models.BooleanField(default=False)
     eliminar_rol= models.BooleanField(default=False)
     crear_proyecto= models.BooleanField(default=False)          # - Permisos de Administracion de Proyectos
     iniciar_proyecto= models.BooleanField(default=False)
