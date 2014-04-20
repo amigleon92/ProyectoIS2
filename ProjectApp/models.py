@@ -99,10 +99,10 @@ class Proyecto(models.Model):
     descripcion= models.TextField(max_length=200)
     lider=models.ForeignKey(Usuarios,related_name='Lider')
     usuarios= models.ManyToManyField(Usuarios, related_name='UsuarioBase')
-    presupuesto= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
-    estado= models.CharField ( max_length = 1 ,  default='I' )
+    presupuesto= models.DecimalField(max_digits=10,decimal_places=2, default=0.0) #decimales positivos nada mas
+    estado= models.CharField ( max_length = 1 ,choices = estados_probables, default= 'I' ) #
     costoTemporal= models.PositiveIntegerField(default=0)
-    costoMonetario= models.DecimalField(max_digits=10,decimal_places=2) #decimales positivos nada mas
+    costoMonetario= models.DecimalField(max_digits=10,decimal_places=2,default=0.0) #decimales positivos nada mas
     fechaInicio= models.DateField(auto_now_add=True)
     fechaFin= models.DateField()            #debe de existir un validator que verifique que la fecha no este antes que el inicio
     def __unicode__(self):
@@ -129,12 +129,12 @@ class Fase(models.Model):
         ('F','finalizado'),
     )
     nombre= models.CharField(max_length=50, null=False)
-    numeroSecuencia = models.PositiveIntegerField(default=1) #puede ser auto incremental
+    numeroSecuencia = models.PositiveIntegerField(null= False) #puede ser auto incremental
     descripcion= models.TextField(max_length=200)
     numero= models.PositiveIntegerField(default=0)
     tipodeItemAsociado = models.PositiveIntegerField(default=0) #esto es por que aun no exite tipos de item, deberia ser generico
-    estado= models.CharField ( max_length = 1 ,  choices = estados_probables )
-    fechaInicio= models.DateField()
+    estado= models.CharField ( max_length = 1 ,choices = estados_probables, default= 'I' ) #
+    fechaInicio= models.DateField(auto_now_add=True)
     fechaFin= models.DateField() #el mismo validator de fecha
     def __unicode__(self):
         return self.nombre
