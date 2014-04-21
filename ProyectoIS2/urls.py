@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from ProjectApp.views import login, RegistrarUsuario, inicio, ListarUsuario, CambioEstado, EditarUsuario, EditarUsuarioConfirmar, MostrarUsuario
-from ProjectApp.views import  CrearProyecto,MenuProyecto, InformeProyecto, EliminarProyecto
+from ProjectApp.views import  CrearProyecto,MenuProyecto, InformeProyecto, EliminarProyecto, InicializarProyecto
 
 
 urlpatterns = patterns('',
@@ -24,5 +24,6 @@ urlpatterns = patterns('',
     url(r'^inicio/crear_proyecto/$', CrearProyecto.as_view(), name= 'crear_proyecto'),
     url(r'^inicio/MenuProyecto/$',MenuProyecto.as_view(), name='menu_proyecto'),
     url(r'^inicio/InformeProyecto/$',InformeProyecto.as_view(), name='informe_proyecto'),
-    url(r'^inicio/eliminar_proyecto/$',EliminarProyecto.as_view(), name='eliminar_proyecto')
+    url(r'^inicio/eliminar_proyecto/$',EliminarProyecto.as_view(), name='eliminar_proyecto'),
+    url(r'^inicio/InicializarProyecto/$',InicializarProyecto.as_view(), name='inicializar_proyecto')
 )

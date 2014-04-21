@@ -107,6 +107,7 @@ class Proyecto(models.Model):
     fechaInicio= models.DateField(null=True)
     fechaFin= models.DateField(null=True)            #debe de existir un validator que verifique que la fecha no este antes que el inicio
     activo= models.BooleanField(default=True)
+    numeroFase=models.PositiveIntegerField(default=1)
     def __unicode__(self):
         return self.nombre
 
