@@ -233,10 +233,6 @@ class EliminarProyecto(TemplateView):
             return render(request, 'inicio.html', {'lista_proyectos': lista,'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puedes realizar esta accion'})
 
 
-
-
-
-
 #Generacion de informe de Proyecto
 class InformeProyecto(TemplateView):
     def post(self, request, *args, **kwargs):
@@ -247,3 +243,16 @@ class InformeProyecto(TemplateView):
         else:
             lista=Proyecto.objects.all()
             return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede mostrar proyecto NO-INICIADO'})
+
+#Cambia el estado de un proyecto a Inicializado y completa los demas compos requeridos
+class InicializarProyecto(TemplateView):
+    def post(self, request, *args, **kwargs):
+        proyecto= request.POST['proyecto']
+        proyecto= Proyecto.objects.get(codigo=proyecto)
+        if proyecto.estado == 'N':
+            lista=Usuarios.objects.all()
+            return render(request, 'InicializarProyecto.html', {'lista_usuarios':lista,'proyecto':proyecto, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
+        else:
+            lista=Proyecto.objects.all()
+            return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'El Proyecto ya esta Inicializado'})
+
