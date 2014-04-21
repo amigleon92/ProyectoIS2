@@ -41,7 +41,7 @@ class inicio(TemplateView):
                 if existe_proyecto:
                     lista= Usuarios.objects.all()
                     return render(request, 'CrearProyecto.html', {'lista_usuarios':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error': 'Nombre de proyecto ya existe'})
-                new_lider= Usuarios.objects.get(nick= request.POST['lider_proyecto'])
+                new_lider= Usuarios.objects.get(nombre= request.POST['lider_proyecto'])
                 new_descripcion=request.POST['descripcion_proyecto']
                 new_proyecto=Proyecto(nombre=new_nombre, descripcion=new_descripcion, lider=new_lider)
                 new_proyecto.save()
@@ -49,21 +49,6 @@ class inicio(TemplateView):
                 new_proyecto.save()
                 new_lider.permiso.add(Roles.objects.get(nombre='Lider del Proyecto'))
                 new_lider.save()
-            if 'presupuesto' in request.POST:
-                proyecto_detalles= request.POST['proyecto']
-                proyecto_detalles= Proyecto.objects.get(codigo=proyecto_detalles)
-                proyecto_detalles.presupuesto= request.POST['presupuesto']
-                proyecto_detalles.costoTemporal= request.POST['costoTemporal']
-                proyecto_detalles.costoMonetario= request.POST['costoMonetario']
-                proyecto_detalles.fechaInicio= request.POST['fechaInicio']
-                proyecto_detalles.fechaFin= request.POST['fechaFin']
-                proyecto_detalles.numeroFase= request.POST['numeroFase']
-                usuarios= request.POST.getlist('miembros[]')
-                for i in usuarios:
-                    miembro_proyecto= Usuarios.objects.get(nick=i)
-                    proyecto_detalles.usuarios.add(miembro_proyecto)
-                proyecto_detalles.estado='I'
-                proyecto_detalles.save()
             listaProyecto= Proyecto.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
             return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
                                                                                                                                     #nada y muestra la pagina solicitada
@@ -247,20 +232,3 @@ class InformeProyecto(TemplateView):
         else:
             lista=Proyecto.objects.all()
             return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'No puede mostrar proyecto NO-INICIADO'})
-
-
-#Cambia el estado de un proyecto a Inicializado y completa los demas compos requeridos
-class InicializarProyecto(TemplateView):
-    def post(self, request, *args, **kwargs):
-        proyecto= request.POST['proyecto']
-        proyecto= Proyecto.objects.get(codigo=proyecto)
-        if proyecto.estado == 'N':
-            lista=Usuarios.objects.all()
-            return render(request, 'InicializarProyecto.html', {'lista_usuarios':lista,'proyecto':proyecto, 'logueado':Usuarios.objects.get(id=request.POST['login'])})
-        else:
-            lista=Proyecto.objects.all()
-            return render(request, 'inicio.html', {'lista_proyectos':lista, 'logueado':Usuarios.objects.get(id=request.POST['login']), 'error':'El Proyecto ya esta Inicializado'})
-
-
-#Creacion de faces se realiza internamente con la cantidad inidicada en el proyecto, con la primera abierta y las demas no- inicializadas
-

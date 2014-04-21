@@ -67,7 +67,11 @@
                                                     <option value="">Seleccionar usuario/s</option>
                                                 {% for usuario in lista_usuarios %}
                                                 {% if usuario.estado %}
+<<<<<<< HEAD
                                                     <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
+=======
+                                                    <option value={{ usuario.nombre }}>{{ usuario.nombre }}</option>
+>>>>>>> origin/master
 
                                                 {% endif %}
                                                 {% endfor %}
