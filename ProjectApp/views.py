@@ -64,6 +64,15 @@ class inicio(TemplateView):
                     proyecto_detalles.usuarios.add(miembro_proyecto)
                 proyecto_detalles.estado='I'
                 proyecto_detalles.save()
+                proyecto_detalles= Proyecto.objects.get(nombre= proyecto_detalles.nombre)
+                for i in range(1, proyecto_detalles.numeroFase+1):
+                    nueva_fase= Fase(nombre= 'Fase de '+proyecto_detalles.nombre, numeroSecuencia=i, numero= i)
+                    nueva_fase.save()
+                    if i==1:
+                        nueva_fase.estado= 'I'
+                        nueva_fase.save()
+                    proyecto_detalles.fases.add(nueva_fase)
+                proyecto_detalles.save()
             listaProyecto= Proyecto.objects.all()                                                                                                                  #Si no se trata de la pagina de login quien
             return render(request, 'inicio.html', {'lista_proyectos':listaProyecto,'logueado':Usuarios.objects.get(id=request.POST['login'])})                      #lo llamo? Entonces no verifica absolutamente
                                                                                                                                     #nada y muestra la pagina solicitada
