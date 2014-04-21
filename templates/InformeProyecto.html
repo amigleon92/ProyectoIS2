@@ -31,17 +31,34 @@
 							<form action="/inicio/" method="post" class="niceform">{% csrf_token %}
 	 			                <fieldset>
 		                    	    <dl>
-	        	        	            <dt><label>Numero:</label></dt>
+	        	        	            <dt><label>Codigo:</label></dt>
 	        	        	            <dt>{{ proyecto.codigo }}</dt>
 	        	        	        </dl>
-					                <dl>
+                                    <dl>
 	        	        	            <dt><label>Nombre:</label></dt>
 	        	        	            <dt>{{ proyecto.nombre }}</dt>
+	        	        	        </dl>
+					                <dl>
+	        	        	            <dt><label>Presupuesto:</label></dt>
+	        	        	            <dt>{{ proyecto.presupuesto }}</dt>
+	        	        	        </dl>
+                                    <dl>
+	        	        	            <dt><label>Costo Temporal:</label></dt>
+	        	        	            <dt>{{ proyecto.costoTemporal }}</dt>
+	        	        	        </dl>
+                                    <dl>
+	        	        	            <dt><label>Costo Monetario:</label></dt>
+	        	        	            <dt>{{ proyecto.costoMonetario }}</dt>
+	        	        	        </dl>
+                                    <dl>
+	        	        	            <dt><label>Numero de Fase:</label></dt>
+	        	        	            <dt>{{ proyecto.numeroFase }}</dt>
 	        	        	        </dl>
 					                <dl>
 	        	        	            <dt><label>Fecha Incio:</label></dt>
 	        	        	            <dt>{{proyecto.fechaInicio }}</dt>
 	        	        	        </dl>
+
 					                <dl>
 	        	        	            <dt><label>Fecha Fin:</label></dt>
 	        	        	            <dt>{{ proyecto.fechaFin }}</dt>
