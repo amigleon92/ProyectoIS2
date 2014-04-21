@@ -59,15 +59,13 @@
                              <input type="hidden" name='login' value={{ logueado.id }} >
                              <input type="submit" value="Crear">
                         </form>
-                    </table>
-
-                    <table>
-
                         <form action="/inicio/" method="POST"> {% csrf_token %}
                             <input type="hidden" name='login' value={{ logueado.id }} >
                             <input type="submit" value="<Atras"><br>
                         </form>
                     </table>
+
+
                 </div> <!--end of right content -->
             </div>   <!--end of center content -->
             <div class="clear"></div>

@@ -4,8 +4,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 from ProjectApp.views import login, RegistrarUsuario, inicio, ListarUsuario, CambioEstado, EditarUsuario, EditarUsuarioConfirmar, MostrarUsuario
-from ProjectApp.views import  CrearProyecto,MenuProyecto, InformeProyecto, EliminarProyecto, InicializarProyecto
-
+from ProjectApp.views import  CrearProyecto,MenuProyecto, InformeProyecto, EliminarProyecto, InicializarProyecto, FinalizarProyecto
+from ProjectApp.views import Modificarfase, InformeFase, CerrarFase
 
 urlpatterns = patterns('',
     # Examples:
@@ -25,5 +25,9 @@ urlpatterns = patterns('',
     url(r'^inicio/MenuProyecto/$',MenuProyecto.as_view(), name='menu_proyecto'),
     url(r'^inicio/InformeProyecto/$',InformeProyecto.as_view(), name='informe_proyecto'),
     url(r'^inicio/eliminar_proyecto/$',EliminarProyecto.as_view(), name='eliminar_proyecto'),
-    url(r'^inicio/InicializarProyecto/$',InicializarProyecto.as_view(), name='inicializar_proyecto')
+    url(r'^inicio/InicializarProyecto/$',InicializarProyecto.as_view(), name='inicializar_proyecto'),
+    url(r'^inicio/MenuProyecto/ProyectoFinalizado/$',FinalizarProyecto.as_view(), name='fin_proyecto'),
+    url(r'^inicio/MenuProyecto/ModificarFase/$',Modificarfase.as_view(), name='modificar_fase'),
+    url(r'^inicio/MenuProyecto/InformeFase/$',InformeFase.as_view(), name='informe_fase'),
+    url(r'^inicio/MenuProyecto/FaseCerrada/$',CerrarFase.as_view(), name='cerrar_fase'),
 )

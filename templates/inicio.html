@@ -74,6 +74,7 @@
                                             </form>
                                         </td>
                                         <td><form action= "/inicio/MenuProyecto/" method="post"> {% csrf_token %}
+                                                <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
                                                 <input type="hidden" name='login' value={{ logueado.id }} >
                                                 <input type="submit" value="Ingresar>">
                                             </form>

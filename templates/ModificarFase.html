@@ -1,5 +1,5 @@
 {% extends 'PlantillaBase.html' %}
-{% block title %} ::Inicializar Proyecto::{% endblock %}
+{% block title %} ::Modificar Fase::{% endblock %}
 {% block import %}
     <script type="text/javascript" src="{{ STATIC_URL }}jconfirmaction.jquery.js"></script>
 	<script type="text/javascript">
@@ -23,59 +23,47 @@
 
 
         <div class="main_content">
-                <div style="text-align: center;"><b><h1><font color="white">INICIALIZAR PROYECTO</font></h1></b></div>
+                <div style="text-align: center;"><b><h1><font color="white">MODIFICACION DE FASE</font></h1></b></div>
  	        <div class="center_content">
                 <div class="right_content">
 		           <br>
 		           <br>
 
-	                <h2>Completar Formulario del Proyecto: {{ proyecto.nombre }}</h2>
-                    <h2 dir="rtr">Fecha de Inicio :<script type="text/javascript">var d = new Date();document.write('  '+d.getDate(),'/'+d.getMonth(),'/'+d.getFullYear());</script></h2>
+	                <h2>Completar Formulario de la fase: {{ proyecto.nombre }}</h2>
+
                     <table id="rounded-corner" summary="2007 Major IT Companies' Profit">
-			            <form action="/inicio/" method="post" class="niceform">{% csrf_token %}
+			            <form action="/inicio/MenuProyecto/" method="post" class="niceform">{% csrf_token %}
 	 		                <fieldset>
 
                                 <dl>
-	        	                    <dt><label for="email">Presupuesto:</label></dt>
-	        	                    <dd><input type="number" name="presupuesto" id="" step="1"  required/></dd>
+	        	                    <dt><label for="email">Nombre:</label></dt>
+	        	                    <dd><input type="text" name="nombre_fase" id=""  required/></dd>
 	        	                </dl>
                                 <dl>
-	        	                    <dt><label for="email">Costo Temporal:</label></dt>
-	        	                    <dd><input type="number" name="costoTemporal" id="" step="1" required/></dd>
-	        	                </dl>
-                                <dl>
-	        	                    <dt><label for="email">Costo Monetario:</label></dt>
-	        	                    <dd><input type="number" name="costoMonetario" id="" step="1" required/></dd>
+	        	                    <dt><label for="email">Descripcion:</label></dt>
+	        	                    <dd><input type="text" name="descripcion_fase" id=""  required/></dd>
 	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Fecha Inicio:</label></dt>
-	        	                    <dd><input type="date" name="fechaInicio" id=""  required/></dd>
+	        	                    <dd><input type="date" name="fechaInicio_fase" id=""  required/></dd>
 	        	                </dl>
                                 <dl>
 	        	                    <dt><label for="email">Fecha Fin:</label></dt>
-	        	                    <dd><input type="date" name="fechaFin" id=""  required/></dd>
+	        	                    <dd><input type="date" name="fechaFin_fase" id=""  required/></dd>
 	        	                </dl>
                                 <dl>
-	        	                    <dt><label for="email">Numero de Fase:</label></dt>
-	        	                    <dd><input type="number" name="numeroFase" id="" step="1" required/></dd>
-	        	                </dl>
+                                    <dt><label for="email">Estado:</label></dt>
+                                    <select  name="estado" required>
+                                          <option value="">Seleccionar estado/s</option>
+                                          <option value="I">Iniciado</option>
+                                          <option value="F">Finalizado</option>
 
-                                <dl>
-	        	                    <dt><label for="email">Usuarios miembros:</label></dt>
-                                    <dd>
-                                        <select multiple name="miembros[]" required>
-                                                    <option value="">Seleccionar usuario/s</option>
-                                                {% for usuario in lista_usuarios %}
-                                                {% if usuario.estado %}
-                                                    <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
-                                                {% endif %}
-                                                {% endfor %}
-                                        </select>
-                                    </dd>
-	        	                </dl>
+                                    </select>
+                                </dl>
 
                             </fieldset>
                              <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
+                             <input type="hidden" name='fase' value="{{ fase.id }}" >
                              <input type="hidden" name='login' value={{ logueado.id }} >
                              <input type="submit" value="Aceptar">
                         </form>
@@ -83,7 +71,9 @@
                     <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
                     <table>
 
-                        <form action="/inicio/" method="POST"> {% csrf_token %}
+                        <form action="/inicio/MenuProyecto/" method="POST"> {% csrf_token %}
+                            <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
+                            <input type="hidden" name='fase' value="{{ fase.id }}" >
                             <input type="hidden" name='login' value={{ logueado.id }} >
                             <input type="submit" value="<Atras"><br>
                         </form>
