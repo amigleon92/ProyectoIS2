@@ -30,7 +30,6 @@
 		           <br>
 
 	                <h2>Completar Formulario del Proyecto: {{ proyecto.nombre }}</h2>
-                    <h2 dir="rtr">Fecha de Inicio :<script type="text/javascript">var d = new Date();document.write('  '+d.getDate(),'/'+d.getMonth(),'/'+d.getFullYear());</script></h2>
                     <table id="rounded-corner" summary="2007 Major IT Companies' Profit">
 			            <form action="/inicio/" method="post" class="niceform">{% csrf_token %}
 	 		                <fieldset>
@@ -73,17 +72,13 @@
                                         </select>
                                     </dd>
 	        	                </dl>
-
+                                <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
                             </fieldset>
                              <input type="hidden" name='proyecto' value={{ proyecto.codigo }} >
                              <input type="hidden" name='login' value={{ logueado.id }} >
                              <input type="submit" value="Aceptar">
                         </form>
-                    </table>
-                    <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
-                    <table>
-
-                        <form action="/inicio/" method="POST"> {% csrf_token %}
+                         <form action="/inicio/" method="POST"> {% csrf_token %}
                             <input type="hidden" name='login' value={{ logueado.id }} >
                             <input type="submit" value="<Atras"><br>
                         </form>
