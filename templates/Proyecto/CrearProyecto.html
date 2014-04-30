@@ -1,0 +1,41 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Proyecto::{% endblock %}
+{% block TituloMenu %} CREAR PROYECTO {% endblock %}
+{% block TituloOperacion %} Formulario Proyecto {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/crear/confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_proyecto" size="54" required/></dd>
+            </dl>
+            <dl>
+                <dt><label>Descripcion:</label></dt>
+                <dd><input type="text" name="descripcion_proyecto" size="54"/></dd>
+            </dl>
+            <dl>
+                <dt><label>Usuario Líder:</label></dt>
+                <dd>
+                    <select  name="lider_proyecto" required>
+                        <option value="">Seleccione un usuario</option>
+                        {% for usuario in lista_usuarios %}
+                            {% if usuario.estado %}
+                                <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </dd>
+            </dl>
+        </fieldset>
+        <table>
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Crear">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}

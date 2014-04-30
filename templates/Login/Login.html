@@ -1,0 +1,25 @@
+{% extends 'PlantillaBase.html' %}
+{% block title %} ::LOGIN {% endblock %}
+{% block Content %}
+    <br><br><br><br><br><br><br><br>
+    <div class="login_form">
+        <h3>Panel de Login</h3>
+        <form action='/proyecto/'  method="POST" class="niceform"> {% csrf_token %}
+               <fieldset>
+                   <dl>
+                       <dt><label for="email">Usuario:</label></dt>
+	        	       <dd><input type="text" name="user" size="40"/></dd>
+                   </dl>
+                   <dl>
+	                   <dt><label for="password">Contraseña:</label></dt>
+	             	   <dd><input name="pass" type="password" size="40"/></dd>
+	           	   </dl>
+                   <div style="text-align: center;"><span style="color:#FF0000">{{ error }}</span></div>
+                   <br><br>
+                   <dl class="submit">
+	               		<input type="submit" name="submit" id="submit" value="Enter" />
+	               </dl>
+               </fieldset>
+        </form>
+    </div>
+{% endblock %}

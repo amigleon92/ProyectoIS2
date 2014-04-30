@@ -1,0 +1,14 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Editar Fase::{% endblock %}
+{% block TituloMenu %} EDITAR FASE{% endblock %}
+{% block TituloOperacion %} Fase Modificada {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>Los cambios han sido guardados. </h3></center>
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+    </form>
+{% endblock %}

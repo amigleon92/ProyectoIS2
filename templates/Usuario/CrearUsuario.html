@@ -1,0 +1,24 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Proyecto::{% endblock %}
+{% block TituloMenu %} CREAR PROYECTO {% endblock %}
+{% block TituloOperacion %} Formulario Usuario {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/usuario/crear/confirmar/" method="POST" class="niceform">{% csrf_token %}
+            <fieldset>
+            <dl><dt><label>Usuario:</label></dt><dd><input type="text" name="user" id="" size="54" required/></dd></dl>
+            <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre" id="" size="54" /></dd></dl>
+            <dl><dt><label>Apellido:</label></dt><dd><input type="text" name="apellido" id="" size="54" /></dd></dl>
+            <dl><dt><label>CI:</label></dt><dd><input type="text" name="cedula" id="" size="54" required/></dd></dl>
+            <dl><dt><label>Email:</label></dt><dd><input type="text" name="email" id="" size="54" /></dd></dl>
+            <dl><dt><label>Contraseña:</label></dt><dd><input type="password" name="pass" id="" size="54" required/></dd></dl>
+        </fieldset>
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear">
+    </form>
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/usuario/" method="POST">{% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Cancelar">
+    </form>
+{% endblock %}

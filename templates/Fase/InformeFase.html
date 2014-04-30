@@ -1,0 +1,21 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Informe de la Fase:: {% endblock %}
+{% block TituloMenu %}INFORME DE LA FASE{% endblock %}
+{% block TituloOperacion %}Datos de la Fase{% endblock %}
+{% block DatosOperacion %}
+    <fieldset>
+        <dl><dt><label>Nombre:</label></dt><dt>{{ fase.nombre }}</dt></dl>
+        <dl><dt><label>Numero de Secuencia:</label></dt><dt>{{ fase.numeroSecuencia }}</dt></dl>
+        <dl><dt><label>Estado:</label></dt><dt>{{ fase.estado }}</dt></dl>
+        <dl><dt><label>Descripcion:</label></dt><dt>{{ fase.descripcion }}</dt></dl>
+        <dl><dt><label>Fecha Incio:</label></dt><dt>{{fase.fechaInicio }}</dt></dl>
+        <dl><dt><label>Fecha Fin:</label></dt><dt>{{ fase.fechaFin }}</dt></dl>
+    </fieldset>
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/" method="POST">{% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="submit" value="<Atrás">
+    </form>
+{% endblock %}
