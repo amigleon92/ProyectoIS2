@@ -11,19 +11,13 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-#PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
-#TEMPLATE_DIRS = os.path.join(PROJECT_PATH, 'templates')
-from unipath import Path
-PROJECT_PATH= Path(__file__).ancestor(2)
-TEMPLATE_DIRS= PROJECT_PATH.child('templates')
-
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '749=b4qhs@#8&q88w6zsa2&7h$3!t1n6(p@oe%d8$eeiu&n+at'
+SECRET_KEY = 'u9lvrfu5f8^k0zy5y9*$)!_#b9#@*y^@kuu4b72^4t0drw8ulf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ProjectApp',
+    'Aplicaciones.Fase',
+    'Aplicaciones.Login',
+    'Aplicaciones.Proyecto',
+    'Aplicaciones.Rol',
+    'Aplicaciones.Usuario',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,9 +63,10 @@ WSGI_APPLICATION = 'ProyectoIS2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres'
+        'NAME': 'GrupoR05_IS2',
+        'HOST':'localhost',
+        'USER': 'R05_is2',
+        'PASSWORD': 'R05_is2'
     }
 }
 
@@ -88,5 +87,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATICFILES_DIRS= (PROJECT_PATH.child('static'),)
+from unipath import Path
+
+RUTA_PROYECTO= Path(__file__).ancestor(2)
+
+TEMPLATE_DIRS= (
+    RUTA_PROYECTO.child('templates'),
+)
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+
+STATICFILES_DIRS= (
+    RUTA_PROYECTO.child('static'),
+)
+
 STATIC_URL = '/static/'
