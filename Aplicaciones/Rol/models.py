@@ -2,6 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Rol(models.Model):
+    """
+    Se crea el modelo de Rol en el cual tenemos booleans
+    """
     nombre= models.CharField(max_length=30, unique=True)
     crear_usuario= models.BooleanField(default=False)           # - Permisos de Administracion de usuarios
     modificar_usuario= models.BooleanField(default=False)
