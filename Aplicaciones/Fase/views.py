@@ -34,11 +34,15 @@ class EditarFase(FaseView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
-            fase= Fase.objects.get(id= request.POST['fase'])
-            diccionario['fase']= fase
-            return render(request, self.template_name, diccionario)
+            fase_actual= Fase.objects.get(id= request.POST['fase'])
+            if fase_actual.estado=='N':
+                diccionario['fase']= fase_actual
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['error']= 'La fase ya fue inicializada'
+        else:
+            diccionario['error']= 'No puedes realizar esta accion'
         diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
-        diccionario['error']= 'No puedes realizar esta accion'
         return render(request, super(EditarFase, self).template_name, diccionario)
 
 class EditarFaseConfirm(EditarFase):
