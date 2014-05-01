@@ -41,18 +41,13 @@ class CrearProyecto(ProyectoView):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         diccionario['logueado']= usuario_logueado
         diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
-        if self.tienePermiso(usuario_logueado):
+        if len(Rol.objects.filter(nombre= 'Administrador del Sistema', usuario= usuario_logueado)): #Si el logueado es Admin?
             diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
             del diccionario[self.context_object_name]
             return render(request, self.template_name, diccionario)
         else:
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(CrearProyecto, self).template_name, diccionario)
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.crear_proyecto: return True
-        return False
 
 class CrearProyectoConfirm(CrearProyecto):
     template_name = 'Proyecto/CrearProyectoConfirm.html'
@@ -67,15 +62,17 @@ class CrearProyectoConfirm(CrearProyecto):
             diccionario['error']= 'Nombre de proyecto ya existe'
             return render(request, super(CrearProyectoConfirm, self).template_name, diccionario)
         else:
+            #Creamos el proyecto
             nuevo_proyecto= Proyecto()
             nuevo_proyecto.nombre= new_nombre
-            nuevo_proyecto.lider= Usuario.objects.get(nick= request.POST['lider_proyecto'])
             nuevo_proyecto.descripcion= request.POST['descripcion_proyecto']
             nuevo_proyecto.save()
-            nuevo_proyecto.miembros.add(nuevo_proyecto.lider)
-            nuevo_proyecto.save()
-            nuevo_proyecto.lider.permiso.add(Rol.objects.get(nombre= 'Lider del Proyecto'))
-            nuevo_proyecto.lider.save()
+            new_lider= Usuario.objects.get(nick= request.POST['lider_proyecto'])
+            #Creamos el nuevo Rol
+            nuevo_rol= Rol(nombre= 'Lider del Proyecto', usuario= new_lider, proyecto= nuevo_proyecto)
+            nuevo_rol.save()
+            #Agregamos al lider a los miembros para que puedda visualizar el proyecto
+            nuevo_proyecto.miembros.add(new_lider)
             return render(request, self.template_name, diccionario)
 
 #Eliminacion Logica de Proyectos
@@ -87,7 +84,7 @@ class EliminarProyecto(ProyectoView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
-        if self.tienePermiso(usuario_logueado) and usuario_logueado==proyecto_actual.lider:
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             if proyecto_actual.estado=='F':
                 proyecto_actual.activo= False
                 proyecto_actual.save()
@@ -98,12 +95,6 @@ class EliminarProyecto(ProyectoView):
         else:
             diccionario['error']= 'No puedes realizar esta accion'
         return render(request, super(EliminarProyecto,self).template_name, diccionario)
-    #Permisos de eliminar_proyecto?
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.eliminar_proyecto: return True
-        return False
 
 #Generacion de Informe del Proyecto
 class InformeProyecto(ProyectoView):
@@ -129,7 +120,7 @@ class InicializarProyecto(ProyectoView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
-        if self.tienePermiso(usuario_logueado) and usuario_logueado.id== proyecto_actual.lider.id:
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             if proyecto_actual.estado == 'N':
                 diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
                 diccionario['proyecto']= proyecto_actual
@@ -140,11 +131,6 @@ class InicializarProyecto(ProyectoView):
         else:
             diccionario['error']= 'No puede realizar esta accion'
         return render(request, super(InicializarProyecto, self).template_name, diccionario)
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.iniciar_proyecto: return True
-        return False
 
 class InicializarProyectoConfirm(InicializarProyecto):
     template_name = 'Proyecto/InicializarProyectoConfirm.html'

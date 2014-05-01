@@ -32,5 +32,7 @@ class Fase(models.Model):
     fechaInicio= models.DateField(null=True)
     fechaFin= models.DateField(null=True) #el mismo validator de fecha
     proyecto=models.ForeignKey(Proyecto, related_name='fkProyecto')
+
+    activo= models.BooleanField(default=True)
     def __unicode__(self):
         return self.nombre

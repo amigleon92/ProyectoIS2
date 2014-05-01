@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Fase
 from Aplicaciones.Usuario.models import Usuario
 from Aplicaciones.Proyecto.models import Proyecto
+from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.views import ProyectoView
 
 # Create your views here.
@@ -32,18 +33,13 @@ class EditarFase(FaseView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        if self.tienePermiso(usuario_logueado) and usuario_logueado== proyecto_actual.lider:
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             fase= Fase.objects.get(id= request.POST['fase'])
             diccionario['fase']= fase
             return render(request, self.template_name, diccionario)
         diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
         diccionario['error']= 'No puedes realizar esta accion'
         return render(request, super(EditarFase, self).template_name, diccionario)
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.modificar_fase: return True
-        return False
 
 class EditarFaseConfirm(EditarFase):
     template_name = 'Fase/EditarFaseConfirm.html'
@@ -58,7 +54,7 @@ class EditarFaseConfirm(EditarFase):
         modificar_fase.descripcion= request.POST['descripcion_fase']
         modificar_fase.fechaInicio= request.POST['fechaInicio_fase']
         modificar_fase.fechaFin=request.POST['fechaFin_fase']
-        modificar_fase.estado=request.POST['estado']
+        modificar_fase.estado= 'I'
         modificar_fase.save()
         return render(request, self.template_name, diccionario)
 
@@ -89,7 +85,7 @@ class CerrarFase(FaseView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
-        if self.tienePermiso(usuario_logueado) and usuario_logueado==proyecto_actual.lider:
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             fase_actual= Fase.objects.get(id= request.POST['fase'])
             if fase_actual.estado=='I':
                 for i in diccionario['lista_fases']:
@@ -104,11 +100,6 @@ class CerrarFase(FaseView):
         else:
             diccionario['error']= 'No puedes realizar esta accion'
         return render(request, super(CerrarFase, self).template_name, diccionario)
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.cerrar_fase: return True
-        return False
 
 #Finalizar el proyecto una vez terminadas las fases
 class FinalizarProyecto(FaseView):
@@ -119,7 +110,7 @@ class FinalizarProyecto(FaseView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        if self.tienePermiso(usuario_logueado) and usuario_logueado==proyecto_actual.lider:
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             ultima_fase= Fase.objects.get(numeroSecuencia= proyecto_actual.numeroFase, proyecto= proyecto_actual)       #comporbamos si se termino la ultima fase
             if not ultima_fase.estado=='F':
                 diccionario['error']= 'Para finalizar, todas las fases deberian de estar cerradas'
@@ -134,8 +125,3 @@ class FinalizarProyecto(FaseView):
             diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(FinalizarProyecto, self).template_name, diccionario)
-    def tienePermiso(self, usuario):
-        permisos= usuario.permiso.all()
-        for i in permisos:
-            if i.finalizar_proyecto: return True
-        return False

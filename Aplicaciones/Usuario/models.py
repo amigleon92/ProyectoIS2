@@ -1,5 +1,5 @@
 from django.db import models
-from Aplicaciones.Rol.models import Rol
+#from Aplicaciones.Rol.models import Rol
 
 # Create your models here.
 class Usuario(models.Model):
@@ -27,6 +27,5 @@ class Usuario(models.Model):
     cedula= models.PositiveIntegerField(default=0)
     email= models.CharField(max_length=20, null=True)
     estado= models.BooleanField(default=True)
-    permiso= models.ManyToManyField(Rol)                      #El rol asociado al usuario
     def __unicode__(self):
         return self.nombre

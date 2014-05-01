@@ -28,7 +28,6 @@ class Proyecto(models.Model):
     )
     nombre= models.CharField(max_length=50, null=False, unique=True )
     descripcion= models.TextField(max_length=200, null=True)
-    lider=models.ForeignKey(Usuario,related_name='Lider')
     miembros= models.ManyToManyField(Usuario, related_name='UsuarioBase')
     presupuesto= models.PositiveIntegerField(null=True) #decimales positivos nada mas
     estado= models.CharField ( max_length = 1 ,choices = estados_probables,  default='N' )
@@ -38,6 +37,5 @@ class Proyecto(models.Model):
     fechaFin= models.DateField(null=True)            #debe de existir un validator que verifique que la fecha no este antes que el inicio
     activo= models.BooleanField(default=True)
     numeroFase=models.PositiveIntegerField(default=1)
-    #fases= models.ManyToManyField(Fase, related_name='FasesDelProyecto')
     def __unicode__(self):
         return self.nombre

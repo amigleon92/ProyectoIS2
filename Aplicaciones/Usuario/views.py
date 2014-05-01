@@ -14,7 +14,7 @@ class UsuarioView(ProyectoView):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         diccionario['logueado']= usuario_logueado
         #Solamente el Administrador del Sistema puede ingresar a la Administracion de Usuarios
-        if Rol.objects.get(nombre= 'Administrador del Sistema') in usuario_logueado.permiso.all():
+        if len(Rol.objects.filter(nombre= 'Administrador del Sistema', usuario= usuario_logueado)):
             diccionario[self.context_object_name]= Usuario.objects.order_by('id')
             return render(request, self.template_name, diccionario)
         else:
