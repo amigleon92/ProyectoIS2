@@ -5,6 +5,7 @@
 {% block DatosOperacion %}
     <form action="/proyecto/fase/rol/editar/confirmar/" method="POST">{% csrf_token %}
         <fieldset>
+            <dl><div style="text-align: center;"><span style="color:#ffaf1e">Obs: Las modificaciones afectaran a todos los usuarios que posean dicho rol</span></div></dl>
             <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre_rol"required value="{{ rol.nombre }}"/></dd></dl>
             <dl><dt><label><u>PERMISOS</u></label></dt></dl>
             <dd>
