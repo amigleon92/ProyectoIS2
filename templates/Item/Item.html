@@ -76,9 +76,9 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Crear">
     </form>
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value="{{ fase.id }}" >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <input type="hidden" name='fases' value={{ lista_fases }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Revivir">
     </form>
