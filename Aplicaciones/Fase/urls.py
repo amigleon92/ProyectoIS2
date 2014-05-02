@@ -11,4 +11,8 @@ urlpatterns= patterns('',
 
     #Rol
     url(r'^rol/', include('Aplicaciones.Rol.urls')),
+
+
+    #Item
+    url(r'^item/', include('Aplicaciones.Item.urls')),
 )
