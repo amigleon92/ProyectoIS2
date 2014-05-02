@@ -50,8 +50,6 @@ class CrearUsuarioConfirm(CrearUsuario):
         nuevo_usuario.cedula= request.POST['cedula']
         nuevo_usuario.email= request.POST['email']
         nuevo_usuario.save()
-        nuevo_usuario.permiso.add(Rol.objects.get(nombre= 'Sin Permisos'))
-        nuevo_usuario.save()
         return render(request, self.template_name, diccionario)
 
 class EditarUsuario(UsuarioView):
