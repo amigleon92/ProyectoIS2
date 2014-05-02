@@ -8,6 +8,9 @@
         <th scope="col" class="rounded">Usuario</th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
     </tr>
 {% endblock %}
 {% block MostrarDatos%}
@@ -27,8 +30,34 @@
                 <form action= "/proyecto/fase/rol/eliminar/" method="post"> {% csrf_token %}
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
                     <input type="hidden" name='rol' value={{ rol.id }} >
-                    <input type="submit" value="Eliminar">
+                    <input type="submit" value="Eliminar Rol">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/asignar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Asignar">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/desasignar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Desasignar">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/consultar_usuarios/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
+                    <input type="submit" value="Consultar Usuarios">
                 </form>
             </td>
         </tr>
