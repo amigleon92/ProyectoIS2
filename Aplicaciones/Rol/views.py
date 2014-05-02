@@ -41,8 +41,12 @@ class CrearRolConfirm(CrearRol):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
+        rol_nombre= request.POST['nombre_rol']
+        if len(Rol.objects.filter(nombre= rol_nombre)):
+            diccionario['error']= 'Nombre del rol ya existe. Intente otro'
+            return render(request, super(CrearRolConfirm, self).template_name, diccionario)
         nuevo_rol= Rol(
-            nombre= request.POST['nombre_rol'],
+            nombre= rol_nombre,
             usuario= Usuario.objects.get(nick= request.POST['usuario_rol']),
             proyecto= proyecto_actual,
         )

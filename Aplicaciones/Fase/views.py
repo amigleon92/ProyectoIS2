@@ -10,6 +10,7 @@ from Aplicaciones.Proyecto.views import ProyectoView
 #Lista de Fases correspondientes al Proyecto dentro
 class FaseView(ProyectoView):
     template_name = 'Fase/Fase.html'
+    context_object_name = 'lista_fases'
     def post(self, request, *args, **kwargs):
         diccionario={}
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
