@@ -1,9 +1,6 @@
 from django.conf.urls import patterns, include, url
 from .views import ProyectoView, EliminarProyecto, InformeProyecto, CrearProyecto, CrearProyectoConfirm, InicializarProyecto, InicializarProyectoConfirm
 
-from django.contrib import admin
-admin.autodiscover()
-
 urlpatterns= patterns('',
     url(r'^$', ProyectoView.as_view(), name="proyecto"),
     url(r'^crear/$', CrearProyecto.as_view(), name="crear_proyecto"),

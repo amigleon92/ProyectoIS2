@@ -1,0 +1,60 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Rol::{% endblock %}
+{% block TituloMenu %} CREAR ROL {% endblock %}
+{% block TituloOperacion %} Formulario Rol {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/rol/crear/confirmar/" method="POST">{% csrf_token %}
+        <fieldset>
+            <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre_rol"required /></dd></dl>
+            <dl>
+                <dt><label>Usuario:</label></dt>
+                <dd>
+                    <select  name="usuario_rol" required>
+                        <option value="">Seleccione un usuario</option>
+                        {% for usuario in proyecto.miembros.all %}
+                            <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
+                        {% endfor %}
+                    </select>
+                </dd>
+            </dl>
+            <dl><dt><label><u>PERMISOS</u></label></dt></dl>
+            <dd>
+                <input type="checkbox" name="votar_solicitud">Votar en la Solicitud de Cambios<br>
+                <input type="checkbox" name="consultar_solicitud">Consultar Solicitud de Cambios
+            </dd>
+            <dl><dt><label>Permisos de Item:</label></dt></dl>
+            <dd>
+                <input type="checkbox" name="crear_item">Crear Item<br>
+                <input type="checkbox" name="editar_item">Editar Item<br>
+                <input type="checkbox" name="eliminar_item">Eliminar Item<br>
+                <input type="checkbox" name="consultar_item">Consultar Item<br>
+                <input type="checkbox" name="aprobar_item">Aprobar Item<br>
+                <input type="checkbox" name="revivir_item">Revivir Item<br>
+                <input type="checkbox" name="revertir_item">Crear Item<br>
+                <input type="checkbox" name="establecer_relacion">Establecer Relacion<br>
+                <input type="checkbox" name="eliminar_relacion">Eliminar Relacion<br>
+                <input type="checkbox" name="consultar_relacion">Consultar Relacion<br>
+                <input type="checkbox" name="agregar_atributo">Agregar Atributo<br>
+                <input type="checkbox" name="eliminar_atributo">Eliminar Atributo<br>
+                <input type="checkbox" name="completar_atributo">Completar Atributo<br>
+                <input type="checkbox" name="consultar_atributo">Consultar Atributo
+            </dd>
+            <dl><dt><label>Permisos de Tipo de Item:</label></dt></dl>
+            <dd>
+                <input type="checkbox" name="crear_tipodeitem">Crear Tipo de Item<br>
+                <input type="checkbox" name="eliminar_tipodeitem">Eliminar Tipo de Item<br>
+                <input type="checkbox" name="modificar_tipodeitem">Modificar Tipo de Item
+            </dd>
+            <dl><dt><label>Permisos de Linea Base:</label></dt></dl>
+            <dd><input type="checkbox" name="crear_lineabase">Crear Linea Base</dd><br>
+        </fieldset>
+        <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear">
+    </form>
+    <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
+        <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}

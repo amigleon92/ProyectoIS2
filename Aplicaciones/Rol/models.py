@@ -42,6 +42,7 @@ class Rol(models.Model):
     eliminar_tipodeotem= models.BooleanField(default=False)
     crear_lineabase= models.BooleanField(default=False)             # - Permisos de Administracion de Lineas Base
 
+
     activo= models.BooleanField(default=True)
     def __unicode__(self):
         return self.nombre

@@ -56,6 +56,11 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Finalizar proyecto">
     </form>
+    <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Administracion Roles">
+    </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="<Menú Inicio"><br>

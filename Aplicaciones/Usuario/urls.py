@@ -1,9 +1,6 @@
 from django.conf.urls import patterns, include, url
 from .views import UsuarioView, CrearUsuario, CrearUsuarioConfirm, EditarUsuario, EditarUsuarioConfirm, EliminarUsuario, MostrarUsuario
 
-from django.contrib import admin
-admin.autodiscover()
-
 urlpatterns= patterns('',
     url('^$', UsuarioView.as_view(), name='usuario'),
     url('^crear/$', CrearUsuario.as_view(), name='crear_usuario'),
