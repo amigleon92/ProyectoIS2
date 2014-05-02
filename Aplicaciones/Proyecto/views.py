@@ -159,3 +159,19 @@ class InicializarProyectoConfirm(InicializarProyecto):
             if i==1: nueva_fase.estado= 'I'
             nueva_fase.save()
         return render(request, self.template_name, diccionario)
+
+
+
+#construccion
+class ConstruccionView(TemplateView):
+    template_name = 'Proyecto/Construccion.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        diccionario['fase']=fase_actual
+        return render(request, self.template_name, diccionario)
+

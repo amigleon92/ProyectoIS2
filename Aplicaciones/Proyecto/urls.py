@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
-from .views import ProyectoView, EliminarProyecto, InformeProyecto, CrearProyecto, CrearProyectoConfirm, InicializarProyecto, InicializarProyectoConfirm
+from .views import ProyectoView, EliminarProyecto, InformeProyecto, CrearProyecto, CrearProyectoConfirm, InicializarProyecto, InicializarProyectoConfirm, ConstruccionView
 
 urlpatterns= patterns('',
     url(r'^$', ProyectoView.as_view(), name="proyecto"),
+    url(r'^construccion/$', ConstruccionView.as_view(), name="construccion"),
     url(r'^crear/$', CrearProyecto.as_view(), name="crear_proyecto"),
     url(r'^crear/confirmar/$', CrearProyectoConfirm.as_view(), name="confirmar_crear_proyecto"),
     url(r'^eliminar/$', EliminarProyecto.as_view(), name="eliminar_proyecto"),

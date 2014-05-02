@@ -12,6 +12,7 @@
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos %}
@@ -44,6 +45,14 @@
                     <input type="hidden" name='fase' value="{{ fase.id }}" >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="submit" value="Cerrar Fase"><br>
+                </form>
+            </td>
+            <td>
+                <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
+                    <input type="hidden" name='fase' value="{{ fase.id }}" >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value=">>>"><br>
                 </form>
             </td>
         </tr>
