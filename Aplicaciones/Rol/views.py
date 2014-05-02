@@ -97,49 +97,50 @@ class EditarRolConfirmar(EditarRol):
         rol_actual= Rol.objects.get(id= request.POST['rol'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        rol_actual.nombre= request.POST['nombre_rol']
+        roles= Rol.objects.filter(nombre= request.POST['nombre_rol'], proyecto= proyecto_actual)
         #Actualizamos los permisos
-        if 'votar_solicitud' in request.POST: rol_actual.votar= True
-        else: rol_actual.votar= False
-        if 'consultar_solicitud' in request.POST: rol_actual.consultar_solicitud= True
-        else: rol_actual.consultar_solicitud= False
-        if 'crear_item' in request.POST: rol_actual.crear_item= True
-        else: rol_actual.crear_item= False
-        if 'editar_item' in request.POST: rol_actual.editar_item= True
-        else: rol_actual.editar_item= False
-        if 'eliminar_item' in request.POST: rol_actual.eliminar_item= True
-        else: rol_actual.eliminar_item= False
-        if 'consultar_item' in request.POST: rol_actual.consultar_items= True
-        else: rol_actual.consultar_items= False
-        if 'aprobar_item' in request.POST: rol_actual.aprobar_item= True
-        else: rol_actual.aprobar_item= False
-        if 'revivir_item' in request.POST: rol_actual.revivir_item= True
-        else: rol_actual.revivir_item= False
-        if 'revertir_item' in request.POST: rol_actual.revertir_item= True
-        else: rol_actual.revertir_item= False
-        if 'establecer_relacion' in request.POST: rol_actual.establecer_relacion= True
-        else: rol_actual.establecer_relacion= False
-        if 'eliminar_relacion' in request.POST: rol_actual.eliminar_relacion= True
-        else: rol_actual.eliminar_relacion= False
-        if 'consultar_relacion' in request.POST: rol_actual.consultar_relaciones= True
-        else: rol_actual.consultar_relaciones= False
-        if 'agregar_atributo' in request.POST: rol_actual.agregar_atributo= True
-        else: rol_actual.agregar_atributo= False
-        if 'eliminar_atributo' in request.POST: rol_actual.eliminar_atributo= True
-        else: rol_actual.eliminar_atributo= False
-        if 'completar_atributo' in request.POST: rol_actual.completar_atributos= True
-        else: rol_actual.completar_atributos= False
-        if 'consultar_atributo' in request.POST: rol_actual.consultar_atributos= True
-        else: rol_actual.consultar_atributos= False
-        if 'crear_tipodeitem' in request.POST: rol_actual.crear_tipodeitem= True
-        else: rol_actual.crear_tipodeitem= False
-        if 'eliminar_tipodeitem' in request.POST: rol_actual.eliminar_tipodeotem= True
-        else: rol_actual.eliminar_tipodeotem= False
-        if 'modificar_tipodeitem' in request.POST: rol_actual.modificar_tipodeitem= True
-        else: rol_actual.modificar_tipodeitem= False
-        if 'crear_lineabase' in request.POST: rol_actual.crear_lineabase= True
-        else: rol_actual.crear_lineabase= False
-        rol_actual.save()
+        for rol_actual in roles:
+            if 'votar_solicitud' in request.POST: rol_actual.votar= True
+            else: rol_actual.votar= False
+            if 'consultar_solicitud' in request.POST: rol_actual.consultar_solicitud= True
+            else: rol_actual.consultar_solicitud= False
+            if 'crear_item' in request.POST: rol_actual.crear_item= True
+            else: rol_actual.crear_item= False
+            if 'editar_item' in request.POST: rol_actual.editar_item= True
+            else: rol_actual.editar_item= False
+            if 'eliminar_item' in request.POST: rol_actual.eliminar_item= True
+            else: rol_actual.eliminar_item= False
+            if 'consultar_item' in request.POST: rol_actual.consultar_items= True
+            else: rol_actual.consultar_items= False
+            if 'aprobar_item' in request.POST: rol_actual.aprobar_item= True
+            else: rol_actual.aprobar_item= False
+            if 'revivir_item' in request.POST: rol_actual.revivir_item= True
+            else: rol_actual.revivir_item= False
+            if 'revertir_item' in request.POST: rol_actual.revertir_item= True
+            else: rol_actual.revertir_item= False
+            if 'establecer_relacion' in request.POST: rol_actual.establecer_relacion= True
+            else: rol_actual.establecer_relacion= False
+            if 'eliminar_relacion' in request.POST: rol_actual.eliminar_relacion= True
+            else: rol_actual.eliminar_relacion= False
+            if 'consultar_relacion' in request.POST: rol_actual.consultar_relaciones= True
+            else: rol_actual.consultar_relaciones= False
+            if 'agregar_atributo' in request.POST: rol_actual.agregar_atributo= True
+            else: rol_actual.agregar_atributo= False
+            if 'eliminar_atributo' in request.POST: rol_actual.eliminar_atributo= True
+            else: rol_actual.eliminar_atributo= False
+            if 'completar_atributo' in request.POST: rol_actual.completar_atributos= True
+            else: rol_actual.completar_atributos= False
+            if 'consultar_atributo' in request.POST: rol_actual.consultar_atributos= True
+            else: rol_actual.consultar_atributos= False
+            if 'crear_tipodeitem' in request.POST: rol_actual.crear_tipodeitem= True
+            else: rol_actual.crear_tipodeitem= False
+            if 'eliminar_tipodeitem' in request.POST: rol_actual.eliminar_tipodeotem= True
+            else: rol_actual.eliminar_tipodeotem= False
+            if 'modificar_tipodeitem' in request.POST: rol_actual.modificar_tipodeitem= True
+            else: rol_actual.modificar_tipodeitem= False
+            if 'crear_lineabase' in request.POST: rol_actual.crear_lineabase= True
+            else: rol_actual.crear_lineabase= False
+            rol_actual.save()
         return render(request, self.template_name, diccionario)
 
 class EliminarRol(RolView):
@@ -148,9 +149,12 @@ class EliminarRol(RolView):
         diccionario={}
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        rol_actual= Rol.objects.get(id= request.POST['rol'])
+        rol_actual= Rol.objects.get(id= request.POST['rol'], usuario= usuario_logueado, proyecto= proyecto_actual)
+        roles= Rol.objects.filter(nombre= rol_actual.nombre, proyecto= proyecto_actual, activo= True)
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        rol_actual.activo= False
-        rol_actual.save()
+        for rol_actual in roles:
+            rol_actual.activo= False
+            rol_actual.save()
         return render(request, self.template_name, diccionario)
+
