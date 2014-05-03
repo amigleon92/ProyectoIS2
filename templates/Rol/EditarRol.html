@@ -6,7 +6,10 @@
     <form action="/proyecto/fase/rol/editar/confirmar/" method="POST">{% csrf_token %}
         <fieldset>
             <dl><div style="text-align: center;"><span style="color:#ffaf1e">Obs: Las modificaciones afectaran a todos los usuarios que posean dicho rol</span></div></dl>
-            <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre_rol"required value="{{ rol.nombre }}"/></dd></dl>
+            <dl><dt><label>Nombre:</label></dt><dd>
+                <input type="hidden" name="nombre_rol" value="{{ rol.nombre }}"/></dd>
+                <input type="text" name="nombre_nuevo_rol" value="{{ rol.nombre }}" required/></dd>
+            </dl>
             <dl><dt><label><u>PERMISOS</u></label></dt></dl>
             <dd>
                 <input type="checkbox" name="votar_solicitud" {% if rol.votar %} checked {% endif %}>Votar en la Solicitud de Cambios<br>
