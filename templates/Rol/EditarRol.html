@@ -1,0 +1,51 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Editar Rol::{% endblock %}
+{% block TituloMenu %} EDITAR ROL {% endblock %}
+{% block TituloOperacion %} Formulario Rol {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/rol/editar/confirmar/" method="POST">{% csrf_token %}
+        <fieldset>
+            <dl><div style="text-align: center;"><span style="color:#ffaf1e">Obs: Las modificaciones afectaran a todos los usuarios que posean dicho rol</span></div></dl>
+            <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre_rol"required value="{{ rol.nombre }}"/></dd></dl>
+            <dl><dt><label><u>PERMISOS</u></label></dt></dl>
+            <dd>
+                <input type="checkbox" name="votar_solicitud" {% if rol.votar %} checked {% endif %}>Votar en la Solicitud de Cambios<br>
+                <input type="checkbox" name="consultar_solicitud" {% if rol.consultar_solicitud %} checked {% endif %}>Consultar Solicitud de Cambios
+            </dd>
+            <dl><dt><label>Permisos de Item:</label></dt></dl>
+            <dd>
+                <input type="checkbox" name="crear_item" {% if rol.crear_item %} checked {% endif %}>Crear Item <br>
+                <input type="checkbox" name="editar_item" {% if rol.editar_item %} checked {% endif %}>Editar Item<br>
+                <input type="checkbox" name="eliminar_item" {% if rol.eliminar_item %} checked {% endif %}>Eliminar Item<br>
+                <input type="checkbox" name="consultar_item" {% if rol.consultar_items %} checked {% endif %}>Consultar Item<br>
+                <input type="checkbox" name="aprobar_item" {% if rol.aprobar_item %} checked {% endif %}>Aprobar Item<br>
+                <input type="checkbox" name="revivir_item" {% if rol.revivir_item %} checked {% endif %}>Revivir Item<br>
+                <input type="checkbox" name="revertir_item" {% if rol.revertir_item %} checked {% endif %}>Crear Item<br>
+                <input type="checkbox" name="establecer_relacion" {% if rol.establecer_relacion %} checked {% endif %}>Establecer Relacion<br>
+                <input type="checkbox" name="eliminar_relacion" {% if rol.eliminar_relacion %} checked {% endif %}>Eliminar Relacion<br>
+                <input type="checkbox" name="consultar_relacion"{% if rol.consultar_relaciones %} checked {% endif %}>Consultar Relacion<br>
+                <input type="checkbox" name="agregar_atributo" {% if rol.agregar_atributo %} checked {% endif %}>Agregar Atributo<br>
+                <input type="checkbox" name="eliminar_atributo" {% if rol.eliminar_atributo %} checked {% endif %}>Eliminar Atributo<br>
+                <input type="checkbox" name="completar_atributo" {% if rol.completar_atributos %} checked {% endif %}>Completar Atributo<br>
+                <input type="checkbox" name="consultar_atributo" {% if rol.consultar_atributos %} checked {% endif %}>Consultar Atributo
+            </dd>
+            <dl><dt><label>Permisos de Tipo de Item:</label></dt></dl>
+            <dd>
+                <input type="checkbox" name="crear_tipodeitem" {% if rol.crear_tipodeitem %} checked {% endif %}>Crear Tipo de Item<br>
+                <input type="checkbox" name="eliminar_tipodeitem" {% if rol.eliminar_tipodeotem %} checked {% endif %}>Eliminar Tipo de Item<br>
+                <input type="checkbox" name="modificar_tipodeitem" {% if rol.modificar_tipodeitem %} checked {% endif %}>Modificar Tipo de Item
+            </dd>
+            <dl><dt><label>Permisos de Linea Base:</label></dt></dl>
+            <dd><input type="checkbox" name="crear_lineabase" {% if rol.crear_lineabase %} checked {% endif %}>Crear Linea Base</dd><br>
+        </fieldset>
+        <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="hidden" name='rol' value={{ rol.id }}>
+        <input type="submit" value="Actualizar">
+    </form>
+    <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
+        <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}

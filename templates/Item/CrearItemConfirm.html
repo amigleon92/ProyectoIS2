@@ -1,0 +1,15 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Proyecto::{% endblock %}
+{% block TituloMenu %} CREAR ITEM {% endblock %}
+{% block TituloOperacion %} Item Creado {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>El item se cre&oacute exitosamente. </h3></center>
+{% endblock %}
+{% block Botones %}
+   <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value="{{ fase.id }}" >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+   </form>
+{% endblock %}

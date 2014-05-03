@@ -1,0 +1,19 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Mostrar Usuario::{% endblock %}
+{% block TituloMenu %} MOSTRAR USUARIO {% endblock %}
+{% block TituloOperacion %} Datos del usuario {% endblock %}
+{% block DatosOperacion %}
+    <fieldset>
+	    <dl><dt><label>Usuario:</label></dt><dt>{{ usuario.nick }}</dt></dl>
+        <dl><dt><label>Nombre:</label></dt><dt>{{ usuario.nombre }}</dt></dl>
+        <dl><dt><label>Apellido:</label></dt><dt>{{ usuario.apellido }}</dt></dl>
+        <dl><dt><label>CI:</label></dt><dt>{{ usuario.cedula }}</dt></dl>
+        <dl><dt><label for="email">Email:</label></dt><dt>{{ usuario.email }}</dt></dl>
+    </fieldset>
+{% endblock%}
+{% block Botones %}
+    <form action="/proyecto/usuario/" method="POST">{% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atrás">
+    </form>
+{% endblock %}

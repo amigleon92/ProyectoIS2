@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modelo de usuario &mdash; ProyectoIS2 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Modelo de Roles" href="models_rol.html" />
+    <link rel="prev" title="Bienvenidos a la documentacion del ProyectoIS2" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="models_rol.html" title="Modelo de Roles"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Bienvenidos a la documentacion del ProyectoIS2"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="modelo-de-usuario">
+<h1>Modelo de usuario<a class="headerlink" href="#modelo-de-usuario" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-Aplicaciones.Usuario.models"></span><dl class="class">
+<dt id="Aplicaciones.Usuario.models.Usuario">
+<em class="property">class </em><tt class="descclassname">Aplicaciones.Usuario.models.</tt><tt class="descname">Usuario</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/Aplicaciones/Usuario/models.html#Usuario"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Aplicaciones.Usuario.models.Usuario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Se crea el modelo Usuarios que es una base de datos definida por nosotros para manejar los usuarios que puedan
+ingresar al sistema</p>
+<p>Estan definidos en la tabla los atributos</p>
+<ul>
+<li><p class="first">nick: Por el cual se va a loguear al sistema</p>
+</li>
+<li><p class="first">nombre: Nombre del usuario</p>
+</li>
+<li><p class="first">apellido: Apellido del usuario</p>
+</li>
+<li><p class="first">password: Contrasenha para el logueo</p>
+</li>
+<li><p class="first">cedula: Cedula de identidad del usuario</p>
+</li>
+<li><p class="first">email: Direccion de correo electronico del usuario</p>
+</li>
+<li><dl class="first docutils">
+<dt>estado: - ACTIVO: puede ingresar al sistema</dt>
+<dd><ul class="first last simple">
+<li>INACTIVO: usuario eliminado</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">permiso: roles que posee un usuario</p>
+</li>
+</ul>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Bienvenidos a la documentacion del ProyectoIS2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="models_rol.html"
+                        title="next chapter">Modelo de Roles</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/models_usuario.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="models_rol.html" title="Modelo de Roles"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Bienvenidos a la documentacion del ProyectoIS2"
+             >previous</a> |</li>
+        <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, GR05.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

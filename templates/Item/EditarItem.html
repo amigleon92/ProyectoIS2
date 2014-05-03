@@ -1,0 +1,46 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Editar item::{% endblock %}
+{% block TituloMenu %} EDITAR ITEM {% endblock %}
+{% block TituloOperacion %} Formulario Item {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/item/editarItem/confirmarEditado/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_item" size="54"  required value={{ item.nombre }}/></dd>
+            </dl>
+            <dl>
+                <dt><label>Costo:</label></dt>
+                <dd><input type="number" name="costo_item"  required value={{ item.costo }}/></dd>
+            </dl>
+            <dl>
+                <dt><label>Prioridad:</label></dt>
+                <dd><input type="number" name="prioridad_item" required value={{ item.prioridad }}/></dd>
+            </dl>
+            <dl>
+                <dt><label>Descripcion:</label></dt>
+                <dd><input type="text" name="descripcion_item" size="54" value={{ item.descripcion }}/></dd>
+            </dl>
+           
+        </fieldset>
+        <table>
+            <input type="hidden" name='item' value="{{ item.id }}" >
+            <input type="hidden" name="fase_item" value="{{ fase.id }}" />
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Aceptar">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Completar Atributos">
+    </form>
+    <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}

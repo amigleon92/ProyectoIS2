@@ -1,0 +1,77 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Administracion de Roles:: {% endblock %}
+{% block TituloMenu %} ADMINISTRACION DE ROLES DEL PROYECTO {% endblock %}
+{% block TituloLista %} Lista de Roles {% endblock %}
+{% block Columnas %}
+    <tr>
+        <th scope="col" class="rounded">Nombre</th>
+        <th scope="col" class="rounded">Usuario</th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+    </tr>
+{% endblock %}
+{% block MostrarDatos%}
+    {% for rol in lista_roles %}
+        <tr>
+            <td>{{ rol.nombre }}</td>
+            <td>{{ rol.usuario.nombre }}</td>
+            <td>
+                <form action= "/proyecto/fase/rol/editar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Editar">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/eliminar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Eliminar Rol">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/asignar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Asignar">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/desasignar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="submit" value="Desasignar">
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/consultar_usuarios/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
+                    <input type="submit" value="Consultar Usuarios">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/fase/rol/crear/" method="POST">{% csrf_token %}
+        <input type="submit" value="Crear nuevo rol">
+        <input type="hidden" name="proyecto" value={{ proyecto.id }}>
+        <input type="hidden" name='login' value={{ logueado.id }} >
+    </form>
+    <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name="proyecto" value={{ proyecto.id }}>
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Menú Proyecto"><br>
+    </form>
+{% endblock %}
