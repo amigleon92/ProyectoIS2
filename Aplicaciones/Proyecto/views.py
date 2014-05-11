@@ -66,8 +66,9 @@ class CrearProyectoConfirm(CrearProyecto):
             nuevo_proyecto= Proyecto()
             nuevo_proyecto.nombre= new_nombre
             nuevo_proyecto.descripcion= request.POST['descripcion_proyecto']
-            nuevo_proyecto.save()
             new_lider= Usuario.objects.get(nick= request.POST['lider_proyecto'])
+            nuevo_proyecto.lider= new_lider
+            nuevo_proyecto.save()
             #Creamos el nuevo Rol
             nuevo_rol= Rol(nombre= 'Lider del Proyecto', usuario= new_lider, proyecto= nuevo_proyecto)
             nuevo_rol.save()
@@ -88,6 +89,10 @@ class EliminarProyecto(ProyectoView):
             if proyecto_actual.estado=='F':
                 proyecto_actual.activo= False
                 proyecto_actual.save()
+                #Eliminamos el rol asociado al lider del proyecto
+                rol_asociado= Rol.objects.get(nombre= 'Lider del Proyecto', proyecto= proyecto_actual)
+                rol_asociado.activo= False
+                rol_asociado.save()
                 del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos
                 return render(request, self.template_name, diccionario)
             else:
@@ -145,6 +150,7 @@ class InicializarProyectoConfirm(InicializarProyecto):
         proyecto_detalles.fechaInicio= request.POST['fechaInicio']
         proyecto_detalles.fechaFin= request.POST['fechaFin']
         proyecto_detalles.numeroFase= request.POST['numeroFase']
+        proyecto_detalles.activo= True
         usuarios_miembros= request.POST.getlist('miembros[]')
         for i in usuarios_miembros: proyecto_detalles.miembros.add(Usuario.objects.get(nick= i))
         proyecto_detalles.estado= 'I'

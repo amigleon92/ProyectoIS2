@@ -101,8 +101,10 @@ class EditarRolConfirmar(EditarRol):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         roles= Rol.objects.filter(nombre= request.POST['nombre_rol'], proyecto= proyecto_actual)
+        nuevo_rol_nombre= request.POST['nombre_nuevo_rol']
         #Actualizamos los permisos
         for rol_actual in roles:
+            rol_actual.nombre= nuevo_rol_nombre
             if 'votar_solicitud' in request.POST: rol_actual.votar= True
             else: rol_actual.votar= False
             if 'consultar_solicitud' in request.POST: rol_actual.consultar_solicitud= True

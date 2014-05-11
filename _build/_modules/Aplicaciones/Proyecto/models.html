@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Aplicaciones.Proyecto.models &mdash; ProyectoIS2 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for Aplicaciones.Proyecto.models</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
+
+<span class="c"># Create your models here.</span>
+<div class="viewcode-block" id="Proyecto"><a class="viewcode-back" href="../../../models_proyecto.html#Aplicaciones.Proyecto.models.Proyecto">[docs]</a><span class="k">class</span> <span class="nc">Proyecto</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Se crea el modelo Proyecto</span>
+
+<span class="sd">    Estan definidos en la tabla los atributos</span>
+
+<span class="sd">    - nombre: Nombre del proyecto</span>
+<span class="sd">    - descripcion: Una breve descripcion</span>
+<span class="sd">    - lider: el Lider del Proyecto</span>
+<span class="sd">    - miembros: una lista de usuarios asociados al proyecto</span>
+<span class="sd">    - presupuesto: el presupuesto que se pasa por el proyecto</span>
+<span class="sd">    - estado: puede encontrarse en 3 estados, Iniciado, En desarrollo y finalizado</span>
+<span class="sd">    - costoTemporal: el costo en dias del Proyecto</span>
+<span class="sd">    - costoMonetario: El costo en moneda local de la realizacion</span>
+<span class="sd">    - fechaInicio: la fecha en que se iniciara el Proyecto</span>
+<span class="sd">    - fechaFin: la fecha en la que se debera de dar por terminado el proyecto</span>
+<span class="sd">    - activo: campo para la eliminacion logica</span>
+<span class="sd">    - numeroFases: La cantidad de fase del Proyecto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">estados_probables</span><span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;I&#39;</span><span class="p">,</span><span class="s">&#39;iniciado&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;N&#39;</span><span class="p">,</span><span class="s">&#39;noIniciado&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;finalizado&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">nombre</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span> <span class="p">)</span>
+    <span class="n">descripcion</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">lider</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Usuario</span><span class="p">,</span><span class="n">related_name</span><span class="o">=</span><span class="s">&#39;Lider&#39;</span><span class="p">)</span>
+    <span class="n">miembros</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Usuario</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;UsuarioBase&#39;</span><span class="p">)</span>
+    <span class="n">presupuesto</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#decimales positivos nada mas</span>
+    <span class="n">estado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span> <span class="p">(</span> <span class="n">max_length</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span><span class="n">choices</span> <span class="o">=</span> <span class="n">estados_probables</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="s">&#39;N&#39;</span> <span class="p">)</span>
+    <span class="n">costoTemporal</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">costoMonetario</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#decimales positivos nada mas</span>
+    <span class="n">fechaInicio</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">fechaFin</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>            <span class="c">#debe de existir un validator que verifique que la fecha no este antes que el inicio</span>
+    <span class="n">activo</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">numeroFase</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c">#fases= models.ManyToManyField(Fase, related_name=&#39;FasesDelProyecto&#39;)</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, GR05.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

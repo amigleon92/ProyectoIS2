@@ -15,7 +15,7 @@
                 <dt><label>Usuarios miembros:</label></dt>
                 <dd>
                     <select multiple name="miembros[]" required>
-                        <option value="">Seleccionar usuarios</option>
+                        <option value="">---Seleccionar usuarios---</option>
                         {% for usuario in lista_usuarios %}
                             {% if usuario.estado %}
                                 {% ifnotequal usuario.id logueado.id %}
