@@ -43,7 +43,7 @@ class CrearItem(ItemView):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
-        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_item=True)):
+        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_item=True, activo=True)):
 
             del diccionario[self.context_object_name]
             return render(request, self.template_name, diccionario)
@@ -103,7 +103,7 @@ class EliminarItem(ItemView):
         diccionario['fase']= fase_actual
         #diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
 
-        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True)):
+        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
             item_actual.activo= False
             item_actual.save()
             #del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos
@@ -131,7 +131,7 @@ class EditarItem(ItemView):
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         print('hola')
-        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,editar_item=True)):
+        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,editar_item=True, activo=True)):
             del diccionario[self.context_object_name]
             return render(request, self.template_name, diccionario)
         else:
@@ -146,7 +146,6 @@ class EditarItem(ItemView):
 class EditarItemConfirm(CrearItem):
     template_name = 'Item/EditarItemConfirm.html'
     def post(self, request, *args, **kwargs):
-        print('hola 1')
         diccionario= {}
         fase_actual= Fase.objects.get(id=request.POST['fase_item'])
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
@@ -157,22 +156,13 @@ class EditarItemConfirm(CrearItem):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         new_nombre= request.POST['nombre_item']
-        existe= Item.objects.filter(nombre= new_nombre)
-#        if existe:
-#           #diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
-#            diccionario['error']= 'Nombre de proyecto ya existe'
-#            return render(request, super(CrearItemConfirm, self).template_name, diccionario)
-#        else:
-        print('hola 2')
         item_actual.nombre= new_nombre
         item_actual.costo=request.POST['costo_item']
         item_actual.prioridad=request.POST['prioridad_item']
         item_actual.descripcion= request.POST['descripcion_item']
         item_actual.fase=Fase.objects.get(id=request.POST['fase_item'])
         item_actual.version=item_actual.version + 1
-        print('hola 3')
         item_actual.save()
-        print('hola 4')
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
 
