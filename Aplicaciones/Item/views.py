@@ -5,12 +5,13 @@ from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Fase.views import FaseView
-# Create your views here.
+
+#Create your views here.
+
 #Lista de Fases correspondientes al Proyecto dentro
 class ItemView(FaseView):
     template_name = 'Item/Item.html'
     def post(self, request, *args, **kwargs):
-        print('itemview')
         diccionario={}
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
@@ -26,11 +27,6 @@ class ItemView(FaseView):
             diccionario['error']= 'Debe inicializar fase'
             return render(request, super(ItemView, self).template_name, diccionario)
 
-
-
-
-
-
 #Crear Item
 class CrearItem(ItemView):
     template_name = 'Item/CrearItem.html'
@@ -44,7 +40,6 @@ class CrearItem(ItemView):
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_item=True, activo=True)):
-
             del diccionario[self.context_object_name]
             return render(request, self.template_name, diccionario)
         else:
@@ -52,14 +47,10 @@ class CrearItem(ItemView):
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(CrearItem, self).template_name, diccionario)
 
-
-
-
 #crear item confirmacion
 class CrearItemConfirm(CrearItem):
     template_name = 'Item/CrearItemConfirm.html'
     def post(self, request, *args, **kwargs):
-        print('hola 1')
         diccionario= {}
         fase_actual= Fase.objects.get(id=request.POST['fase_item'])
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
@@ -70,23 +61,17 @@ class CrearItemConfirm(CrearItem):
         new_nombre= request.POST['nombre_item']
         existe= Item.objects.filter(nombre= new_nombre)
         if existe:
-           #diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
             diccionario['error']= 'Nombre de Item ya existe'
             return render(request, super(CrearItemConfirm, self).template_name, diccionario)
         else:
-            print('hola 2')
             nuevo_item= Item()
             nuevo_item.nombre= new_nombre
             nuevo_item.costo=request.POST['costo_item']
             nuevo_item.prioridad=request.POST['prioridad_item']
             nuevo_item.descripcion= request.POST['descripcion_item']
             nuevo_item.fase=Fase.objects.get(id=request.POST['fase_item'])
-            print('hola 3')
             nuevo_item.save()
-            print('hola 4')
             return render(request, self.template_name, diccionario)
-
-
 
 #Eliminar Item
 class EliminarItem(ItemView):
@@ -101,21 +86,15 @@ class EliminarItem(ItemView):
         diccionario['item']= item_actual
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']= fase_actual
-        #diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
-
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
             item_actual.activo= False
             item_actual.save()
-            #del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(EliminarItem,self).template_name, diccionario)
 
-
-
-#
 #editar Item
 class EditarItem(ItemView):
     template_name = 'Item/EditarItem.html'
@@ -124,23 +103,18 @@ class EditarItem(ItemView):
         fase_actual= Fase.objects.get(id=request.POST['fase'])
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        item_actual=Item.objects.get(id=request.POST['item'])
+        item_actual= Item.objects.get(id=request.POST['item'])
         diccionario['item']= item_actual
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
-        print('hola')
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,editar_item=True, activo=True)):
-            del diccionario[self.context_object_name]
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(EditarItem, self).template_name, diccionario)
-
-
-
 
 #editar item confirmacion
 class EditarItemConfirm(CrearItem):
@@ -151,7 +125,6 @@ class EditarItemConfirm(CrearItem):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
-
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual

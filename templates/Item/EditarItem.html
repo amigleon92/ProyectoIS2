@@ -7,19 +7,19 @@
         <fieldset>
             <dl>
                 <dt><label>Nombre:</label></dt>
-                <dd><input type="text" name="nombre_item" size="54"  required value={{ item.nombre }}/></dd>
+                <dd><input type="text" name="nombre_item" size="54"  required value="{{ item.nombre }}"/></dd>
             </dl>
             <dl>
                 <dt><label>Costo:</label></dt>
-                <dd><input type="number" name="costo_item" min=0 required value={{ item.costo }}/></dd>
+                <dd><input type="number" name="costo_item" min=0 required value="{{ item.costo }}"/></dd>
             </dl>
             <dl>
                 <dt><label>Prioridad:</label></dt>
-                <dd><input type="number" name="prioridad_item" min=1 max=10 required value={{ item.prioridad }}/></dd>
+                <dd><input type="number" name="prioridad_item" min=1 max=10 required value="{{ item.prioridad }}"/></dd>
             </dl>
             <dl>
                 <dt><label>Descripcion:</label></dt>
-                <dd><input type="text" name="descripcion_item" size="54" value={{ item.descripcion }}/></dd>
+                <dd><input type="text" name="descripcion_item" size="54" value="{{ item.descripcion }}"/></dd>
             </dl>
            
         </fieldset>
