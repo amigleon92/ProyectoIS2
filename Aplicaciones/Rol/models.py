@@ -4,7 +4,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 
 # Create your models here.
 class Rol(models.Model):
-    nombre= models.CharField(max_length=30)
+    nombre= models.CharField(max_length=50)
     usuario= models.ForeignKey(Usuario)                             # - El usuario que tiene dicho rol
     proyecto= models.ForeignKey(Proyecto, null=True)                # - A que proyecto se asocia dicho rol
     #crear_usuario= models.BooleanField(default=False)  admin       # - Permisos de Administracion de usuarios
@@ -39,7 +39,9 @@ class Rol(models.Model):
     consultar_atributos= models.BooleanField(default=False)
     crear_tipodeitem= models.BooleanField(default=False)            # - Permisos de Administracion de tipos de item
     modificar_tipodeitem= models.BooleanField(default=False)
-    eliminar_tipodeotem= models.BooleanField(default=False)
+    eliminar_tipodeitem= models.BooleanField(default=False)
+    crear_tipodeatributo= models.BooleanField(default=False)            # - Permisos de Administracion de tipos de atributos
+    eliminar_tipodeatributo= models.BooleanField(default=False)
     crear_lineabase= models.BooleanField(default=False)             # - Permisos de Administracion de Lineas Base
 
 

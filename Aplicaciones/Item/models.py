@@ -28,7 +28,7 @@ class Item(models.Model):
     version=models.PositiveIntegerField(default=1, null=True)
     tipodeItemAsociado = models.PositiveIntegerField(default=0, null=True) #esto es por que aun no exite tipos de item, deberia ser generico
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables, default='D' )
-    fase=models.ForeignKey(Fase, related_name='fkFase')
+    fase=models.ForeignKey(Fase, related_name='fkFaseI')
     costo= models.PositiveIntegerField(default=0, null=True)
     activo= models.BooleanField(default=True)
 

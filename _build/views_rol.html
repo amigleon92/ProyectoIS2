@@ -8,8 +8,8 @@
     
     <title>vista de rol &mdash; ProyectoIS2 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_source/_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_source/_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,12 +20,10 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="vista de Proyecto" href="views_proyecto.html" />
-    <link rel="prev" title="vista de usuarios" href="views_usuario.html" /> 
+    <script type="text/javascript" src="../_source/_static/jquery.js"></script>
+    <script type="text/javascript" src="../_source/_static/underscore.js"></script>
+    <script type="text/javascript" src="../_source/_static/doctools.js"></script>
+    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +35,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="views_proyecto.html" title="vista de Proyecto"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="views_usuario.html" title="vista de usuarios"
-             accesskey="P">previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -54,223 +46,11 @@
             
   <div class="section" id="vista-de-rol">
 <h1>vista de rol<a class="headerlink" href="#vista-de-rol" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-</span><span class="kn">from</span> <span class="nn">Aplicaciones.Fase.views</span> <span class="kn">import</span> <span class="n">FaseView</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Rol</span>
-
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+</span>
 <span class="c"># Create your views here.</span>
-<span class="k">class</span> <span class="nc">RolView</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Rol/Rol.html&#39;</span>
-    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">&#39;lista_roles&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="nb">super</span><span class="p">(</span><span class="n">RolView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No posee permisos para visualizar los roles del proyecto&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">RolView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">CrearRol</span><span class="p">(</span><span class="n">RolView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Rol/CrearRol.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">CrearRolConfirm</span><span class="p">(</span><span class="n">CrearRol</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Rol/CrearRolConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">rol_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_rol&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">rol_nombre</span><span class="p">)):</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre del rol ya existe. Intente otro&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearRolConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">nuevo_rol</span><span class="o">=</span> <span class="n">Rol</span><span class="p">(</span>
-            <span class="n">nombre</span><span class="o">=</span> <span class="n">rol_nombre</span><span class="p">,</span>
-            <span class="n">usuario</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;usuario_rol&#39;</span><span class="p">]),</span>
-            <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="c">#Completamos los permisos</span>
-        <span class="k">if</span> <span class="s">&#39;votar_solicitud&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">votar</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;consultar_solicitud&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">consultar_solicitud</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;crear_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">crear_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;editar_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">editar_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;eliminar_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">eliminar_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;consultar_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">consultar_items</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;aprobar_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">aprobar_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;revivir_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">revivir_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;revertir_item&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">revertir_item</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;establecer_relacion&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">establecer_relacion</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;eliminar_relacion&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">eliminar_relacion</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;consultar_relacion&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">consultar_relaciones</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;agregar_atributo&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">agregar_atributo</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;eliminar_atributo&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">eliminar_atributo</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;completar_atributo&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">completar_atributos</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;consultar_atributo&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">consultar_atributos</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;crear_tipodeitem&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">crear_tipodeitem</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;eliminar_tipodeitem&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">eliminar_tipodeotem</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;modificar_tipodeitem&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">modificar_tipodeitem</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="s">&#39;crear_lineabase&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">crear_lineabase</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">EditarRol</span><span class="p">(</span><span class="n">RolView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Rol/EditarRol.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">rol_actual</span><span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;rol&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="n">rol_actual</span><span class="o">.</span><span class="n">nombre</span><span class="o">==</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Rol: Lider del Proyecto - No se puede modificar&#39;</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="nb">super</span><span class="p">(</span><span class="n">EditarRol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarRol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;rol&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">rol_actual</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">EditarRolConfirmar</span><span class="p">(</span><span class="n">EditarRol</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Rol/EditarRolConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">roles</span><span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_rol&#39;</span><span class="p">],</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-        <span class="c">#Actualizamos los permisos</span>
-        <span class="k">for</span> <span class="n">rol_actual</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s">&#39;votar_solicitud&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">rol_actual</span><span class="o">.</span><span class="n">votar</span><span class="o">=</span> <span class="bp">True</span>
-            <span class="k">else</span><span class="p">:</span> <span class="n">rol_actual</span><span class="o">.</span><span class="n">votar</span><span class="o">=</span> <span class="bp">False</span>
-            <span class="k">if</span> <span class="s">&#39;consultar_solicitud&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span> <span class="n">rol_actual</span><span class="o">.</span><span class="n">consultar_solicitud</span><span class="o">=</span> <span class="bp">True</span>
-            <span class="k">else</span><span class="p">:</span> <span class="n">rol_actual</span><span class="o">.</span><span class="n">consultar_solicitud</span><span class="o">=</span> <span class="bp">False</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -281,12 +61,6 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="views_usuario.html"
-                        title="previous chapter">vista de usuarios</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="views_proyecto.html"
-                        title="next chapter">vista de Proyecto</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/views_rol.txt"
@@ -318,12 +92,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="views_proyecto.html" title="vista de Proyecto"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="views_usuario.html" title="vista de usuarios"
-             >previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

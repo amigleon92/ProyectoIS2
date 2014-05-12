@@ -42,6 +42,9 @@ INSTALLED_APPS = (
     'Aplicaciones.Rol',
     'Aplicaciones.Usuario',
     'Aplicaciones.Item',
+    'Aplicaciones.Tipo_de_Item',
+    'Aplicaciones.Tipo_de_Atributo',
+    'Aplicaciones.Atributo',
 )
 
 MIDDLEWARE_CLASSES = (

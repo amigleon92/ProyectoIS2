@@ -15,4 +15,13 @@ urlpatterns= patterns('',
 
     #Item
     url(r'^item/', include('Aplicaciones.Item.urls')),
+
+    #Tipo de Item
+    url(r'^tipoDeItem/', include('Aplicaciones.Tipo_de_Item.urls')),
+
+    #Tipo de Atributo
+    url(r'^tipoDeAtributo/', include('Aplicaciones.Tipo_de_Atributo.urls')),
+
+
+
 )

@@ -69,8 +69,10 @@ class CrearRolConfirm(CrearRol):
         if 'completar_atributo' in request.POST: nuevo_rol.completar_atributos= True
         if 'consultar_atributo' in request.POST: nuevo_rol.consultar_atributos= True
         if 'crear_tipodeitem' in request.POST: nuevo_rol.crear_tipodeitem= True
-        if 'eliminar_tipodeitem' in request.POST: nuevo_rol.eliminar_tipodeotem= True
+        if 'eliminar_tipodeitem' in request.POST: nuevo_rol.eliminar_tipodeitem= True
         if 'modificar_tipodeitem' in request.POST: nuevo_rol.modificar_tipodeitem= True
+        if 'crear_tipodeatributo' in request.POST: nuevo_rol.crear_tipodeatributo= True
+        if 'eliminar_tipodeatributo' in request.POST: nuevo_rol.eliminar_tipodeatributo= True
         if 'crear_lineabase' in request.POST: nuevo_rol.crear_lineabase= True
         nuevo_rol.save()
         return render(request, self.template_name, diccionario)

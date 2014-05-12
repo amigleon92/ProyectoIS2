@@ -15,12 +15,11 @@ Contiene:
    models_rol
    models_proyecto
    models_fase
-   models_item
+
    views_usuario
    views_rol
    views_proyecto
    views_fase
-   views_item
    views_login
 
 Indices and tables

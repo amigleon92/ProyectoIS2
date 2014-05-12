@@ -1,7 +1,7 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Proyecto:: {% endblock %}
-{% block TituloMenu %} MENU PROYECTO {% endblock %}
-{% block TituloLista %} Lista de fases {% endblock %}
+{% block TituloMenu %} MENU PROYECTO - {{ proyecto.nombre }}{% endblock %}
+{% block TituloLista %} Lista de fases{% endblock %}
 {% block Columnas %}
     <tr>
         <th scope="col" class="rounded">Numero</th>
@@ -12,7 +12,7 @@
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded">Adm Ítem</th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos %}
@@ -44,7 +44,7 @@
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='fase' value="{{ fase.id }}" >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-                    <input type="submit" value="Cerrar Fase"><br>
+                    <input type="submit" value="Cerrar"><br>
                 </form>
             </td>
             <td>
@@ -69,6 +69,16 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Administracion Roles">
+    </form>
+    <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Administrar Tipo de Ítem" >
+    </form>
+    <form action="/proyecto/fase/tipoDeAtributo/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Administrar Tipo de Atributo" >
     </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
