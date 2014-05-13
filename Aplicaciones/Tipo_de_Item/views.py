@@ -78,9 +78,14 @@ class EliminarTipoDeItem(TipoDeItemView):
         diccionario['proyecto']= proyecto_actual
 
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_tipodeitem=True, activo=True)):
-            tipo_de_item_actual.activo= False
-            tipo_de_item_actual.save()
-            return render(request, self.template_name, diccionario)
+            if tipo_de_item_actual.cantidad_de_item == 0:
+                tipo_de_item_actual.activo= False
+                tipo_de_item_actual.save()
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['lista_tipo_de_items']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
+                diccionario['error']= 'Tipo de Item asociado a item, no puede realizar esta accion'
+                return render(request, super(EliminarTipoDeItem, self).template_name, diccionario)
         else:
             diccionario['lista_tipo_de_items']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
             diccionario['error']= 'No puedes realizar esta accion'
@@ -100,13 +105,19 @@ class EditarTipoDeItem(TipoDeItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Tipo_de_Item.objects.filter(activo= True)
+        print(tipo_de_item_actual.cantidad_de_item)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,modificar_tipodeitem=True, activo=True)):
-            del diccionario[self.context_object_name]
-            return render(request, self.template_name, diccionario)
+            if tipo_de_item_actual.cantidad_de_item == 0:
+                del diccionario[self.context_object_name]
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['lista_tipo_de_items']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
+                diccionario['error']= 'Tipo de Item asociado a item, no puede realizar esta accion'
+                return render(request, super(EditarTipoDeItem, self).template_name, diccionario)
         else:
             diccionario['lista_tipo_de_items']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
             diccionario['error']= 'No puedes realizar esta accion'
-            return render(request, super(Tipo_de_Item, self).template_name, diccionario)
+            return render(request, super(EditarTipoDeItem, self).template_name, diccionario)
 
 
 

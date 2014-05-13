@@ -60,17 +60,15 @@ class AgregarAtributoConfirm(AgregarAtributo):
         diccionario['proyecto']= proyecto_actual
         diccionario['tipo_de_item']=tipo_de_item_actual
         new_nombre= request.POST['nombre_atributo']
-        tipo_de_atributo= Tipo_de_Atributo.objects.filter(id=request.POST['tipo_de_atributo'])
         existe= Atributo.objects.filter(nombre= new_nombre)
         if existe:
-           #diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
             diccionario['error']= 'Nombre del atributo ya existe'
             return render(request, super(AgregarAtributoConfirm, self).template_name, diccionario)
         else:
             nuevo_atributo= Atributo()
             nuevo_atributo.nombre= new_nombre
             nuevo_atributo.descripcion= request.POST['descripcion_atributo']
-            nuevo_atributo.tipo=tipo_de_item_actual.nombre
+            nuevo_atributo.tipo= request.POST['tipo_de_atributo']
             nuevo_atributo.tipodeitem=tipo_de_item_actual
             nuevo_atributo.save()
             print('hola 4 rena')

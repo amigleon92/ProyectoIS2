@@ -19,7 +19,7 @@
                     <select name="tipo_de_atributo" required>
                         <option value="">Seleccionar tipo</option>
                         {% for tipo_de_atributo in lista_tipo_de_atributos %}
-                             <option value={{ tipo_de_atributo.id }}>{{ tipo_de_atributo.nombre }}</option>
+                             <option value={{ tipo_de_atributo.nombre }}>{{ tipo_de_atributo.nombre }}</option>
                         {% endfor %}
                     </select>
                 </dd>
