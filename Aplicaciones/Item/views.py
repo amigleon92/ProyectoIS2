@@ -5,6 +5,10 @@ from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Fase.views import FaseView
+from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
+from Aplicaciones.Atributo.models import Atributo
+
+
 # Create your views here.
 #Lista de Fases correspondientes al Proyecto dentro
 class ItemView(FaseView):
@@ -41,6 +45,7 @@ class CrearItem(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
+        diccionario['lista_tipo_de_item']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_item=True, activo=True)):
 
@@ -58,7 +63,6 @@ class CrearItem(ItemView):
 class CrearItemConfirm(CrearItem):
     template_name = 'Item/CrearItemConfirm.html'
     def post(self, request, *args, **kwargs):
-        print('hola 1')
         diccionario= {}
         fase_actual= Fase.objects.get(id=request.POST['fase_item'])
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
@@ -69,20 +73,22 @@ class CrearItemConfirm(CrearItem):
         new_nombre= request.POST['nombre_item']
         existe= Item.objects.filter(nombre= new_nombre)
         if existe:
-           #diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
             diccionario['error']= 'Nombre de Item ya existe'
             return render(request, super(CrearItemConfirm, self).template_name, diccionario)
         else:
-            print('hola 2')
             nuevo_item= Item()
             nuevo_item.nombre= new_nombre
             nuevo_item.costo=request.POST['costo_item']
             nuevo_item.prioridad=request.POST['prioridad_item']
             nuevo_item.descripcion= request.POST['descripcion_item']
             nuevo_item.fase=Fase.objects.get(id=request.POST['fase_item'])
-            print('hola 3')
+            tipodeitem= Tipo_de_Item.objects.get(id=request.POST['tipo_item'], activo=True)
+            print(tipodeitem.cantidad_de_item)
+            tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item+1
+            print(tipodeitem.cantidad_de_item)
+            nuevo_item.tipodeItemAsociado= tipodeitem.nombre
             nuevo_item.save()
-            print('hola 4')
+            tipodeitem.save()
             return render(request, self.template_name, diccionario)
 
 
@@ -96,16 +102,17 @@ class EliminarItem(ItemView):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
+        tipodeitem= Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
+        tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item-1
         diccionario['logueado']= usuario_logueado
         diccionario['item']= item_actual
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']= fase_actual
-        #diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
 
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
             item_actual.activo= False
+            tipodeitem.save()
             item_actual.save()
-            #del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
@@ -164,4 +171,20 @@ class EditarItemConfirm(CrearItem):
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
 
+
+class MostrarAtributo(ItemView):
+    template_name = 'Item/MostrarAtributo.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual= Item.objects.get(id=request.POST['tipo_de_item'])
+        tipo_de_item_actual= Tipo_de_Item.objects.get(nombre= item_actual.tipodeItemAsociado, activo= True)
+        diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo= True)
+        diccionario['fase']= fase_actual
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+
+        return render(request, self.template_name, diccionario)
 

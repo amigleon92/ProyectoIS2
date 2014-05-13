@@ -5,10 +5,8 @@
 {% block Columnas %}
     <tr>
 		<th scope="col" class="rounded">Nombre</th>
-		<th scope="col" class="rounded">Estado</th>
-        <th scope="col" class="rounded">Costo</th>
-        <th scope="col" class="rounded">Priord.</th>
-        <th scope="col" class="rounded">Version</th>
+		<th scope="col" class="rounded">Tipo</th>
+        <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
@@ -20,10 +18,15 @@
     {% for item in lista_items %}
         <tr>
             <td>{{ item.nombre }}</td>
-            <td>{{ item.estado }}</td>
-            <td>{{ item.costo }}</td>
-            <td>{{ item.prioridad }}</td>
-            <td>{{ item.version }}</td>
+            <td>{{ item.tipodeItemAsociado }}</td>
+            <td>
+                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="submit" value="Iforme">
+                </form>
+            </td>
             <td>
                 <form action="/proyecto/fase/item/editarItem/" method="post">{% csrf_token %}
                     <input type="hidden" name='item' value={{ item.id }} >
@@ -47,7 +50,16 @@
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-                    <input type="submit" value="Aprob.">
+                    <input type="submit" value="Aprobar">
+                </form>
+            </td>
+            <td>
+                <form action="/proyecto/fase/item/atributo/" method="post">{% csrf_token %}
+                    <input type="hidden" name='tipo_de_item' value={{ item.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Atributo">
                 </form>
             </td>
             <td>
@@ -55,15 +67,7 @@
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Atrib.">
-                </form>
-            </td>
-            <td>
-                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
-                    <input type="hidden" name='fase' value={{ fase.id }} >
-                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-                    <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Relac.">
+                    <input type="submit" value="Relacion">
                 </form>
             </td>
         </tr>

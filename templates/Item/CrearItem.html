@@ -21,6 +21,17 @@
                 <dt><label>Descripcion:</label></dt>
                 <dd><input type="text" name="descripcion_item" size="54"/></dd>
             </dl>
+            <dl>
+                <dt><label>Tipo de Ítem:</label></dt>
+                <dd>
+                    <select name="tipo_item" required>
+                        <option value="">Seleccionar tipo</option>
+                        {% for tipo_de_item in lista_tipo_de_item %}
+                             <option value={{ tipo_de_item.id }}>{{ tipo_de_item.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </dd>
+            </dl>
 
         </fieldset>
         <table>
@@ -32,10 +43,6 @@
     </form>
 {% endblock %}
 {% block Botones%}
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
-        <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Completar Atributos">
-    </form>
     <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
