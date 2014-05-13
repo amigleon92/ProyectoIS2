@@ -1,0 +1,32 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Editar tipo de item::{% endblock %}
+{% block TituloMenu %} EDITAR TIPO DE ÍTEM {% endblock %}
+{% block TituloOperacion %} Formulario tipo de Ítem {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/tipoDeItem/editar/confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_tipo_de_item" size="54"  required value="{{ tipo_de_item.nombre }}"/></dd>
+            </dl>
+            <dl>
+                <dt><label>Descripcion:</label></dt>
+                <dd><input type="text" name="descripcion_tipo_de_item" size="54" value="{{ tipo_de_item.descripcion }}"/></dd>
+            </dl>
+           
+        </fieldset>
+        <table>
+            <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }} >
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Aceptar">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}

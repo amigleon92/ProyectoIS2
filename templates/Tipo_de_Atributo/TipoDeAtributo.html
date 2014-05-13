@@ -1,0 +1,40 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Tipo de Atributo:: {% endblock %}
+{% block TituloMenu %} MENU TIPO DE ATRIBUTO - {{ fase.nombre }}{% endblock %}
+{% block TituloLista %} Lista de tipos de atributos {% endblock %}
+{% block Columnas %}
+    <tr>
+		<th scope="col" class="rounded">Nombre</th>
+        <th scope="col" class="rounded">Tipo</th>
+        <th scope="col" class="rounded"></th>
+
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for tipo_de_atributo in lista_tipo_de_atributos %}
+        <tr>
+            <td>{{ tipo_de_atributo.nombre }}</td>
+            <td>{{ tipo_de_atributo.tipo }}</td>
+            <td>
+                <form action="/proyecto/fase/tipoDeAtributo/eliminar/" method="post">{% csrf_token %}
+                    <input type="hidden" name='tipo_de_atributo' value={{ tipo_de_atributo.id }}>
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }}>
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Eliminar">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/tipoDeAtributo/crearTipoDeAtributo/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear">
+    </form>
+    <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras" >
+    </form>
+{% endblock %}

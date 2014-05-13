@@ -1,0 +1,14 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Editar Tipo Ítem::{% endblock %}
+{% block TituloMenu %} EDITAR TIPO DE ÍTEM {% endblock %}
+{% block TituloOperacion %} Tipo de Ítem Editado {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>El tipo de ítem se editó exitosamente. </h3></center>
+{% endblock %}
+{% block Botones %}
+   <form action="/proyecto/fase/tipoDeItem/" method="post">{% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+   </form>
+{% endblock %}

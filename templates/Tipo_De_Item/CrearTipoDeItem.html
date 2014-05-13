@@ -1,0 +1,30 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Tipo de Ítem::{% endblock %}
+{% block TituloMenu %} CREAR TIPO DE ÍTEM {% endblock %}
+{% block TituloOperacion %} Formulario Tipo de Ítem {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/tipoDeItem/crearTipoDeItem/confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_tipo_de_item" size="54" required/></dd>
+            </dl>
+            <dl>
+                <dt><label>Descripción:</label></dt>
+                <dd><input type="text" name="descripcion_tipo_de_item" size="54" required/></dd>
+            </dl>
+        </fieldset>
+        <table>
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Crear">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}>

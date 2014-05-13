@@ -1,0 +1,57 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Tipo de Item:: {% endblock %}
+{% block TituloMenu %} MENU TIPO DE ITEM - {{ proyecto.nombre }}{% endblock %}
+{% block TituloLista %} Lista de tipo de item {% endblock %}
+{% block Columnas %}
+    <tr>
+		<th scope="col" class="rounded">Nombre</th>
+		<th scope="col" class="rounded">Descripcion</th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for tipo_de_item in lista_tipo_de_items %}
+        <tr>
+            <td>{{ tipo_de_item.nombre }}</td>
+            <td>{{ tipo_de_item.descripcion }}</td>
+            <td>
+                <form action="/proyecto/fase/tipoDeItem/editar/" method="post">{% csrf_token %}
+                    <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Editar">
+                </form>
+            </td>
+            <td>
+                <form action="/proyecto/fase/tipoDeItem/eliminar/" method="post">{% csrf_token %}
+                    <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }}>
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Eliminar">
+                </form>
+            </td>
+            <td>
+                <form action="/proyecto/fase/tipoDeItem/atributo/" method="post">{% csrf_token %}
+                    <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Atributos.">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/tipoDeItem/crearTipoDeItem/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear">
+    </form>
+    <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras" >
+    </form>
+{% endblock %}

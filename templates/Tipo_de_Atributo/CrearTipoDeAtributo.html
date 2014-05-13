@@ -1,0 +1,38 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Crear Tipo de Atributo::{% endblock %}
+{% block TituloMenu %} CREAR TIPO DE ATRIBUTO {% endblock %}
+{% block TituloOperacion %} Formulario Tipo de Atributo {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/tipoDeAtributo/crearTipoDeAtributo/confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_tipo_de_atributo" size="54" required/></dd>
+            </dl>
+            <dl>
+                <dt><label>Tipo:</label></dt>
+                <dd>
+                    <select name="tipo_tipo_de_atributo" required>
+                        <option value="N">Numérico</option>
+                        <option value="B">Buleano</option>
+                        <option value="T">Texto</option>
+                        <option value="F">Fecha</option>
+                    </select>
+                </dd>
+            </dl>
+
+        </fieldset>
+        <table>
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Crear">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/fase/tipoDeAtributo/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}>
