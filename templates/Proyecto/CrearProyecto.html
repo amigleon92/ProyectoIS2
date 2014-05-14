@@ -19,9 +19,7 @@
                     <select  name="lider_proyecto" required>
                         <option value="">Seleccione un usuario</option>
                         {% for usuario in lista_usuarios %}
-                            {% if usuario.estado %}
-                                <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
-                            {% endif %}
+                            <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
                         {% endfor %}
                     </select>
                 </dd>
