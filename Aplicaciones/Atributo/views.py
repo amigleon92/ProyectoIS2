@@ -6,6 +6,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
 from Aplicaciones.Tipo_de_Item.views import TipoDeItemView
 from Aplicaciones.Tipo_de_Atributo.models import Tipo_de_Atributo
+from Aplicaciones.Item.models import Item
 # Create your views here.
 
 class AtributoView(TipoDeItemView):
@@ -19,7 +20,6 @@ class AtributoView(TipoDeItemView):
         diccionario['proyecto']= proyecto_actual
         diccionario['tipo_de_item']=tipo_de_item_actual
         diccionario['lista_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo=True)
-
         return render(request, self.template_name, diccionario)
 
 

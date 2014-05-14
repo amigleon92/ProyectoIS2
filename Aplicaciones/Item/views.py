@@ -26,7 +26,7 @@ class ItemView(FaseView):
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             return render(request, self.template_name, diccionario)
         else:
-            diccionario['lista_fases']= Fase.objects.filter(activo= True)
+            diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
             diccionario['error']= 'Debe inicializar fase'
             return render(request, super(ItemView, self).template_name, diccionario)
 
@@ -248,4 +248,22 @@ class CompletarAtributoConfirm(CompletarAtributo):
         elif tipo_de_atributo_actual.tipo == 'F':
             atributo_actual.tipo_fecha=request.POST['tipo_fecha']
         atributo_actual.save()
+        return render(request, self.template_name, diccionario)
+
+
+#Generacion de Informe del Item
+class InformeItem(ItemView):
+    template_name = 'Item/InformeItem.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual=Item.objects.get(id=request.POST['item'])
+        fase_actual=Fase.objects.get(id=request.POST['fase'])
+        diccionario['fase']=fase_actual
+        diccionario['item']=item_actual
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        tipo_de_item_actual=Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
+        diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem=tipo_de_item_actual, activo= True)
         return render(request, self.template_name, diccionario)

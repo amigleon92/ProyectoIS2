@@ -1,0 +1,30 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}:Informe Ítem:::{% endblock %}
+{% block TituloMenu %} INFORME DEL ÍTEM {% endblock %}
+{% block TituloOperacion %} Datos del Ítem {% endblock %}
+{% block DatosOperacion %}
+    <fieldset>
+        <dl><dt><label>Nombre:</label></dt><dt>{{ item.nombre }}</dt></dl>
+        <dl><dt><label>Descripción:</label></dt><dt>{{ item.descripcion }}</dt></dl>
+        <dl><dt><label>Versión:</label></dt><dt>{{ item.version }}</dt></dl>
+        <dl><dt><label>Estado:</label></dt><dt>{{item.estado }}</dt></dl>
+        <dl><dt><label>Prioridad:</label></dt><dt>{{ item.prioridad }}</dt></dl>
+        <dl><dt><label>Costo:</label></dt><dt>{{ item.costo }}</dt></dl>
+        <dl><dt><label>Tipo de Ítem Asociado:</label></dt><dt>{{ item.tipodeItemAsociado }}</dt></dl>
+        <dl>
+            <dt><label>Atributos Asociados:</label></dt>
+            {% for atributo in lista_de_atributos %}
+                <dt>{{ atributo.nombre }}</dt>
+            {% endfor %}
+        </dl>
+    </fieldset>
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/" method="POST">{% csrf_token %}
+        <input type="hidden" name='item' value={{ item.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="submit" value="<Atrás">
+    </form>
+{% endblock %}

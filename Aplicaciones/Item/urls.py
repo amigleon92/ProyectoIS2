@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
-from .views import ItemView, CrearItem, CrearItemConfirm, EliminarItem, EditarItem, EditarItemConfirm, MostrarAtributo, CompletarAtributo, CompletarAtributoConfirm
-
+from .views import ItemView, CrearItem, CrearItemConfirm, EliminarItem, EditarItem, EditarItemConfirm
+from .views import MostrarAtributo, CompletarAtributo, CompletarAtributoConfirm, InformeItem
 from django.contrib import admin
 admin.autodiscover()
 
@@ -14,5 +14,6 @@ urlpatterns= patterns('',
     url(r'^atributo/$', MostrarAtributo.as_view(), name="atributo_item"),
     url(r'^atributo/completarAtributo/$', CompletarAtributo.as_view(), name="completar_atributo_item"),
     url(r'^atributo/completarAtributo/confirmar/$', CompletarAtributoConfirm.as_view(), name="completar_atributo_confirm"),
+    url(r'^informe/$', InformeItem.as_view(), name="informe_item_"),
 
 )
