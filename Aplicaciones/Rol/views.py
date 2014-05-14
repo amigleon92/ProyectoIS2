@@ -42,7 +42,7 @@ class CrearRolConfirm(CrearRol):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         rol_nombre= request.POST['nombre_rol']
-        if len(Rol.objects.filter(nombre= rol_nombre)):
+        if len(Rol.objects.filter(nombre= rol_nombre, activo= True, proyecto= proyecto_actual)):
             diccionario['error']= 'Nombre del rol ya existe. Intente otro'
             return render(request, super(CrearRolConfirm, self).template_name, diccionario)
         nuevo_rol= Rol(
@@ -102,8 +102,14 @@ class EditarRolConfirmar(EditarRol):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        roles= Rol.objects.filter(nombre= request.POST['nombre_rol'], proyecto= proyecto_actual)
+        rol_actual= request.POST['nombre_rol']
+        roles= Rol.objects.filter(nombre= rol_actual, proyecto= proyecto_actual, activo= True)
         nuevo_rol_nombre= request.POST['nombre_nuevo_rol']
+        existe_roles= Rol.objects.filter(nombre= nuevo_rol_nombre, proyecto= proyecto_actual, activo= True)
+        if len(existe_roles) and roles[0].nombre != existe_roles[0].nombre:
+            diccionario['error']= 'Nombre del rol ya existe. Intente otro'
+            diccionario['rol']= Rol.objects.get(id= request.POST['rol'])
+            return render(request, super(EditarRolConfirmar, self).template_name, diccionario)
         #Actualizamos los permisos
         for rol_actual in roles:
             rol_actual.nombre= nuevo_rol_nombre
