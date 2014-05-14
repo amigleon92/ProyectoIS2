@@ -37,9 +37,6 @@ class AgregarAtributo(AtributoView):
         diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(proyecto= proyecto_actual, activo=True)
         diccionario[self.context_object_name]= Atributo.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,agregar_atributo=True, activo=True)):
-
-
-            print(diccionario['lista_tipo_de_atributos'])
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo=True)
@@ -59,6 +56,7 @@ class AgregarAtributoConfirm(AgregarAtributo):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['tipo_de_item']=tipo_de_item_actual
+        diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(proyecto= proyecto_actual, activo=True)
         new_nombre= request.POST['nombre_atributo']
         existe= Atributo.objects.filter(nombre= new_nombre)
         if existe:
@@ -71,7 +69,6 @@ class AgregarAtributoConfirm(AgregarAtributo):
             nuevo_atributo.tipo= request.POST['tipo_de_atributo']
             nuevo_atributo.tipodeitem=tipo_de_item_actual
             nuevo_atributo.save()
-            print('hola 4 rena')
             return render(request, self.template_name, diccionario)
 
 

@@ -16,7 +16,6 @@
 {% endblock %}
 {% block MostrarDatos%}
     {% for proyecto in lista_proyectos %}
-
             {%  for usuario in proyecto.miembros.all %}
                 {% ifequal usuario.id logueado.id %}
 		    	    <tr>
@@ -55,7 +54,6 @@
                     </tr>
                 {% endifequal %}
             {% endfor %}
-
     {% endfor %}
 {% endblock %}
 {% block Botones %}
