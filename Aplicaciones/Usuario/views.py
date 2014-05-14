@@ -15,7 +15,7 @@ class UsuarioView(ProyectoView):
         diccionario['logueado']= usuario_logueado
         #Solamente el Administrador del Sistema puede ingresar a la Administracion de Usuarios
         if len(Rol.objects.filter(nombre= 'Administrador del Sistema', usuario= usuario_logueado)):
-            diccionario[self.context_object_name]= Usuario.objects.order_by('id')
+            diccionario[self.context_object_name]= Usuario.objects.filter(estado=True)
             return render(request, self.template_name, diccionario)
         else:
             diccionario['error']= 'No posee permisos para ver los usuarios del sistema'
@@ -74,7 +74,7 @@ class EditarUsuarioConfirm(EditarUsuario):
             diccionario['error']= 'El nombre de usuario ya existe'
             diccionario['usuario']= modificacion
             return render(request, super(EditarUsuarioConfirm, self).template_name, diccionario)
-        modificacion.nick= modificacion
+        modificacion.nick= modificacion_nick
         modificacion.password= request.POST['pass']
         modificacion.nombre= request.POST['nombre']
         modificacion.apellido= request.POST['apellido']
@@ -90,6 +90,16 @@ class EliminarUsuario(UsuarioView):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         diccionario['logueado']= usuario_logueado
         eliminado= Usuario.objects.get(id= request.POST['codigo'])
+        #Verificar si es Administrador del Sistema
+        if len(Rol.objects.filter(nombre='Administrador del Sistema', usuario= eliminado)):
+            diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
+            diccionario['error']= 'No se puede eliminar - El usuario es Administrador del Sistema'
+            return render(request, super(EliminarUsuario, self).template_name, diccionario)
+        #Verificar si es lider de algun proyecto
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= eliminado, activo= True)):
+            diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
+            diccionario['error']= 'No se puede eliminar - El usuario es lider de un proyecto activo'
+            return render(request, super(EliminarUsuario, self).template_name, diccionario)
         eliminado.estado= False
         eliminado.save()
         return render(request, self.template_name, diccionario)

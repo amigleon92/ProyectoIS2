@@ -66,13 +66,15 @@ class CrearProyectoConfirm(CrearProyecto):
             nuevo_proyecto= Proyecto()
             nuevo_proyecto.nombre= new_nombre
             nuevo_proyecto.descripcion= request.POST['descripcion_proyecto']
-            nuevo_proyecto.save()
             new_lider= Usuario.objects.get(nick= request.POST['lider_proyecto'])
-            #Creamos el nuevo Rol
-            nuevo_rol= Rol(nombre= 'Lider del Proyecto', usuario= new_lider, proyecto= nuevo_proyecto)
-            nuevo_rol.save()
+            nuevo_proyecto.lider= new_lider
+            nuevo_proyecto.save()
             #Agregamos al lider a los miembros para que puedda visualizar el proyecto
             nuevo_proyecto.miembros.add(new_lider)
+            nuevo_proyecto.save()
+            #Creamos el nuevo Rol Lider del Proyecto
+            nuevo_rol= Rol(nombre= 'Lider del Proyecto', usuario= new_lider, proyecto= nuevo_proyecto)
+            nuevo_rol.save()
             return render(request, self.template_name, diccionario)
 
 #Eliminacion Logica de Proyectos
@@ -84,10 +86,13 @@ class EliminarProyecto(ProyectoView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)
-        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual, activo= True)):
             if proyecto_actual.estado=='F':
                 proyecto_actual.activo= False
                 proyecto_actual.save()
+                rol_asociado= Rol.objects.get(nombre= 'Lider del Proyecto', usuario= proyecto_actual.lider, activo= True)
+                rol_asociado.activo= False
+                rol_asociado.save()
                 del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos
                 return render(request, self.template_name, diccionario)
             else:
