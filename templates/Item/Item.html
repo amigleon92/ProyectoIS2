@@ -55,7 +55,7 @@
             </td>
             <td>
                 <form action="/proyecto/fase/item/atributo/" method="post">{% csrf_token %}
-                    <input type="hidden" name='tipo_de_item' value={{ item.id }} >
+                    <input type="hidden" name='item' value={{ item.id }} >
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >

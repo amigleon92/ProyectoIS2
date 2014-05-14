@@ -8,10 +8,10 @@ class Atributo(models.Model):
     descripcion= models.TextField(max_length=200, null=True)
     tipo= models.CharField(max_length=50, null=False)           #apunta al tipo de de atributo
 
-#    tipo_numerico=models.IntegerField(default=0)
-#    tipo_texto=models.CharField(max_length=50, null=True)
-#    tipo_boolean= models.BooleanField(default=True)
-#    tipo_fecha= models.DateField(null=True)
+    tipo_numerico=models.IntegerField(default=0)
+    tipo_texto=models.CharField(max_length=50, null=True)
+    tipo_boolean= models.BooleanField(default=True)
+    tipo_fecha= models.DateField(null=True)
 
     tipodeitem= models.ForeignKey(Tipo_de_Item, null=True)      #apunta al tipo de item al que pertenece
     activo= models.BooleanField(default=True)

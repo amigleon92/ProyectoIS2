@@ -13,10 +13,10 @@ class Tipo_de_Atributo(models.Model):
     nombre= models.CharField(max_length=50, null=False)
     tipo= models.CharField ( max_length = 1 ,  choices = tipos_probables, default='N' )
 
-    tipo_numerico=models.IntegerField(default=0)
-    tipo_texto=models.CharField(max_length=50, null=False)
-    tipo_boolean= models.BooleanField(default=True)
-    tipo_fecha= models.DateField(null=True)
+#    tipo_numerico=models.IntegerField(default=0)
+#    tipo_texto=models.CharField(max_length=50, null=False)
+#    tipo_boolean= models.BooleanField(default=True)
+#    tipo_fecha= models.DateField(null=True)
 
     proyecto= models.ForeignKey(Proyecto, null=True)
     activo= models.BooleanField(default=True)

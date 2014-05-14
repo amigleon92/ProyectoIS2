@@ -7,6 +7,7 @@
 		<th scope="col" class="rounded">Nombre</th>
 		<th scope="col" class="rounded">Descripcion</th>
         <th scope="col" class="rounded">Tipo</th>
+        <th scope="col" class="rounded">Valor</th>
         <th scope="col" class="rounded"></th>
 
 	</tr>
@@ -18,9 +19,10 @@
             <td>{{ atributo.descripcion }}</td>
             <td>{{ atributo.tipo }}</td>
             <td>
-                <form action="/proyecto/fase/tipoDeItem/atributo/eliminar/" method="post">{% csrf_token %}
+                <form action="/proyecto/fase/item/atributo/completarAtributo/" method="post">{% csrf_token %}
                     <input type="hidden" name='atributo' value={{ atributo.id }}>
-                    <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
+                    <input type="hidden" name='fase' value={{ fase.id }}>
+                    <input type="hidden" name='item' value={{ item.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="Completar">
