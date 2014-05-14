@@ -6,7 +6,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Fase.views import FaseView
 # Create your views here.
-#Lista de items correspondientes a la fase dentro
+#Lista de items correspondientes a la fase
 class ItemView(FaseView):
     template_name = 'Item/Item.html'
     def post(self, request, *args, **kwargs):
