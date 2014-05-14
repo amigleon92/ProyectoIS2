@@ -49,10 +49,11 @@
                 </form>
             </td>
             <td>
-                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
-                    <input type="hidden" name='login' value={{ logueado.id }} >
+                <form action="/proyecto/fase/item/aprobar/" method="post">{% csrf_token %}
+                    <input type="hidden" name='item' value={{ item.id }} >
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="Aprob.">
                 </form>
             </td>

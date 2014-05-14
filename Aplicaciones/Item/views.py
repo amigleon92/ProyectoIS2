@@ -267,3 +267,20 @@ class InformeItem(ItemView):
         tipo_de_item_actual=Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
         diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem=tipo_de_item_actual, activo= True)
         return render(request, self.template_name, diccionario)
+
+class AprobarItem(ItemView):
+    template_name = 'Item/AprobarItem.html'
+    def post(self, request, *args, **kwargs):
+        diccionario= {}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual=Item.objects.get(id=request.POST['item'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+        item_actual.estado='A'
+        item_actual.version= item_actual.version + 1
+        item_actual.save()
+        diccionario['item']= item_actual
+        return render(request, self.template_name, diccionario)
