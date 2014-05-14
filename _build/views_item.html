@@ -23,9 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="vista de Login" href="views_login.html" />
-    <link rel="prev" title="vista de las fases" href="views_fase.html" /> 
+    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +35,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="views_login.html" title="vista de Login"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="views_fase.html" title="vista de las fases"
-             accesskey="P">previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -230,19 +222,26 @@
 174
 175
 176
-177</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+177
+178
+179
+180</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 </span><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Item</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Fase.views</span> <span class="kn">import</span> <span class="n">FaseView</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Tipo_de_Item.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Item</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Atributo.models</span> <span class="kn">import</span> <span class="n">Atributo</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Tipo_de_Atributo.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Atributo</span>
+
+
 <span class="c"># Create your views here.</span>
 <span class="c">#Lista de Fases correspondientes al Proyecto dentro</span>
 <span class="k">class</span> <span class="nc">ItemView</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/Item.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;itemview&#39;</span><span class="p">)</span>
         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
@@ -254,7 +253,7 @@
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_items&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">)</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Debe inicializar fase&#39;</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">ItemView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
@@ -274,8 +273,9 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_tipo_de_item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">crear_item</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">crear_item</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
 
             <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
@@ -291,7 +291,6 @@
 <span class="k">class</span> <span class="nc">CrearItemConfirm</span><span class="p">(</span><span class="n">CrearItem</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/CrearItemConfirm.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 1&#39;</span><span class="p">)</span>
         <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>
         <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
@@ -302,20 +301,22 @@
         <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_item&#39;</span><span class="p">]</span>
         <span class="n">existe</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">existe</span><span class="p">:</span>
-           <span class="c">#diccionario[&#39;lista_usuarios&#39;]= Usuario.objects.filter(estado= True)</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre de Item ya existe&#39;</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearItemConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 2&#39;</span><span class="p">)</span>
             <span class="n">nuevo_item</span><span class="o">=</span> <span class="n">Item</span><span class="p">()</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">costo</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;costo_item&#39;</span><span class="p">]</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">prioridad</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;prioridad_item&#39;</span><span class="p">]</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_item&#39;</span><span class="p">]</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 3&#39;</span><span class="p">)</span>
+            <span class="n">tipodeitem</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;tipo_item&#39;</span><span class="p">],</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="p">)</span>
+            <span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">=</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">+</span><span class="mi">1</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="p">)</span>
+            <span class="n">nuevo_item</span><span class="o">.</span><span class="n">tipodeItemAsociado</span><span class="o">=</span> <span class="n">tipodeitem</span><span class="o">.</span><span class="n">nombre</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 4&#39;</span><span class="p">)</span>
+            <span class="n">tipodeitem</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
 
@@ -329,16 +330,17 @@
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">item_actual</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
+        <span class="n">tipodeitem</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="n">item_actual</span><span class="o">.</span><span class="n">tipodeItemAsociado</span><span class="p">)</span>
+        <span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">=</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">-</span><span class="mi">1</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">item_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
-        <span class="c">#diccionario[self.context_object_name]= Proyecto.objects.filter(activo= True)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">eliminar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">eliminar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
             <span class="n">item_actual</span><span class="o">.</span><span class="n">activo</span><span class="o">=</span> <span class="bp">False</span>
+            <span class="n">tipodeitem</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">item_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="c">#del diccionario[self.context_object_name]  #No hace falta enviar la lista de proyectos</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_items&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -347,7 +349,7 @@
 
 
 
-<span class="c">#</span>
+
 <span class="c">#editar Item</span>
 <span class="k">class</span> <span class="nc">EditarItem</span><span class="p">(</span><span class="n">ItemView</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/EditarItem.html&#39;</span>
@@ -357,13 +359,12 @@
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">item_actual</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">item_actual</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">item_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">editar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">editar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
             <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -378,7 +379,6 @@
 <span class="k">class</span> <span class="nc">EditarItemConfirm</span><span class="p">(</span><span class="n">CrearItem</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/EditarItemConfirm.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 1&#39;</span><span class="p">)</span>
         <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>
         <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
@@ -389,24 +389,22 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_item&#39;</span><span class="p">]</span>
-        <span class="n">existe</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">)</span>
-<span class="c">#        if existe:</span>
-<span class="c">#           #diccionario[&#39;lista_usuarios&#39;]= Usuario.objects.filter(estado= True)</span>
-<span class="c">#            diccionario[&#39;error&#39;]= &#39;Nombre de proyecto ya existe&#39;</span>
-<span class="c">#            return render(request, super(CrearItemConfirm, self).template_name, diccionario)</span>
-<span class="c">#        else:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 2&#39;</span><span class="p">)</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">costo</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;costo_item&#39;</span><span class="p">]</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">prioridad</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;prioridad_item&#39;</span><span class="p">]</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_item&#39;</span><span class="p">]</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">version</span><span class="o">=</span><span class="n">item_actual</span><span class="o">.</span><span class="n">version</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 3&#39;</span><span class="p">)</span>
         <span class="n">item_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 4&#39;</span><span class="p">)</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">item_actual</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+
+
+<span class="c">#mostrar atributos de item</span>
+<span class="k">class</span> <span class="nc">MostrarAtributo</span><span class="p">(</span><span class="n">ItemView</span><span class="p">):</span>
+     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/MostrarAtributo.html&#39;</span>
+     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -417,12 +415,6 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="views_fase.html"
-                        title="previous chapter">vista de las fases</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="views_login.html"
-                        title="next chapter">vista de Login</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/views_item.txt"
@@ -454,12 +446,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="views_login.html" title="vista de Login"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="views_fase.html" title="vista de las fases"
-             >previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

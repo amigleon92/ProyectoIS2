@@ -15,12 +15,19 @@ Contiene:
    models_rol
    models_proyecto
    models_fase
-
+   models_item
+   models_tipo_de_item
+   models_Atributo
+   models_tipo_de_atributo
+   views_login
    views_usuario
    views_rol
    views_proyecto
    views_fase
-   views_login
+   views_item
+   views_tipo_de_item
+   views_Atributo
+   views_tipo_de_atributo
 
 Indices and tables
 ==================

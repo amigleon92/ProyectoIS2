@@ -8,8 +8,8 @@
     
     <title>vista de Proyecto &mdash; ProyectoIS2 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="../_source/_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="../_source/_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,10 +20,12 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_source/_static/jquery.js"></script>
-    <script type="text/javascript" src="../_source/_static/underscore.js"></script>
-    <script type="text/javascript" src="../_source/_static/doctools.js"></script>
-    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" /> 
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="vista de las fases" href="views_fase.html" />
+    <link rel="prev" title="vista de rol" href="views_rol.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,6 +37,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="views_fase.html" title="vista de las fases"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="views_rol.html" title="vista de rol"
+             accesskey="P">previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -152,7 +160,15 @@
 104
 105
 106
-107</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+107
+108
+109
+110
+111
+112
+113
+114
+115</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 </span><span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.views</span> <span class="kn">import</span> <span class="n">ProyectoView</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
@@ -168,8 +184,8 @@
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="c">#Solamente el Administrador del Sistema puede ingresar a la Administracion de Usuarios</span>
-        <span class="k">if</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">usuario_logueado</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">)):</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No posee permisos para ver los usuarios del sistema&#39;</span>
@@ -204,8 +220,6 @@
         <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">cedula</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;cedula&#39;</span><span class="p">]</span>
         <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">email</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>
         <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Sin Permisos&#39;</span><span class="p">))</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">EditarUsuario</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">):</span>
@@ -230,7 +244,7 @@
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;El nombre de usuario ya existe&#39;</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;usuario&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">modificacion</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarUsuarioConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">nick</span><span class="o">=</span> <span class="n">modificacion</span>
+        <span class="n">modificacion</span><span class="o">.</span><span class="n">nick</span><span class="o">=</span> <span class="n">modificacion_nick</span>
         <span class="n">modificacion</span><span class="o">.</span><span class="n">password</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>
         <span class="n">modificacion</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre&#39;</span><span class="p">]</span>
         <span class="n">modificacion</span><span class="o">.</span><span class="n">apellido</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;apellido&#39;</span><span class="p">]</span>
@@ -246,6 +260,16 @@
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">eliminado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">])</span>
+        <span class="c">#Verificar si es Administrador del Sistema</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">eliminado</span><span class="p">)):</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede eliminar - El usuario es Administrador del Sistema&#39;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarUsuario</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="c">#Verificar si es lider de algun proyecto</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">eliminado</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)):</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede eliminar - El usuario es lider de un proyecto activo&#39;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarUsuario</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="n">eliminado</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="bp">False</span>
         <span class="n">eliminado</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
@@ -269,6 +293,12 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="views_rol.html"
+                        title="previous chapter">vista de rol</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="views_fase.html"
+                        title="next chapter">vista de las fases</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/views_proyecto.txt"
@@ -300,6 +330,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="views_fase.html" title="vista de las fases"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="views_rol.html" title="vista de rol"
+             >previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

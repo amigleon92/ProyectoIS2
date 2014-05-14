@@ -8,8 +8,8 @@
     
     <title>Aplicaciones.Usuario.models &mdash; ProyectoIS2 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="../../../../_source/_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_source/_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,9 +20,9 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../../../_source/_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_source/_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_source/_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
@@ -48,7 +48,7 @@
             
   <h1>Source code for Aplicaciones.Usuario.models</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
+<span class="c">#from Aplicaciones.Rol.models import Rol</span>
 
 <span class="c"># Create your models here.</span>
 <div class="viewcode-block" id="Usuario"><a class="viewcode-back" href="../../../models_usuario.html#Aplicaciones.Usuario.models.Usuario">[docs]</a><span class="k">class</span> <span class="nc">Usuario</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -76,7 +76,6 @@
     <span class="n">cedula</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">email</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">estado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">permiso</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Rol</span><span class="p">)</span>                      <span class="c">#El rol asociado al usuario</span>
     <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></div>
 </pre></div>

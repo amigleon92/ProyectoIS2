@@ -8,8 +8,8 @@
     
     <title>vista de las fases &mdash; ProyectoIS2 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="../_source/_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="../_source/_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,12 +20,12 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_source/_static/jquery.js"></script>
-    <script type="text/javascript" src="../_source/_static/underscore.js"></script>
-    <script type="text/javascript" src="../_source/_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="views usuarios" href="views_login.html" />
-    <link rel="prev" title="Models_fase" href="models_fase.html" /> 
+    <link rel="next" title="vista de los items" href="views_item.html" />
+    <link rel="prev" title="vista de Proyecto" href="views_proyecto.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,10 +35,13 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="views_login.html" title="views usuarios"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="views_item.html" title="vista de los items"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="models_fase.html" title="Models_fase"
+          <a href="views_proyecto.html" title="vista de Proyecto"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -182,19 +185,11 @@
 129
 130
 131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+132</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 </span><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.views</span> <span class="kn">import</span> <span class="n">ProyectoView</span>
 
 <span class="c"># Create your views here.</span>
@@ -202,6 +197,7 @@
 <span class="c">#Lista de Fases correspondientes al Proyecto dentro</span>
 <span class="k">class</span> <span class="nc">FaseView</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/Fase.html&#39;</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">&#39;lista_fases&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
@@ -225,18 +221,17 @@
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tienePermiso</span><span class="p">(</span><span class="n">usuario_logueado</span><span class="p">)</span> <span class="ow">and</span> <span class="n">usuario_logueado</span><span class="o">==</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">lider</span><span class="p">:</span>
-            <span class="n">fase</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
+            <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;N&#39;</span><span class="p">:</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;La fase ya fue inicializada&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">tienePermiso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usuario</span><span class="p">):</span>
-        <span class="n">permisos</span><span class="o">=</span> <span class="n">usuario</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">permisos</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">modificar_fase</span><span class="p">:</span> <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="bp">False</span>
 
 <span class="k">class</span> <span class="nc">EditarFaseConfirm</span><span class="p">(</span><span class="n">EditarFase</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/EditarFaseConfirm.html&#39;</span>
@@ -251,7 +246,7 @@
         <span class="n">modificar_fase</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_fase&#39;</span><span class="p">]</span>
         <span class="n">modificar_fase</span><span class="o">.</span><span class="n">fechaInicio</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaInicio_fase&#39;</span><span class="p">]</span>
         <span class="n">modificar_fase</span><span class="o">.</span><span class="n">fechaFin</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaFin_fase&#39;</span><span class="p">]</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;estado&#39;</span><span class="p">]</span>
+        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="s">&#39;I&#39;</span>
         <span class="n">modificar_fase</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
@@ -282,7 +277,7 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tienePermiso</span><span class="p">(</span><span class="n">usuario_logueado</span><span class="p">)</span> <span class="ow">and</span> <span class="n">usuario_logueado</span><span class="o">==</span><span class="n">proyecto_actual</span><span class="o">.</span><span class="n">lider</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
             <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;I&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]:</span>
@@ -297,11 +292,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">tienePermiso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usuario</span><span class="p">):</span>
-        <span class="n">permisos</span><span class="o">=</span> <span class="n">usuario</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">permisos</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">cerrar_fase</span><span class="p">:</span> <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="bp">False</span>
 
 <span class="c">#Finalizar el proyecto una vez terminadas las fases</span>
 <span class="k">class</span> <span class="nc">FinalizarProyecto</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
@@ -312,7 +302,7 @@
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tienePermiso</span><span class="p">(</span><span class="n">usuario_logueado</span><span class="p">)</span> <span class="ow">and</span> <span class="n">usuario_logueado</span><span class="o">==</span><span class="n">proyecto_actual</span><span class="o">.</span><span class="n">lider</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
             <span class="n">ultima_fase</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">numeroSecuencia</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">numeroFase</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>       <span class="c">#comporbamos si se termino la ultima fase</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">ultima_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
                 <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Para finalizar, todas las fases deberian de estar cerradas&#39;</span>
@@ -327,11 +317,6 @@
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">FinalizarProyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">tienePermiso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usuario</span><span class="p">):</span>
-        <span class="n">permisos</span><span class="o">=</span> <span class="n">usuario</span><span class="o">.</span><span class="n">permiso</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">permisos</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">finalizar_proyecto</span><span class="p">:</span> <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="bp">False</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -343,11 +328,11 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="models_fase.html"
-                        title="previous chapter">Models_fase</a></p>
+  <p class="topless"><a href="views_proyecto.html"
+                        title="previous chapter">vista de Proyecto</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="views_login.html"
-                        title="next chapter">views usuarios</a></p>
+  <p class="topless"><a href="views_item.html"
+                        title="next chapter">vista de los items</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/views_fase.txt"
@@ -377,10 +362,13 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="views_login.html" title="views usuarios"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="views_item.html" title="vista de los items"
              >next</a> |</li>
         <li class="right" >
-          <a href="models_fase.html" title="Models_fase"
+          <a href="views_proyecto.html" title="vista de Proyecto"
              >previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>

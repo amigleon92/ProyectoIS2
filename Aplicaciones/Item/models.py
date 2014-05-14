@@ -14,7 +14,9 @@ class Item(models.Model):
     - descripcion: Una breve descripcion del item
     - tipoDeItemAsociado:En el cual se denota el tipo de item asignado
     - estado: puede encontrarse en 4 estados: Bloqueado, Revision, Desaprobado, Aprobado.
+    - costo: el costo del item
     - pkFase: el id de la Fase a la que pertenece
+    - activo: boolean para el estado logico del item
     """
     estados_probables= (
         ('B','Bloqueado'),
