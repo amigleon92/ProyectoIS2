@@ -22,13 +22,15 @@ class ItemView(FaseView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']=fase_actual
-        if not fase_actual.estado=='N':
+        if fase_actual.estado=='I':
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             return render(request, self.template_name, diccionario)
+        elif fase_actual.estado=='F':
+            diccionario['error']= 'No puede ingresar a la fase - Fase Finalizada'
         else:
-            diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
             diccionario['error']= 'Debe inicializar fase'
-            return render(request, super(ItemView, self).template_name, diccionario)
+        diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
+        return render(request, super(ItemView, self).template_name, diccionario)
 
 
 

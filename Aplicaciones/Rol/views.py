@@ -148,7 +148,7 @@ class EditarRolConfirmar(EditarRol):
             if 'crear_tipodeitem' in request.POST: rol_actual.crear_tipodeitem= True
             else: rol_actual.crear_tipodeitem= False
             if 'eliminar_tipodeitem' in request.POST: rol_actual.eliminar_tipodeotem= True
-            else: rol_actual.eliminar_tipodeotem= False
+            else: rol_actual.eliminar_tipodeitem= False
             if 'modificar_tipodeitem' in request.POST: rol_actual.modificar_tipodeitem= True
             else: rol_actual.modificar_tipodeitem= False
             if 'crear_lineabase' in request.POST: rol_actual.crear_lineabase= True
@@ -269,7 +269,7 @@ class AsignarRolConfirm(RolView):
             completar_atributos= rol_actual.completar_atributos,
             consultar_atributos= rol_actual.consultar_atributos,
             crear_tipodeitem= rol_actual.crear_tipodeitem,
-            eliminar_tipodeotem= rol_actual.eliminar_tipodeotem,
+            eliminar_tipodeitem= rol_actual.eliminar_tipodeitem,
             crear_lineabase= rol_actual.crear_lineabase,
         )
         nuevo_rol.save()
