@@ -42,7 +42,7 @@ class CrearRolConfirm(CrearRol):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         rol_nombre= request.POST['nombre_rol']
-        if len(Rol.objects.filter(nombre= rol_nombre, activo= True, proyecto= proyecto_actual)):
+        if len(Rol.objects.filter(nombre= rol_nombre, activo= True, proyecto= proyecto_actual)) or rol_nombre=='Miembro del Comite':
             diccionario['error']= 'Nombre del rol ya existe. Intente otro'
             return render(request, super(CrearRolConfirm, self).template_name, diccionario)
         nuevo_rol= Rol(
@@ -103,7 +103,7 @@ class EditarRolConfirmar(EditarRol):
         roles= Rol.objects.filter(nombre= request.POST['nombre_rol'], proyecto= proyecto_actual)
         nuevo_rol_nombre= request.POST['nombre_nuevo_rol']
         existe_roles= Rol.objects.filter(nombre= nuevo_rol_nombre, proyecto= proyecto_actual, activo= True)
-        if len(existe_roles) and roles[0].nombre != existe_roles[0].nombre:
+        if (len(existe_roles) and roles[0].nombre != existe_roles[0].nombre) or nuevo_rol_nombre== 'Miembro del Comite':
             diccionario['error']= 'Nombre del rol ya existe. Intente otro'
             diccionario['rol']= Rol.objects.get(id= request.POST['rol'])
             return render(request, super(EditarRolConfirmar, self).template_name, diccionario)
@@ -158,8 +158,8 @@ class EliminarRol(RolView):
         rol_actual= Rol.objects.get(id= request.POST['rol'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        if rol_actual.nombre== 'Lider del Proyecto':
-            diccionario['error']= 'Rol: Lider del Proyecto - No se puede eliminar'
+        if rol_actual.nombre== 'Lider del Proyecto' or rol_actual.nombre== 'Miembro del Comite':
+            diccionario['error']= 'Rol: '+ rol_actual.nombre + ' - No se puede eliminar'
             diccionario[super(EliminarRol, self).context_object_name]= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
             return render(request, super(EliminarRol, self).template_name, diccionario)
         roles= Rol.objects.filter(nombre= rol_actual.nombre, proyecto= proyecto_actual, activo= True)
@@ -190,8 +190,8 @@ class DesasignarRol(RolView):
         rol_actual= Rol.objects.get(id= request.POST['rol'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        if rol_actual.nombre== 'Lider del Proyecto':
-            diccionario['error']= 'Rol: Lider del Proyecto - Operacion No Permitida'
+        if rol_actual.nombre== 'Lider del Proyecto' or rol_actual.nombre== 'Miembro del Comite':
+            diccionario['error']= 'Rol: ' + rol_actual.nombre +' - Operacion No Permitida'
             diccionario[super(DesasignarRol, self).context_object_name]= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
             return render(request, super(DesasignarRol, self).template_name, diccionario)
         rol_actual.activo= False
@@ -211,8 +211,8 @@ class AsignarRol(RolView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['rol']= rol_actual
-        if rol_actual.nombre== 'Lider del Proyecto':
-            diccionario['error']= 'Rol: Lider del Proyecto - Operacion No Permitida'
+        if rol_actual.nombre== 'Lider del Proyecto' or rol_actual.nombre== 'Miembro del Comite':
+            diccionario['error']= 'Rol: ' + rol_actual.nombre +' - Operacion No Permitida'
             diccionario[super(AsignarRol, self).context_object_name]= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
             return render(request, super(AsignarRol, self).template_name, diccionario)
         usuarios_rol= []    #Usuarios que pertenecen al Rol
@@ -264,4 +264,47 @@ class AsignarRolConfirm(RolView):
             crear_lineabase= rol_actual.crear_lineabase,
         )
         nuevo_rol.save()
+        return render(request, self.template_name, diccionario)
+
+class AsignarMiembroComite(RolView):
+    template_name = 'Rol/AsignarMiembroComite.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        miembros= proyecto_actual.miembros.all()
+        if len(Rol.objects.filter(nombre= 'Miembro del Comite', proyecto= proyecto_actual, activo= True)):
+            diccionario['lista_roles']= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
+            diccionario['error']= 'El Comite de Cambios ya fue definido anteriormente'
+            return render(request, super(AsignarMiembroComite, self).template_name, diccionario)
+        if len(miembros)<3:
+            diccionario['lista_roles']= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
+            diccionario['error']= 'El proyecto no posee la cantidad minima de usuarios para definir un Comite'
+            return render(request, super(AsignarMiembroComite, self).template_name, diccionario)
+        diccionario['lista_usuarios']= miembros
+        return render(request, self.template_name, diccionario)
+
+class AsignarMiembroComiteConfirm(AsignarMiembroComite):
+    template_name = 'Rol/AsignarMiembroComiteConfirmar.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        usuarios_comite= request.POST.getlist('miembros[]')
+        if len(usuarios_comite) != 3:
+            diccionario['lista_usuarios']= proyecto_actual.miembros.all()
+            diccionario['error']= 'Seleccione exactamente 3 (tres) usuarios para definir el Comite'
+            return render(request, super(AsignarMiembroComiteConfirm, self).template_name, diccionario)
+        for usuario in usuarios_comite:
+            usuario= Usuario.objects.get(nick= usuario)
+            rol_asociado= Rol(
+                nombre= 'Miembro del Comite',
+                usuario= usuario,
+                proyecto= proyecto_actual,
+            )
+            rol_asociado.save()
         return render(request, self.template_name, diccionario)

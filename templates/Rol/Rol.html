@@ -69,6 +69,11 @@
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
     </form>
+     <form action="/proyecto/fase/rol/asignar_miembro_comite/" method="POST">{% csrf_token %}
+        <input type="submit" value="Definir Comite de Cambios">
+        <input type="hidden" name="proyecto" value={{ proyecto.id }}>
+        <input type="hidden" name='login' value={{ logueado.id }} >
+    </form>
     <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >

@@ -116,4 +116,3 @@ rol_operaciones= Rol(
 	crear_lineabase= True,
 )
 rol_operaciones.save()
-

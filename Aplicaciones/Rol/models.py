@@ -21,8 +21,8 @@ class Rol(models.Model):
     #modificar_fase= models.BooleanField(default=False) lider
     #cerrar_fase= models.BooleanField(default=False) lider
     #asignar_miembro= models.BooleanField(default=False) lider      # - Tareas de los miembros del comite
-    votar= models.BooleanField(default=False)
-    consultar_solicitud= models.BooleanField(default=False)
+    #votar= models.BooleanField(default=False)
+    #consultar_solicitud= models.BooleanField(default=False)
     crear_item= models.BooleanField(default=False)                  # - Permisos de Administracion de  Items
     eliminar_item= models.BooleanField(default=False)
     editar_item= models.BooleanField(default=False)
