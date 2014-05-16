@@ -146,6 +146,10 @@ class EditarRolConfirmar(EditarRol):
             else: rol_actual.modificar_tipodeitem= False
             if 'crear_lineabase' in request.POST: rol_actual.crear_lineabase= True
             else: rol_actual.crear_lineabase= False
+            if 'crear_tipodeatributo' in request.POST: rol_actual.crear_tipodeatributo= True
+            else: rol_actual.crear_tipodeatributo= False
+            if 'eliminar_tipodeatributo' in request.POST: rol_actual.eliminartipodeatributo= True
+            else: rol_actual.eliminartipodeatributo= False
             rol_actual.save()
         return render(request, self.template_name, diccionario)
 
