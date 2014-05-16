@@ -154,7 +154,8 @@ class CompletarAtributoConfirm(CompletarAtributo):
         elif atributo_actual.tipo_de_atributo_tipo == 'T':
             atributo_actual.tipo_texto= request.POST['tipo_texto']
         elif atributo_actual.tipo_de_atributo_tipo == 'B':
-            atributo_actual.tipo_boolean= request.POST['tipo_buleano']
+            if 'tipo_buleano' in request.POST: atributo_actual.tipo_boolean= True
+            else: atributo_actual.tipo_boolean= False
         elif atributo_actual.tipo_de_atributo_tipo == 'F':
             atributo_actual.tipo_fecha=request.POST['tipo_fecha']
         atributo_actual.save()
