@@ -17,6 +17,7 @@ class Item(models.Model):
     - tipoDeItemAsociado:En el cual se denota el tipo de item asignado
     - estado: puede encontrarse en 4 estados: Bloqueado, Revision, Desaprobado, Aprobado.
     - pkFase: el id de la Fase a la que pertenece
+    - identificador: Un id para localizar las versiones anteriores de un mismo item
     """
     estados_probables= (
         ('B','Bloqueado'),
@@ -35,6 +36,31 @@ class Item(models.Model):
     lineaBase=models.ForeignKey(LineaBase, related_name='fkLineaBaseI', null= True)
     costo= models.PositiveIntegerField(default=0, null=True)
     activo= models.BooleanField(default=True)
+    identificador= models.PositiveIntegerField(default=0, null=True)
 
     def __unicode__(self):
         return self.nombre
+
+class Relacion(models.Model):
+    """
+    Se crea el modelo Relacion (Las relaciones van a estar definidas de la forma item1 -> item2)
+
+    Estan definidos los atributos
+
+    - nombre= Nombre de la relacion
+    - item1= FK al primer item de la relacion
+    - item2= FK del segundo item de la relacion
+    - tipo= Puede tener 2 tipos: RelacionAntecesorSucesor, RelacionPadreHijo
+    """
+    relaciones_probables= (
+        ('A', 'RelacionAntecesorSucesor'),
+        ('P', 'RelacionPadreHijo')
+    )
+    nombre= models.CharField(max_length=50)
+    item1= models.ForeignKey(Item, related_name='fkItem1')
+    item2= models.ForeignKey(Item, related_name='fkItem2')
+    tipo= models.CharField(max_length=1, choices=relaciones_probables)
+    activo= models.BooleanField(default=True)
+    def __unicode__(self):
+        return self.nombre
+
