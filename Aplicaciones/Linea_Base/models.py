@@ -9,7 +9,7 @@ class LineaBase(models.Model):
     Estan definidos en la tabla los atributos
 
     - nombre: Nombre de la linea base
-    - estado: puede encontrarse en 2 estados: Abierto y Cerrado.
+    - estado: puede encontrarse en 2 estados: Abierta y Cerrada.
     - pkFase: el id de la Fase a la que pertenece
     """
     estados_probables= (
