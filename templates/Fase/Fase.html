@@ -1,7 +1,7 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Proyecto:: {% endblock %}
 {% block TituloMenu %} MENU PROYECTO - {{ proyecto.nombre }}{% endblock %}
-{% block TituloLista %} Lista de fases{% endblock %}
+{% block TituloLista %} Lista de fases {% endblock %}
 {% block Columnas %}
     <tr>
         <th scope="col" class="rounded">Numero</th>
@@ -74,6 +74,16 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Administrar Tipo de Ítem" >
+    </form>
+    <form action="/proyecto/fase/tipoDeAtributo/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Administrar Tipo de Atributo" >
+    </form><br>
+    <form action="/proyecto/fase/asignar_nuevos_miembros/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="submit" value="Asignar Nuevos Miembros">
     </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >

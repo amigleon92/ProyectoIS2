@@ -136,3 +136,37 @@ class FinalizarProyecto(FaseView):
             diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(FinalizarProyecto, self).template_name, diccionario)
+
+class AsignarNuevosMiembros(FaseView):
+    template_name = 'Fase/AsignarNuevosMiembros.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        lista_usuarios= Usuario.objects.filter(estado= True)
+        lista_no_miembros= []
+        for usuario in lista_usuarios:
+            if not usuario in proyecto_actual.miembros.all():
+                lista_no_miembros.append(usuario)
+        if not len(lista_no_miembros):
+            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+            diccionario['error']= 'No existen mas usuarios'
+            return render(request, super(AsignarNuevosMiembros, self).template_name, diccionario)
+        diccionario['lista_no_miembros']= lista_no_miembros
+        return render(request, self.template_name, diccionario)
+
+class AsignarNuevosMiembrosConfirm(FaseView):
+    template_name = 'Fase/AsignarNuevosMiembrosConfirmar.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        usuarios_miembros= request.POST.getlist('miembros[]')
+        for usuario in usuarios_miembros:
+            usuario= Usuario.objects.get(nick= usuario)
+            proyecto_actual.miembros.add(usuario)
+        return render(request, 'Fase/AsignarNuevosMiembrosConfirmar.html', diccionario)

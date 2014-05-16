@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from .views import FaseView, EditarFase, EditarFaseConfirm, InformeFase, CerrarFase, FinalizarProyecto
+from .views import FaseView, EditarFase, EditarFaseConfirm, InformeFase, CerrarFase, FinalizarProyecto, AsignarNuevosMiembros, AsignarNuevosMiembrosConfirm
 
 urlpatterns= patterns('',
     url(r'^$', FaseView.as_view(), name="fase"),
@@ -8,10 +8,11 @@ urlpatterns= patterns('',
     url(r'^informe/$', InformeFase.as_view(), name='informe_fase'),
     url(r'^cerrar/$', CerrarFase.as_view(), name='cerrar_fase'),
     url(r'^finalizar_proyecto/$', FinalizarProyecto.as_view(), name="finalizar_proyecto"),
+    url(r'^asignar_nuevos_miembros/$', AsignarNuevosMiembros.as_view(), name='asignar_nuevos_miembros'),
+    url(r'^asignar_nuevos_miembros/confirmar/$', AsignarNuevosMiembrosConfirm.as_view(), name='asignar_nuevos_miembros_confirmar'),
 
     #Rol
     url(r'^rol/', include('Aplicaciones.Rol.urls')),
-
 
     #Item
     url(r'^item/', include('Aplicaciones.Item.urls')),
