@@ -26,6 +26,7 @@ class Fase(models.Model):
     nombre= models.CharField(max_length=50, null=False)
     numeroSecuencia = models.PositiveIntegerField(default=1, null=True) #puede ser auto incremental
     descripcion= models.TextField(max_length=200, null=True)
+    numero= models.PositiveIntegerField(default=0, null=True)
     tipodeItemAsociado = models.PositiveIntegerField(default=0, null=True) #esto es por que aun no exite tipos de item, deberia ser generico
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables, default='N' )
     fechaInicio= models.DateField(null=True)

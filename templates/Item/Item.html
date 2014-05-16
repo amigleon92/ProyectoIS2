@@ -63,7 +63,7 @@
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Atrib.">
+                    <input type="submit" value="Atributo">
                 </form>
             </td>
             <td>
@@ -89,7 +89,8 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Revivir">
     </form>
-    <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+    <form action="/proyecto/fase/item/lineaBase/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Linea Base">

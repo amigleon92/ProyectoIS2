@@ -1,0 +1,28 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Linea base :: {% endblock %}
+{% block TituloMenu %} MENU LINEA BASE - {{ linea_base.nombre }}{% endblock %}
+{% block TituloLista %} Lista de items en Linea Base {% endblock %}
+{% block Columnas %}
+    <tr>
+		<th scope="col" class="rounded">Nombre</th>
+		<th scope="col" class="rounded">Tipo</th>
+        <th scope="col" class="rounded">Estado</th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for item in lista_de_items %}
+        <tr>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.tipodeItemAsociado }}</td>
+            <td>{{ item.estado }}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/lineaBase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar" ></center>
+    </form>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Crear Ítem::{% endblock %}
-{% block TituloMenu %} CREAR ÍTEM {% endblock %}
+{% block TituloMenu %} CREAR ÍTEM - {{ fase.nombre }}{% endblock %}
 {% block TituloOperacion %} Formulario Item {% endblock %}
 {% block DatosOperacion %}
     <form action="/proyecto/fase/item/crearItem/confirmar/" method="post">{% csrf_token %}

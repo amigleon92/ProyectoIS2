@@ -4,6 +4,7 @@ from Aplicaciones.Usuario.models import Usuario
 from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.views import ProyectoView
+from Aplicaciones.Item.models import Item
 
 # Create your views here.
 
@@ -92,10 +93,15 @@ class CerrarFase(FaseView):
         diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
         if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             fase_actual= Fase.objects.get(id= request.POST['fase'])
+            lista_de_items= Item.objects.filter(fase=fase_actual, activo=True)
             if fase_actual.estado=='I':
                 for i in diccionario['lista_fases']:
                     if i.numeroSecuencia < fase_actual.numeroSecuencia and not i.estado=='F':
                         diccionario['error']= 'No se puede cerra la fase - Fase Anterior No Finalizadda'
+                        return render(request, super(CerrarFase, self).template_name, diccionario)
+                for item in lista_de_items:
+                    if not item.estado == 'B':
+                        diccionario['error']= 'No se puede cerra la fase - Exite items NO BLOQUEADO'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
                 fase_actual.estado='F'
                 fase_actual.save()

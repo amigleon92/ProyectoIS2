@@ -42,7 +42,7 @@ class CrearRolConfirm(CrearRol):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         rol_nombre= request.POST['nombre_rol']
-        if len(Rol.objects.filter(nombre= rol_nombre, activo= True, proyecto= proyecto_actual)):
+        if len(Rol.objects.filter(nombre= rol_nombre)):
             diccionario['error']= 'Nombre del rol ya existe. Intente otro'
             return render(request, super(CrearRolConfirm, self).template_name, diccionario)
         nuevo_rol= Rol(
@@ -102,14 +102,8 @@ class EditarRolConfirmar(EditarRol):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        rol_actual= request.POST['nombre_rol']
-        roles= Rol.objects.filter(nombre= rol_actual, proyecto= proyecto_actual, activo= True)
+        roles= Rol.objects.filter(nombre= request.POST['nombre_rol'], proyecto= proyecto_actual)
         nuevo_rol_nombre= request.POST['nombre_nuevo_rol']
-        existe_roles= Rol.objects.filter(nombre= nuevo_rol_nombre, proyecto= proyecto_actual, activo= True)
-        if len(existe_roles) and roles[0].nombre != existe_roles[0].nombre:
-            diccionario['error']= 'Nombre del rol ya existe. Intente otro'
-            diccionario['rol']= Rol.objects.get(id= request.POST['rol'])
-            return render(request, super(EditarRolConfirmar, self).template_name, diccionario)
         #Actualizamos los permisos
         for rol_actual in roles:
             rol_actual.nombre= nuevo_rol_nombre
@@ -148,7 +142,7 @@ class EditarRolConfirmar(EditarRol):
             if 'crear_tipodeitem' in request.POST: rol_actual.crear_tipodeitem= True
             else: rol_actual.crear_tipodeitem= False
             if 'eliminar_tipodeitem' in request.POST: rol_actual.eliminar_tipodeotem= True
-            else: rol_actual.eliminar_tipodeitem= False
+            else: rol_actual.eliminar_tipodeotem= False
             if 'modificar_tipodeitem' in request.POST: rol_actual.modificar_tipodeitem= True
             else: rol_actual.modificar_tipodeitem= False
             if 'crear_lineabase' in request.POST: rol_actual.crear_lineabase= True
@@ -269,7 +263,7 @@ class AsignarRolConfirm(RolView):
             completar_atributos= rol_actual.completar_atributos,
             consultar_atributos= rol_actual.consultar_atributos,
             crear_tipodeitem= rol_actual.crear_tipodeitem,
-            eliminar_tipodeitem= rol_actual.eliminar_tipodeitem,
+            eliminar_tipodeotem= rol_actual.eliminar_tipodeotem,
             crear_lineabase= rol_actual.crear_lineabase,
         )
         nuevo_rol.save()

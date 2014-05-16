@@ -52,7 +52,6 @@ class CrearTipoDeItemConfirm(CrearTipoDeItem):
         new_nombre= request.POST['nombre_tipo_de_item']
         existe= Tipo_de_Item.objects.filter(nombre= new_nombre)
         if existe:
-           #diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
             diccionario['error']= 'Nombre de Tipo de Item ya existe'
             return render(request, super(CrearTipoDeItemConfirm, self).template_name, diccionario)
         else:
@@ -60,10 +59,7 @@ class CrearTipoDeItemConfirm(CrearTipoDeItem):
             nuevo_tipodeitem.nombre= new_nombre
             nuevo_tipodeitem.descripcion= request.POST['descripcion_tipo_de_item']
             nuevo_tipodeitem.proyecto=proyecto_actual
-            #nuevo_tipodeitem.atributos= request.POST.getlist('atributos[]')
-            print('hola 3')
             nuevo_tipodeitem.save()
-            print('hola 4')
             return render(request, self.template_name, diccionario)
 
 class EliminarTipoDeItem(TipoDeItemView):
@@ -76,7 +72,6 @@ class EliminarTipoDeItem(TipoDeItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['tipo_de_item']= tipo_de_item_actual
         diccionario['proyecto']= proyecto_actual
-
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_tipodeitem=True, activo=True)):
             if tipo_de_item_actual.cantidad_de_item == 0:
                 tipo_de_item_actual.activo= False
@@ -105,7 +100,6 @@ class EditarTipoDeItem(TipoDeItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario[self.context_object_name]= Tipo_de_Item.objects.filter(activo= True)
-        print(tipo_de_item_actual.cantidad_de_item)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,modificar_tipodeitem=True, activo=True)):
             if tipo_de_item_actual.cantidad_de_item == 0:
                 del diccionario[self.context_object_name]

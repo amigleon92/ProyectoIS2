@@ -1,6 +1,6 @@
 {% extends 'PlantillaBaseMetodos.html' %}
-{% block title %}::Editar tipo de item::{% endblock %}
-{% block TituloMenu %} EDITAR TIPO DE ÍTEM {% endblock %}
+{% block title %}::Editar tipo de ítem::{% endblock %}
+{% block TituloMenu %} EDITAR TIPO DE ÍTEM - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %} Formulario tipo de Ítem {% endblock %}
 {% block DatosOperacion %}
     <form action="/proyecto/fase/tipoDeItem/editar/confirmar/" method="post">{% csrf_token %}

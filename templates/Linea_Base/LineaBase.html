@@ -1,0 +1,44 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Linea Base:: {% endblock %}
+{% block TituloMenu %} MENU LINEA BASE - {{ fase.nombre }}{% endblock %}
+{% block TituloLista %} Lista de Lineas Bases {% endblock %}
+{% block Columnas %}
+    <tr>
+        <th scope="col" class="rounded">Número</th>
+		<th scope="col" class="rounded">Nombre</th>
+        <th scope="col" class="rounded">Estado</th>
+        <th scope="col" class="rounded"></th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for linea_base in lista_linea_base %}
+        <tr>
+            <td>{{ linea_base.id }}</td>
+            <td>{{ linea_base.nombre }}</td>
+            <td>{{ linea_base.estado }}</td>
+            <td>
+                <form action="/proyecto/fase/item/lineaBase/mostrarItems/" method="post">{% csrf_token %}
+                    <input type="hidden" name='linea_base' value={{ linea_base.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Mostrar Items.">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/lineaBase/crearLineaBase/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear">
+    </form>
+    <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras" >
+    </form>
+{% endblock %}

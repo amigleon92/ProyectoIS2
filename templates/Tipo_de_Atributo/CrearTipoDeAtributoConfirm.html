@@ -1,12 +1,13 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Crear Tipo de Atributo Confirmar::{% endblock %}
-{% block TituloMenu %} CREAR TIPO DE ATRIBUTO {% endblock %}
+{% block TituloMenu %} CREAR TIPO DE ATRIBUTO - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %} Tipo de Atributo Creado {% endblock %}
 {% block DatosOperacion %}
     <center><h3>El tipo de atributo se cre&oacute exitosamente. </h3></center>
 {% endblock %}
 {% block Botones %}
-   <form action="/proyecto/fase/tipoDeAtributo/" method="post">{% csrf_token %}
+   <form action="/proyecto/fase/tipoDeItem/tipoDeAtributo/" method="post">{% csrf_token %}
+       <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <center><input type="submit" value="Aceptar"></center>

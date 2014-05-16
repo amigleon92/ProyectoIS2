@@ -1,14 +1,14 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Eliminar Atributo::{% endblock %}
-{% block TituloMenu %} ELIMINAR ATRIBUTO {% endblock %}
+{% block TituloMenu %} ELIMINAR ATRIBUTO - {{ tipo_de_item.nombre }}{% endblock %}
 {% block TituloOperacion %} Atributo Eliminado {% endblock %}
 {% block DatosOperacion %}
     <center><h3>Se elimino el atributo &lt;&lt;&lt;{{ atributo.nombre }}&gt;&gt;&gt;</h3></center>
 {% endblock %}
 {% block Botones %}
-    <form action="/proyecto/fase/tipoDeItem/atributo/" method="post">{% csrf_token %}
-        <input type="hidden" name='atributo' value={{ atributo.id }}>
-        <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
+    <form action="/proyecto/fase/item/atributo/" method="post">{% csrf_token %}
+        <input type="hidden" name='item' value={{ item.id }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
         <center><input type="submit" value="Aceptar"></center>

@@ -1,12 +1,13 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Eliminar Tipo de Atributo::{% endblock %}
-{% block TituloMenu %} ELIMINAR TIPO DE ATRIBUTO {% endblock %}
+{% block TituloMenu %} ELIMINAR TIPO DE ATRIBUTO - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %} Tipo de Atributo Eliminado {% endblock %}
 {% block DatosOperacion %}
     <center><h3>Se elimino el tipo de atributo &lt;&lt;&lt;{{ tipo_de_atributo.nombre }}&gt;&gt;&gt;</h3></center>
 {% endblock %}
 {% block Botones %}
-    <form action="/proyecto/fase/tipoDeAtributo/" method="post">{% csrf_token %}
+    <form action="/proyecto/fase/tipoDeItem/tipoDeAtributo/" method="post">{% csrf_token %}
+        <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
         <input type="hidden" name='proyecto' value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
         <center><input type="submit" value="Aceptar"></center>

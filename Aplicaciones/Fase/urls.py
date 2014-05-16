@@ -19,9 +19,4 @@ urlpatterns= patterns('',
     #Tipo de Item
     url(r'^tipoDeItem/', include('Aplicaciones.Tipo_de_Item.urls')),
 
-    #Tipo de Atributo
-    url(r'^tipoDeAtributo/', include('Aplicaciones.Tipo_de_Atributo.urls')),
-
-
-
 )

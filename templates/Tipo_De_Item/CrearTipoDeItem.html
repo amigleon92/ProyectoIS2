@@ -1,6 +1,6 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Crear Tipo de Ítem::{% endblock %}
-{% block TituloMenu %} CREAR TIPO DE ÍTEM {% endblock %}
+{% block TituloMenu %} CREAR TIPO DE ÍTEM - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %} Formulario Tipo de Ítem {% endblock %}
 {% block DatosOperacion %}
     <form action="/proyecto/fase/tipoDeItem/crearTipoDeItem/confirmar/" method="post">{% csrf_token %}

@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'Aplicaciones.Tipo_de_Item',
     'Aplicaciones.Tipo_de_Atributo',
     'Aplicaciones.Atributo',
+    'Aplicaciones.Linea_Base',
+
 )
 
 MIDDLEWARE_CLASSES = (

@@ -11,9 +11,9 @@ urlpatterns= patterns('',
     url(r'^eliminar/$', EliminarTipoDeItem.as_view(), name="eliminar_tipo_de_item"),
     url(r'^editar/$', EditarTipoDeItem.as_view(), name="editar_tipo_de_item"),
     url(r'^editar/confirmar/$', EditarTipoDeItemConfirm.as_view(), name="editar_tipo_de_item_confirm"),
-    #Atributo
-    url(r'^atributo/', include('Aplicaciones.Atributo.urls')),
 
+    #Tipo de Atributo
+    url(r'^tipoDeAtributo/', include('Aplicaciones.Tipo_de_Atributo.urls')),
 
 
 )

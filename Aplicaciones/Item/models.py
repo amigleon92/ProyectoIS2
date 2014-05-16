@@ -1,6 +1,8 @@
 
 from django.db import models
 from Aplicaciones.Fase.models import Fase
+from Aplicaciones.Linea_Base.models import LineaBase
+from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
 
 # Create your models here.
 class Item(models.Model):
@@ -14,9 +16,7 @@ class Item(models.Model):
     - descripcion: Una breve descripcion del item
     - tipoDeItemAsociado:En el cual se denota el tipo de item asignado
     - estado: puede encontrarse en 4 estados: Bloqueado, Revision, Desaprobado, Aprobado.
-    - costo: el costo del item
     - pkFase: el id de la Fase a la que pertenece
-    - activo: boolean para el estado logico del item
     """
     estados_probables= (
         ('B','Bloqueado'),
@@ -28,9 +28,11 @@ class Item(models.Model):
     prioridad= models.PositiveIntegerField(default=0, null=False)
     descripcion= models.TextField(max_length=200, null=True)
     version=models.PositiveIntegerField(default=1, null=True)
-    tipodeItemAsociado = models.CharField(max_length=50, null=False)
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables, default='D' )
+    tipodeItemAsociado= models.CharField(max_length=50, null=False)
+    tipo_de_item= models.ForeignKey(Tipo_de_Item, related_name='fkTipodeItemI',null=True)
     fase=models.ForeignKey(Fase, related_name='fkFaseI')
+    lineaBase=models.ForeignKey(LineaBase, related_name='fkLineaBaseI', null= True)
     costo= models.PositiveIntegerField(default=0, null=True)
     activo= models.BooleanField(default=True)
 

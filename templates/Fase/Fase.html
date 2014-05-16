@@ -75,11 +75,6 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Administrar Tipo de Ítem" >
     </form>
-    <form action="/proyecto/fase/tipoDeAtributo/" method="POST"> {% csrf_token %}
-        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Administrar Tipo de Atributo" >
-    </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="<Menú Inicio"><br>

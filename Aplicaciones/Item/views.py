@@ -22,15 +22,13 @@ class ItemView(FaseView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']=fase_actual
-        if fase_actual.estado=='I':
+        if not fase_actual.estado=='N':
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             return render(request, self.template_name, diccionario)
-        elif fase_actual.estado=='F':
-            diccionario['error']= 'No puede ingresar a la fase - Fase Finalizada'
         else:
+            diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
             diccionario['error']= 'Debe inicializar fase'
-        diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
-        return render(request, super(ItemView, self).template_name, diccionario)
+            return render(request, super(ItemView, self).template_name, diccionario)
 
 
 
@@ -77,6 +75,7 @@ class CrearItemConfirm(CrearItem):
         existe= Item.objects.filter(nombre= new_nombre)
         if existe:
             diccionario['error']= 'Nombre de Item ya existe'
+            diccionario['lista_tipo_de_item']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
             return render(request, super(CrearItemConfirm, self).template_name, diccionario)
         else:
             nuevo_item= Item()
@@ -86,10 +85,9 @@ class CrearItemConfirm(CrearItem):
             nuevo_item.descripcion= request.POST['descripcion_item']
             nuevo_item.fase=Fase.objects.get(id=request.POST['fase_item'])
             tipodeitem= Tipo_de_Item.objects.get(id=request.POST['tipo_item'], activo=True)
-            print(tipodeitem.cantidad_de_item)
             tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item+1
-            print(tipodeitem.cantidad_de_item)
             nuevo_item.tipodeItemAsociado= tipodeitem.nombre
+            nuevo_item.tipo_de_item=tipodeitem
             nuevo_item.save()
             tipodeitem.save()
             return render(request, self.template_name, diccionario)
@@ -175,84 +173,6 @@ class EditarItemConfirm(CrearItem):
         return render(request, self.template_name, diccionario)
 
 
-#mostrar atributos de item
-class MostrarAtributo(ItemView):
-     template_name = 'Item/MostrarAtributo.html'
-     def post(self, request, *args, **kwargs):
-         diccionario={}
-         fase_actual= Fase.objects.get(id=request.POST['fase'])
-         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
-         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-         item_actual= Item.objects.get(id=request.POST['item'])
-         tipo_de_item_actual= Tipo_de_Item.objects.get(nombre= item_actual.tipodeItemAsociado, activo= True)
-         diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo= True)
-         diccionario['fase']= fase_actual
-         diccionario['logueado']= usuario_logueado
-         diccionario['proyecto']= proyecto_actual
-         diccionario['item']= item_actual
-         return render(request, self.template_name, diccionario)
-
-
-#Completar atributo
-class CompletarAtributo(MostrarAtributo):
-    template_name = 'Item/CompletarAtributo.html'
-    def post(self, request, *args, **kwargs):
-        diccionario={}
-        fase_actual= Fase.objects.get(id=request.POST['fase'])
-        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
-        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        atributo_actual= Atributo.objects.get(id=request.POST['atributo'])
-        item_actual= Item.objects.get(id=request.POST['item'])
-        tipo_de_item_actual= Tipo_de_Item.objects.get(nombre= item_actual.tipodeItemAsociado, activo= True)
-        tipo_de_atributo_actual= Tipo_de_Atributo.objects.get(nombre= atributo_actual.tipo, activo= True)
-        print(tipo_de_atributo_actual.nombre)
-        print(tipo_de_atributo_actual.tipo)
-        diccionario['fase']= fase_actual
-        diccionario['logueado']= usuario_logueado
-        diccionario['proyecto']= proyecto_actual
-        diccionario['tipo_de_atributo']=tipo_de_atributo_actual
-        diccionario['atributo']=atributo_actual
-        diccionario['item']=item_actual
-        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,completar_atributos=True, activo=True)):
-            if not fase_actual.estado == 'F':
-                    #del diccionario[self.context_object_name]
-                    return render(request, self.template_name, diccionario)
-            else:
-               diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo= True)
-               diccionario['error']= 'Fase finalizada. No puedes realizar esta accion'
-               return render(request, super(CompletarAtributo, self).template_name, diccionario)
-        else:
-            diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem= tipo_de_item_actual, activo= True)
-            diccionario['error']= 'No puedes realizar esta accion'
-            return render(request, super(CompletarAtributo, self).template_name, diccionario)
-
-#completar atributo confirmar
-class CompletarAtributoConfirm(CompletarAtributo):
-    template_name = 'Item/CompletarAtributoConfirm.html'
-    def post(self, request, *args, **kwargs):
-        diccionario= {}
-        item_actual= Item.objects.get(id=request.POST['item'])
-        fase_actual= Fase.objects.get(id=request.POST['fase_item'])
-        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
-        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        atributo_actual= Atributo.objects.get(id= request.POST['atributo'])
-        tipo_de_atributo_actual=Tipo_de_Atributo.objects.get(id=request.POST['tipo_de_atributo'])
-        diccionario['logueado']= usuario_logueado
-        diccionario['item']=item_actual
-        diccionario['fase']= fase_actual
-        diccionario['proyecto']= proyecto_actual
-        if tipo_de_atributo_actual.tipo == 'N':
-            atributo_actual.tipo_numerico= request.POST['tipo_numerico']
-        elif tipo_de_atributo_actual.tipo == 'T':
-            atributo_actual.tipo_texto= request.POST['tipo_texto']
-        elif tipo_de_atributo_actual.tipo == 'B':
-            atributo_actual.tipo_boolean= request.POST['tipo_buleano']
-        elif tipo_de_atributo_actual.tipo == 'F':
-            atributo_actual.tipo_fecha=request.POST['tipo_fecha']
-        atributo_actual.save()
-        return render(request, self.template_name, diccionario)
-
-
 #Generacion de Informe del Item
 class InformeItem(ItemView):
     template_name = 'Item/InformeItem.html'
@@ -267,7 +187,7 @@ class InformeItem(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         tipo_de_item_actual=Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
-        diccionario['lista_de_atributos']= Atributo.objects.filter(tipodeitem=tipo_de_item_actual, activo= True)
+        diccionario['lista_de_atributos']= Atributo.objects.filter(item=item_actual, activo= True)
         return render(request, self.template_name, diccionario)
 
 class AprobarItem(ItemView):
@@ -281,8 +201,17 @@ class AprobarItem(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        item_actual.estado='A'
-        item_actual.version= item_actual.version + 1
-        item_actual.save()
-        diccionario['item']= item_actual
-        return render(request, self.template_name, diccionario)
+        if item_actual.estado == 'D':
+            item_actual.estado='A'
+            item_actual.version= item_actual.version + 1
+            item_actual.save()
+            diccionario['item']= item_actual
+            return render(request, self.template_name, diccionario)
+        elif item_actual.estado== 'A':
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'Item ya esta Aprobado.'
+            return render(request, super(AprobarItem, self).template_name, diccionario)
+        elif item_actual.estado== 'B':
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'Item Bloqueado. No puede realizar accion.'
+            return render(request, super(AprobarItem, self).template_name, diccionario)
