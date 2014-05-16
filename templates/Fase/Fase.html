@@ -59,12 +59,6 @@
     {% endfor %}
 {% endblock %}
 {% block Botones %}
-    <form action="/proyecto/fase/finalizar_proyecto/" method="POST"> {% csrf_token %}
-        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <input type="hidden" name='fases' value={{ lista_fases }} >
-        <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Finalizar proyecto">
-    </form>
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
@@ -74,16 +68,17 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Administrar Tipo de Ítem" >
-    </form>
-    <form action="/proyecto/fase/tipoDeAtributo/" method="POST"> {% csrf_token %}
-        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Administrar Tipo de Atributo" >
     </form><br>
     <form action="/proyecto/fase/asignar_nuevos_miembros/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="submit" value="Asignar Nuevos Miembros">
+    </form>
+    <form action="/proyecto/fase/finalizar_proyecto/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='fases' value={{ lista_fases }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Finalizar proyecto">
     </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >

@@ -22,6 +22,9 @@
                 <input type="checkbox" name="establecer_relacion" {% if rol.establecer_relacion %} checked {% endif %}>Establecer Relacion<br>
                 <input type="checkbox" name="eliminar_relacion" {% if rol.eliminar_relacion %} checked {% endif %}>Eliminar Relacion<br>
                 <input type="checkbox" name="consultar_relacion"{% if rol.consultar_relaciones %} checked {% endif %}>Consultar Relacion<br>
+            </dd>
+            <dl><dt><label>Permisos de Tipo de Atributo:</label></dt></dl>
+            <dd>
                 <input type="checkbox" name="agregar_atributo" {% if rol.agregar_atributo %} checked {% endif %}>Agregar Atributo<br>
                 <input type="checkbox" name="eliminar_atributo" {% if rol.eliminar_atributo %} checked {% endif %}>Eliminar Atributo<br>
                 <input type="checkbox" name="completar_atributo" {% if rol.completar_atributos %} checked {% endif %}>Completar Atributo<br>
@@ -32,6 +35,11 @@
                 <input type="checkbox" name="crear_tipodeitem" {% if rol.crear_tipodeitem %} checked {% endif %}>Crear Tipo de Item<br>
                 <input type="checkbox" name="eliminar_tipodeitem" {% if rol.eliminar_tipodeotem %} checked {% endif %}>Eliminar Tipo de Item<br>
                 <input type="checkbox" name="modificar_tipodeitem" {% if rol.modificar_tipodeitem %} checked {% endif %}>Modificar Tipo de Item
+            </dd>
+            <dl><dt><label>Permisos de Tipo de Atributo:</label></dt></dl>
+            <dd>
+                <input type="checkbox" name="crear_tipodeatributo" {% if rol.crear_tipodeatributo %} checked {% endif %}>Crear Tipo de Atributo<br>
+                <input type="checkbox" name="eliminar_tipodeatributo" {% if rol.eliminar_tipodeatributo %} checked {% endif %}>Eliminar Tipo de Atributo
             </dd>
             <dl><dt><label>Permisos de Linea Base:</label></dt></dl>
             <dd><input type="checkbox" name="crear_lineabase" {% if rol.crear_lineabase %} checked {% endif %}>Crear Linea Base</dd><br>
