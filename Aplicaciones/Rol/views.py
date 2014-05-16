@@ -52,8 +52,6 @@ class CrearRolConfirm(CrearRol):
         )
         nuevo_rol.save()
         #Completamos los permisos
-        if 'votar_solicitud' in request.POST: nuevo_rol.votar= True
-        if 'consultar_solicitud' in request.POST: nuevo_rol.consultar_solicitud= True
         if 'crear_item' in request.POST: nuevo_rol.crear_item= True
         if 'editar_item' in request.POST: nuevo_rol.editar_item= True
         if 'eliminar_item' in request.POST: nuevo_rol.eliminar_item= True
@@ -112,10 +110,6 @@ class EditarRolConfirmar(EditarRol):
         #Actualizamos los permisos
         for rol_actual in roles:
             rol_actual.nombre= nuevo_rol_nombre
-            if 'votar_solicitud' in request.POST: rol_actual.votar= True
-            else: rol_actual.votar= False
-            if 'consultar_solicitud' in request.POST: rol_actual.consultar_solicitud= True
-            else: rol_actual.consultar_solicitud= False
             if 'crear_item' in request.POST: rol_actual.crear_item= True
             else: rol_actual.crear_item= False
             if 'editar_item' in request.POST: rol_actual.editar_item= True
@@ -251,8 +245,6 @@ class AsignarRolConfirm(RolView):
             nombre= rol_actual.nombre,
             usuario= usuario_rol,
             proyecto= proyecto_actual,
-            votar= rol_actual.votar,
-            consultar_solicitud= rol_actual.consultar_solicitud,
             crear_item= rol_actual.crear_item,
             eliminar_item= rol_actual.eliminar_item,
             editar_item= rol_actual.editar_item,

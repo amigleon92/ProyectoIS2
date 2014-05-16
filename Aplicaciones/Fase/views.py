@@ -97,11 +97,11 @@ class CerrarFase(FaseView):
             if fase_actual.estado=='I':
                 for i in diccionario['lista_fases']:
                     if i.numeroSecuencia < fase_actual.numeroSecuencia and not i.estado=='F':
-                        diccionario['error']= 'No se puede cerra la fase - Fase Anterior No Finalizadda'
+                        diccionario['error']= 'No se puede cerrar la fase - Fase Anterior No Finalizadda'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
                 for item in lista_de_items:
                     if not item.estado == 'B':
-                        diccionario['error']= 'No se puede cerra la fase - Exite items NO BLOQUEADO'
+                        diccionario['error']= 'No se puede cerrar la fase - Exite items NO BLOQUEADO'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
                 fase_actual.estado='F'
                 fase_actual.save()
@@ -145,17 +145,22 @@ class AsignarNuevosMiembros(FaseView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        lista_usuarios= Usuario.objects.filter(estado= True)
-        lista_no_miembros= []
-        for usuario in lista_usuarios:
-            if not usuario in proyecto_actual.miembros.all():
-                lista_no_miembros.append(usuario)
-        if not len(lista_no_miembros):
-            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
-            diccionario['error']= 'No existen mas usuarios'
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
+            lista_usuarios= Usuario.objects.filter(estado= True)
+            lista_no_miembros= []
+            for usuario in lista_usuarios:
+                if not usuario in proyecto_actual.miembros.all():
+                    lista_no_miembros.append(usuario)
+            if not len(lista_no_miembros):
+                diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+                diccionario['error']= 'No existen mas usuarios'
+                return render(request, super(AsignarNuevosMiembros, self).template_name, diccionario)
+            diccionario['lista_no_miembros']= lista_no_miembros
+            return render(request, self.template_name, diccionario)
+        else:
+            diccionario[super(AsignarNuevosMiembros, self).context_object_name]= Fase.objects.filter(proyecto= proyecto_actual)
+            diccionario['error']= 'No posee permisos para asignar nuevos miembros al proyecto'
             return render(request, super(AsignarNuevosMiembros, self).template_name, diccionario)
-        diccionario['lista_no_miembros']= lista_no_miembros
-        return render(request, self.template_name, diccionario)
 
 class AsignarNuevosMiembrosConfirm(FaseView):
     template_name = 'Fase/AsignarNuevosMiembrosConfirmar.html'
@@ -169,4 +174,4 @@ class AsignarNuevosMiembrosConfirm(FaseView):
         for usuario in usuarios_miembros:
             usuario= Usuario.objects.get(nick= usuario)
             proyecto_actual.miembros.add(usuario)
-        return render(request, 'Fase/AsignarNuevosMiembrosConfirmar.html', diccionario)
+        return render(request, self.template_name, diccionario)

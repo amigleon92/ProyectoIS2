@@ -10,12 +10,7 @@
                 <input type="hidden" name="nombre_rol" value="{{ rol.nombre }}"/></dd>
                 <input type="text" name="nombre_nuevo_rol" value="{{ rol.nombre }}" required/></dd>
             </dl>
-            <dl><dt><label><u>PERMISOS</u></label></dt></dl>
-            <dd>
-                <input type="checkbox" name="votar_solicitud" {% if rol.votar %} checked {% endif %}>Votar en la Solicitud de Cambios<br>
-                <input type="checkbox" name="consultar_solicitud" {% if rol.consultar_solicitud %} checked {% endif %}>Consultar Solicitud de Cambios
-            </dd>
-            <dl><dt><label>Permisos de Item:</label></dt></dl>
+            <dl><dt><label><u>PERMISOS</u></label></dt></dl><dl><dt><label>Permisos de Item:</label></dt></dl>
             <dd>
                 <input type="checkbox" name="crear_item" {% if rol.crear_item %} checked {% endif %}>Crear Item <br>
                 <input type="checkbox" name="editar_item" {% if rol.editar_item %} checked {% endif %}>Editar Item<br>
