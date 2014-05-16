@@ -94,3 +94,26 @@ fase3= Fase(
 )
 fase3.save()
 
+#Rol para realizar las distintas operaciones...
+rol_operaciones= Rol(
+	nombre= 'Administrador del Proyecto',
+	usuario= u_base,
+	proyecto= primer_proyecto,
+	crear_item= True,
+	eliminar_item= True,
+	editar_item= True,
+	consultar_items= True,
+	aprobar_item= True,
+	agregar_atributo= True,
+	eliminar_atributo= True,
+	completar_atributos= True,
+	consultar_atributos= True,
+	crear_tipodeitem= True,
+	modificar_tipodeitem= True,
+	eliminar_tipodeitem= True,
+	crear_tipodeatributo= True,
+	eliminar_tipodeatributo= True,
+	crear_lineabase= True,
+)
+rol_operaciones.save()
+
