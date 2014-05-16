@@ -91,6 +91,10 @@ class CrearItemConfirm(CrearItem):
             nuevo_item.tipodeItemAsociado= tipodeitem.nombre
             nuevo_item.tipo_de_item=tipodeitem
             nuevo_item.save()
+            #Identificador para las versiones anteriores
+            nuevo_item.identificador= nuevo_item.id
+            nuevo_item.save()
+            #######################
             tipodeitem.save()
             return render(request, self.template_name, diccionario)
 
@@ -112,6 +116,10 @@ class EliminarItem(ItemView):
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']= fase_actual
 
+        if not item_actual.estado=='D':
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'Item ya esta Aprobado/Bloqueado'
+            return render(request, super(EliminarItem,self).template_name, diccionario)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
             item_actual.activo= False
             tipodeitem.save()
@@ -159,6 +167,22 @@ class EditarItemConfirm(CrearItem):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
+        #Guardamos la version anterior
+        version_anterior= Item(
+            nombre= item_actual.nombre,
+            prioridad= item_actual.prioridad,
+            descripcion= item_actual.descripcion,
+            version= item_actual.version,
+            estado= item_actual.estado,
+            tipodeItemAsociado= item_actual.tipodeItemAsociado,
+            tipo_de_item= item_actual.tipo_de_item,
+            fase= item_actual.fase,
+            lineaBase= item_actual.lineaBase,
+            costo= item_actual.costo,
+            activo= False,
+            identificador= item_actual.identificador
+        )
+        version_anterior.save()
 
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual

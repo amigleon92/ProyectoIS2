@@ -157,7 +157,10 @@ item_fase2= Item(
     tipo_de_item= tipo_item1,
     fase=fase2,
     lineaBase=l_base1,
+    descripcion='Es un item de fase de desarrollo'
 )
+item_fase2.save()
+item_fase2.identificador= item_fase2.id
 item_fase2.save()
 
 tipo_atributo1= Tipo_de_Atributo(
