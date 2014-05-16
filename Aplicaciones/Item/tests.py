@@ -1,4 +1,6 @@
 from django.test import TestCase
+from Aplicaciones.Linea_Base.models import LineaBase
+from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
 from Aplicaciones.Usuario.models import Usuario
 from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.models import Proyecto
@@ -24,12 +26,20 @@ class TestItemView(TestCase):
           p = self.crear_proyecto(nombre='Proyecto_test')
           return Fase.objects.create(nombre= nombre, proyecto= p)
 
+    def crear_tipo_item(self, nombre, p):
+          return Tipo_de_Item.objects.create(nombre= nombre, descripcion= 'Item Tipo test', cantidad_de_item=1, proyecto= p)
+
+    def crear_lineaBase(self, nombre):
+        f= self.crear_fase(nombre='Fase_item')
+        return LineaBase(nombre=nombre, fase=f)
+
     def crear_item(self, nombre ):
-         f = self.crear_fase(nombre= 'Fase_item')
-         return Item.objects.create(nombre = nombre, fase = f)
+         LB = self.crear_lineaBase(nombre= 'lb_test_item')
+         tipo_item= self.crear_tipo_item(nombre='tipo', p=LB.fase.proyecto)
+         return Item.objects.create(nombre = nombre,prioridad=1,  tipodeItemAsociado= tipo_item.nombre, tipo_de_item= tipo_item, fase=LB.fase, lineaBase=LB)
 
     def test_crea_item(self):
          test = self.crear_item(nombre ='test_item')
          self.assertTrue(isinstance(test,Item))
          self.assertEqual(test.__unicode__(), test.nombre)
-         print('Test de crear item, exitoso')
+         print('Test de crear item con Linea Base, exitoso')
