@@ -11,12 +11,6 @@
         <dl><dt><label>Prioridad:</label></dt><dt>{{ item.prioridad }}</dt></dl>
         <dl><dt><label>Costo:</label></dt><dt>{{ item.costo }}</dt></dl>
         <dl><dt><label>Tipo de Ítem Asociado:</label></dt><dt>{{ item.tipodeItemAsociado }}</dt></dl>
-        <dl>
-            <dt><label>Atributos Asociados:</label></dt>
-            {% for atributo in lista_de_atributos %}
-                <dt>{{ atributo.nombre }}</dt>
-            {% endfor %}
-        </dl>
     </fieldset>
 {% endblock %}
 {% block Botones %}

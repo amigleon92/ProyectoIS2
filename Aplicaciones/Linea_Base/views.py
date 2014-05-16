@@ -61,9 +61,9 @@ class CrearLineaBaseConfirm(CrearLineaBase):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         new_nombre= request.POST['nombre_linea_base']
-        existe= LineaBase.objects.filter(nombre= new_nombre)
+        existe= LineaBase.objects.filter(nombre= new_nombre, fase=fase_actual, activo= True)
         if existe:
-            diccionario['error']= 'Nombre de Item ya existe'
+            diccionario['error']= 'Nombre de Linea base ya existe'
             diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
             return render(request, super(CrearLineaBaseConfirm, self).template_name, diccionario)
         else:
@@ -78,7 +78,6 @@ class CrearLineaBaseConfirm(CrearLineaBase):
                 item_actual.lineaBase=nueva_lienea_base
                 item_actual.estado='B'
                 item_actual.save()
-            #print(Item.objects.filter(lineaBase=nueva_lienea_base))
             return render(request, self.template_name, diccionario)
 
 #mostrar items de linea base

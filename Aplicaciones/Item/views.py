@@ -74,9 +74,9 @@ class CrearItemConfirm(CrearItem):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         new_nombre= request.POST['nombre_item']
-        existe= Item.objects.filter(nombre= new_nombre)
+        existe= Item.objects.filter(nombre= new_nombre, fase=fase_actual)
         if existe:
-            diccionario['error']= 'Nombre de Item ya existe'
+            diccionario['error']= 'Nombre de Item ya fue utilizado'
             diccionario['lista_tipo_de_item']= Tipo_de_Item.objects.filter(proyecto= proyecto_actual, activo=True)
             return render(request, super(CrearItemConfirm, self).template_name, diccionario)
         else:
@@ -203,12 +203,36 @@ class AprobarItem(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        if item_actual.estado == 'D':
+        existe_atributo_nulo= False
+        lista_de_atributos= Atributo.objects.filter(item=item_actual, activo=True)
+        for atributo_actual in lista_de_atributos:
+                if atributo_actual.tipo_de_atributo_tipo == 'N' and not atributo_actual.tipo_numerico:
+                    existe_atributo_nulo=True
+                    break
+                elif atributo_actual.tipo_de_atributo_tipo == 'T' and not atributo_actual.tipo_texto:
+                    existe_atributo_nulo=True
+                    break
+                elif atributo_actual.tipo_de_atributo_tipo == 'B' and not atributo_actual.tipo_boolean:
+                    existe_atributo_nulo=True
+                    break
+                elif atributo_actual.tipo_de_atributo_tipo == 'F' and not atributo_actual.tipo_fecha:
+                    existe_atributo_nulo=True
+                    break
+
+        if item_actual.estado == 'D' and len(lista_de_atributos):
+            if existe_atributo_nulo:
+                diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+                diccionario['error']= 'Existe atributos sin completar.'
+                return render(request, super(AprobarItem, self).template_name, diccionario)
             item_actual.estado='A'
             item_actual.version= item_actual.version + 1
             item_actual.save()
             diccionario['item']= item_actual
             return render(request, self.template_name, diccionario)
+        elif not len(lista_de_atributos):
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'Item sin atributos.'
+            return render(request, super(AprobarItem, self).template_name, diccionario)
         elif item_actual.estado== 'A':
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             diccionario['error']= 'Item ya esta Aprobado.'

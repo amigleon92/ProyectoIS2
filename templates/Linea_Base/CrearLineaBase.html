@@ -7,10 +7,10 @@
         <fieldset>
             <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre_linea_base" required=""/></dd></dl>
             <dl>
-                <dt><label>Ítems Aprobados:</label></dt>
+                <dt><label>Ítems Aprobados: </label></dt>
                 <dd>
                     <select multiple name="items_en_linea_base[]" required>
-                        <option value="">Seleccionar ítems</option>
+                        <option value="" disabled>Seleccionar ítems</option>
                         {% for item in lista_de_items %}
                                 <option value={{ item.id }}>{{ item.nombre }}</option>
                         {% endfor %}

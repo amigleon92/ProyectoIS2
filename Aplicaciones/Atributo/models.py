@@ -23,9 +23,9 @@ class Atributo(models.Model):
     tipo_de_atributo_nombre= models.CharField(max_length=50, null=False)           #nombre del tipo de atributo
     tipo_de_atributo_tipo=models.CharField(max_length=1, null=True)                 #tipo del tipo de atributo
 
-    tipo_numerico=models.IntegerField(default=0)
+    tipo_numerico=models.IntegerField(null=True)
     tipo_texto=models.CharField(max_length=50, null=True)
-    tipo_boolean= models.BooleanField(default=True)
+    tipo_boolean= models.NullBooleanField(null=True)
     tipo_fecha= models.DateField(null=True)
 
     item= models.ForeignKey(Item, null=True)      #apunta al item al que pertenece

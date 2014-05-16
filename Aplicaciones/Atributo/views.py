@@ -66,7 +66,7 @@ class AgregarAtributoConfirm(AgregarAtributo):
         diccionario['proyecto']= proyecto_actual
         diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(tipo_de_item= item_actual.tipo_de_item, activo=True)
         new_nombre= request.POST['nombre_atributo']
-        existe= Atributo.objects.filter(nombre= new_nombre)
+        existe= Atributo.objects.filter(nombre= new_nombre, activo= True, item= item_actual)
         if existe:
             diccionario['error']= 'Nombre del atributo ya existe'
             return render(request, super(AgregarAtributoConfirm, self).template_name, diccionario)
