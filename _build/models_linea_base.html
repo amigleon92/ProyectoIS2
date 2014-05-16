@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>vista de Login &mdash; ProyectoIS2 1.0.0 documentation</title>
+    <title>Modelo de linea base &mdash; ProyectoIS2 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="ProyectoIS2 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="vista de usuarios" href="views_usuario.html" />
-    <link rel="prev" title="Modelo de linea base" href="models_linea_base.html" /> 
+    <link rel="next" title="vista de Login" href="views_login.html" />
+    <link rel="prev" title="Modelo de tipo de atributo" href="models_tipo_de_atributo.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="views_usuario.html" title="vista de usuarios"
+          <a href="views_login.html" title="vista de Login"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="models_linea_base.html" title="Modelo de linea base"
+          <a href="models_tipo_de_atributo.html" title="Modelo de tipo de atributo"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -52,29 +52,20 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="vista-de-login">
-<h1>vista de Login<a class="headerlink" href="#vista-de-login" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-</span><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
-<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">request</span>
+  <div class="section" id="module-Aplicaciones.Linea_Base.models">
+<span id="modelo-de-linea-base"></span><h1>Modelo de linea base<a class="headerlink" href="#module-Aplicaciones.Linea_Base.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Aplicaciones.Linea_Base.models.LineaBase">
+<em class="property">class </em><tt class="descclassname">Aplicaciones.Linea_Base.models.</tt><tt class="descname">LineaBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/Aplicaciones/Linea_Base/models.html#LineaBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Aplicaciones.Linea_Base.models.LineaBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Se crea el modelo Linea Base</p>
+<p>Estan definidos en la tabla los atributos</p>
+<ul class="simple">
+<li>nombre: Nombre de la linea base</li>
+<li>estado: puede encontrarse en 2 estados: Abierta y Cerrada.</li>
+<li>pkFase: el id de la Fase a la que pertenece</li>
+</ul>
+</dd></dl>
 
-<span class="c"># Create your views here.</span>
-
-<span class="k">class</span> <span class="nc">LoginView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Login/Login.html&#39;</span>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
 </div>
 
 
@@ -84,14 +75,14 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="models_linea_base.html"
-                        title="previous chapter">Modelo de linea base</a></p>
+  <p class="topless"><a href="models_tipo_de_atributo.html"
+                        title="previous chapter">Modelo de tipo de atributo</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="views_usuario.html"
-                        title="next chapter">vista de usuarios</a></p>
+  <p class="topless"><a href="views_login.html"
+                        title="next chapter">vista de Login</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/views_login.txt"
+    <li><a href="_sources/models_linea_base.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -121,10 +112,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="views_usuario.html" title="vista de usuarios"
+          <a href="views_login.html" title="vista de Login"
              >next</a> |</li>
         <li class="right" >
-          <a href="models_linea_base.html" title="Modelo de linea base"
+          <a href="models_tipo_de_atributo.html" title="Modelo de tipo de atributo"
              >previous</a> |</li>
         <li><a href="index.html">ProyectoIS2 1.0.0 documentation</a> &raquo;</li> 
       </ul>

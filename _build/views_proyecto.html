@@ -168,121 +168,243 @@
 112
 113
 114
-115</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-</span><span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.views</span> <span class="kn">import</span> <span class="n">ProyectoView</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+</span><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Login.views</span> <span class="kn">import</span> <span class="n">LoginView</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 
 <span class="c"># Create your views here.</span>
-<span class="c">#Lista de usuarios</span>
-<span class="k">class</span> <span class="nc">UsuarioView</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/Usuario.html&#39;</span>
-    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">&#39;lista_usuarios&#39;</span>
+
+<span class="c"># Lista de Proyectos</span>
+<span class="k">class</span> <span class="nc">ProyectoView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/Proyecto.html&#39;</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">&#39;lista_proyectos&#39;</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>                                                  <span class="c">#Diccionario para ser retornado en HTML</span>
+        <span class="c">#Login.html es la unica pagina que envia un &#39;user&#39; en el diccionario de request.POST</span>
+        <span class="k">if</span> <span class="s">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">existe</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">existe</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">existe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">password</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]:</span>
+                    <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+                    <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">existe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span> <span class="n">error</span><span class="o">=</span> <span class="s">&#39;Password incorrecto&#39;</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">error</span><span class="o">=</span> <span class="s">&#39;Nombre de usuario no existe&#39;</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">error</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">LoginView</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">LoginView</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span><span class="s">&#39;Acceso Incorrecto&#39;</span><span class="p">})</span>
+
+<span class="c">#Creacion de Proyectos</span>
+<span class="k">class</span> <span class="nc">CrearProyecto</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/CrearProyecto.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="c">#Solamente el Administrador del Sistema puede ingresar a la Administracion de Usuarios</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">)):</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">)):</span> <span class="c">#Si el logueado es Admin?</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No posee permisos para ver los usuarios del sistema&#39;</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="nb">super</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearProyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
-<span class="c">#Creacion de usuario</span>
-<span class="k">class</span> <span class="nc">CrearUsuario</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/CrearUsuario.html&#39;</span>
+<span class="k">class</span> <span class="nc">CrearProyectoConfirm</span><span class="p">(</span><span class="n">CrearProyecto</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/CrearProyectoConfirm.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">CrearUsuarioConfirm</span><span class="p">(</span><span class="n">CrearUsuario</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/CrearUsuarioConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">nuevo_nick</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-        <span class="n">existe</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">nuevo_nick</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">existe</span><span class="p">):</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;El nombre de usuario ya existe&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearUsuarioConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">nuevo_usuario</span><span class="o">=</span> <span class="n">Usuario</span><span class="p">()</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">nick</span><span class="o">=</span> <span class="n">nuevo_nick</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">password</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre&#39;</span><span class="p">]</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">apellido</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;apellido&#39;</span><span class="p">]</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">cedula</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;cedula&#39;</span><span class="p">]</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">email</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>
-        <span class="n">nuevo_usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">EditarUsuario</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/EditarUsuario.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;usuario&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">EditarUsuarioConfirm</span><span class="p">(</span><span class="n">EditarUsuario</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/EditarUsuarioConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">modificacion</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">])</span>
-        <span class="n">modificacion_nick</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">]</span>
-        <span class="n">existe</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">modificacion_nick</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">existe</span><span class="p">)</span> <span class="ow">and</span> <span class="n">existe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="n">modificacion</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;El nombre de usuario ya existe&#39;</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;usuario&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">modificacion</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarUsuarioConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">nick</span><span class="o">=</span> <span class="n">modificacion_nick</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">password</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;pass&#39;</span><span class="p">]</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre&#39;</span><span class="p">]</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">apellido</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;apellido&#39;</span><span class="p">]</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">cedula</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;cedula&#39;</span><span class="p">]</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">email</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>
-        <span class="n">modificacion</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">EliminarUsuario</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/EliminarUsuario.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">eliminado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">])</span>
-        <span class="c">#Verificar si es Administrador del Sistema</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s">&#39;Administrador del Sistema&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">eliminado</span><span class="p">)):</span>
+        <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_proyecto&#39;</span><span class="p">]</span>
+        <span class="n">existe</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">existe</span><span class="p">:</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede eliminar - El usuario es Administrador del Sistema&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarUsuario</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="c">#Verificar si es lider de algun proyecto</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">eliminado</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)):</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede eliminar - El usuario es lider de un proyecto activo&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarUsuario</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="n">eliminado</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="bp">False</span>
-        <span class="n">eliminado</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre de proyecto ya existe&#39;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearProyectoConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#Creamos el proyecto</span>
+            <span class="n">nuevo_proyecto</span><span class="o">=</span> <span class="n">Proyecto</span><span class="p">()</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_proyecto&#39;</span><span class="p">]</span>
+            <span class="n">new_lider</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;lider_proyecto&#39;</span><span class="p">])</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">lider</span><span class="o">=</span> <span class="n">new_lider</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c">#Agregamos al lider a los miembros para que puedda visualizar el proyecto</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_lider</span><span class="p">)</span>
+            <span class="n">nuevo_proyecto</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c">#Creamos el nuevo Rol Lider del Proyecto</span>
+            <span class="n">nuevo_rol</span><span class="o">=</span> <span class="n">Rol</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">new_lider</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">nuevo_proyecto</span><span class="p">)</span>
+            <span class="n">nuevo_rol</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">MostrarUsuario</span><span class="p">(</span><span class="n">UsuarioView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Usuario/MostrarUsuario.html&#39;</span>
+<span class="c">#Eliminacion Logica de Proyectos</span>
+<span class="k">class</span> <span class="nc">EliminarProyecto</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/EliminarProyecto.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
         <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">mostrar</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;codigo&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;usuario&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">mostrar</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
+                <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">activo</span><span class="o">=</span> <span class="bp">False</span>
+                <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">rol_asociado</span><span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">lider</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="n">rol_asociado</span><span class="o">.</span><span class="n">activo</span><span class="o">=</span> <span class="bp">False</span>
+                <span class="n">rol_asociado</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>  <span class="c">#No hace falta enviar la lista de proyectos</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Proyecto No Finalizado - No se puede eliminar&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarProyecto</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+
+<span class="c">#Generacion de Informe del Proyecto</span>
+<span class="k">class</span> <span class="nc">InformeProyecto</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s">&#39;N&#39;</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
+            <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Proyecto/InformeProyecto.html&#39;</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede mostrar proyecto - No Iniciado&#39;</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+
+<span class="c">#Iniciando Proyecto</span>
+<span class="k">class</span> <span class="nc">InicializarProyecto</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/InicializarProyecto.html&#39;</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s">&#39;N&#39;</span><span class="p">:</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_usuarios&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
+                <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;El proyecto ya esta inicializado&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puede realizar esta accion&#39;</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">InicializarProyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">InicializarProyectoConfirm</span><span class="p">(</span><span class="n">InicializarProyecto</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/InicializarProyectoConfirm.html&#39;</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>
+        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
+        <span class="n">proyecto_detalles</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">presupuesto</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;presupuesto&#39;</span><span class="p">]</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">costoTemporal</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;costoTemporal&#39;</span><span class="p">]</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">costoMonetario</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;costoMonetario&#39;</span><span class="p">]</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">fechaInicio</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaInicio&#39;</span><span class="p">]</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">fechaFin</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaFin&#39;</span><span class="p">]</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">numeroFase</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;numeroFase&#39;</span><span class="p">]</span>
+        <span class="n">usuarios_miembros</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&#39;miembros[]&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">usuarios_miembros</span><span class="p">:</span> <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nick</span><span class="o">=</span> <span class="n">i</span><span class="p">))</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="s">&#39;I&#39;</span>
+        <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">proyecto_detalles</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">numeroFase</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">nueva_fase</span><span class="o">=</span> <span class="n">Fase</span><span class="p">()</span>
+            <span class="n">nueva_fase</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Fase de &#39;</span><span class="o">+</span> <span class="n">proyecto_detalles</span><span class="o">.</span><span class="n">nombre</span>
+            <span class="n">nueva_fase</span><span class="o">.</span><span class="n">numeroSecuencia</span><span class="o">=</span> <span class="n">i</span>
+            <span class="n">nueva_fase</span><span class="o">.</span><span class="n">numero</span><span class="o">=</span> <span class="n">i</span>
+            <span class="n">nueva_fase</span><span class="o">.</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_detalles</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="n">nueva_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span><span class="s">&#39;I&#39;</span>
+            <span class="n">nueva_fase</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+
+
+
+<span class="c">#construccion</span>
+<span class="k">class</span> <span class="nc">ConstruccionView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Proyecto/Construccion.html&#39;</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
+        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>

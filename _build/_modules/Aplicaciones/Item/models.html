@@ -49,6 +49,8 @@
   <h1>Source code for Aplicaciones.Item.models</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Linea_Base.models</span> <span class="kn">import</span> <span class="n">LineaBase</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Tipo_de_Item.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Item</span>
 
 <span class="c"># Create your models here.</span>
 <span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -62,9 +64,7 @@
 <span class="sd">    - descripcion: Una breve descripcion del item</span>
 <span class="sd">    - tipoDeItemAsociado:En el cual se denota el tipo de item asignado</span>
 <span class="sd">    - estado: puede encontrarse en 4 estados: Bloqueado, Revision, Desaprobado, Aprobado.</span>
-<span class="sd">    - costo: el costo del item</span>
 <span class="sd">    - pkFase: el id de la Fase a la que pertenece</span>
-<span class="sd">    - activo: boolean para el estado logico del item</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">estados_probables</span><span class="o">=</span> <span class="p">(</span>
         <span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span><span class="s">&#39;Bloqueado&#39;</span><span class="p">),</span>
@@ -76,9 +76,11 @@
     <span class="n">prioridad</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">descripcion</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">version</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">tipodeItemAsociado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">estado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span> <span class="p">(</span> <span class="n">max_length</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span>  <span class="n">choices</span> <span class="o">=</span> <span class="n">estados_probables</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;D&#39;</span> <span class="p">)</span>
+    <span class="n">tipodeItemAsociado</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">tipo_de_item</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Tipo_de_Item</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;fkTipodeItemI&#39;</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">fase</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;fkFaseI&#39;</span><span class="p">)</span>
+    <span class="n">lineaBase</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;fkLineaBaseI&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">costo</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">activo</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 

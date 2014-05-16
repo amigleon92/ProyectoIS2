@@ -3,7 +3,21 @@ from Aplicaciones.Item.models import Item
 
 # Create your models here.
 class Atributo(models.Model):
+    """
+    Se crea el modelo Atributo
 
+    Estan definidos en la tabla los atributos
+
+    - nombre: Nombre del atributo
+    - descripcion: Una breve descripcion del atributo
+    - tipo:el cual apunta al tipo de atributo
+    - tipo_numerico:
+    - tipo_texto:
+    - tipo_boolean:
+    - tipo_fecha:
+    - tipodeitem: el cual apunta al tipo de item al que pertenece
+    - activo: estado logico del atributo
+    """
     nombre= models.CharField(max_length=50, null=False)
     descripcion= models.TextField(max_length=200, null=True)
     tipo_de_atributo_nombre= models.CharField(max_length=50, null=False)           #nombre del tipo de atributo

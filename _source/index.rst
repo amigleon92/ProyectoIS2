@@ -19,6 +19,7 @@ Contiene:
    models_tipo_de_item
    models_Atributo
    models_tipo_de_atributo
+   models_linea_base
    views_login
    views_usuario
    views_rol
@@ -28,6 +29,8 @@ Contiene:
    views_tipo_de_item
    views_Atributo
    views_tipo_de_atributo
+   views_linea_base
+
 
 Indices and tables
 ==================

@@ -1,5 +1,5 @@
 vista de rol
-================
+============
 .. literalinclude:: ../Aplicaciones/Rol/views.py
     :lines: 1-109
     :linenos:

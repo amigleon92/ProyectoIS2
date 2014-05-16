@@ -187,13 +187,7 @@
 131
 132
 133
-134
-135
-136
-137
-138
-139
-140</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+134</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 </span><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Item</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
@@ -247,7 +241,6 @@
         <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_tipo_de_item&#39;</span><span class="p">]</span>
         <span class="n">existe</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">existe</span><span class="p">:</span>
-           <span class="c">#diccionario[&#39;lista_usuarios&#39;]= Usuario.objects.filter(estado= True)</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre de Tipo de Item ya existe&#39;</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearTipoDeItemConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -255,10 +248,7 @@
             <span class="n">nuevo_tipodeitem</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span>
             <span class="n">nuevo_tipodeitem</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_tipo_de_item&#39;</span><span class="p">]</span>
             <span class="n">nuevo_tipodeitem</span><span class="o">.</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span>
-            <span class="c">#nuevo_tipodeitem.atributos= request.POST.getlist(&#39;atributos[]&#39;)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 3&#39;</span><span class="p">)</span>
             <span class="n">nuevo_tipodeitem</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;hola 4&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">EliminarTipoDeItem</span><span class="p">(</span><span class="n">TipoDeItemView</span><span class="p">):</span>
@@ -271,7 +261,6 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;tipo_de_item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">tipo_de_item_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">eliminar_tipodeitem</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">tipo_de_item_actual</span><span class="o">.</span><span class="n">cantidad_de_item</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">tipo_de_item_actual</span><span class="o">.</span><span class="n">activo</span><span class="o">=</span> <span class="bp">False</span>
@@ -300,7 +289,6 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">tipo_de_item_actual</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">modificar_tipodeitem</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">tipo_de_item_actual</span><span class="o">.</span><span class="n">cantidad_de_item</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>

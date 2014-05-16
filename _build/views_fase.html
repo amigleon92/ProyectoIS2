@@ -185,12 +185,19 @@
 129
 130
 131
-132</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+132
+133
+134
+135
+136
+137
+138</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 </span><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.views</span> <span class="kn">import</span> <span class="n">ProyectoView</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Item.models</span> <span class="kn">import</span> <span class="n">Item</span>
 
 <span class="c"># Create your views here.</span>
 
@@ -279,10 +286,15 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
             <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
+            <span class="n">lista_de_items</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;I&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">numeroSecuencia</span> <span class="o">&lt;</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">numeroSecuencia</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
                         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede cerra la fase - Fase Anterior No Finalizadda&#39;</span>
+                        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lista_de_items</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s">&#39;B&#39;</span><span class="p">:</span>
+                        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede cerra la fase - Exite items NO BLOQUEADO&#39;</span>
                         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
                 <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span><span class="s">&#39;F&#39;</span>
                 <span class="n">fase_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
