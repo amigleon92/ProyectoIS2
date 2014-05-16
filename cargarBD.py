@@ -2,7 +2,11 @@ from Aplicaciones.Usuario.models import Usuario
 from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
-
+from Aplicaciones.Item.models import Item
+from Aplicaciones.Linea_Base.models import LineaBase
+from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
+from Aplicaciones.Tipo_de_Atributo.models import Tipo_de_Atributo
+from Aplicaciones.Atributo.models import Atributo
 #Usuarios
 	#1
 administrador= Usuario(
@@ -31,6 +35,18 @@ u_base=Usuario(
 )
 u_base.save()
 
+#Usuarios
+	#3
+developer= Usuario(
+    nick= 'dev',
+    nombre= 'developer',
+    apellido= 'dev',
+    password= 'developer',
+    cedula= 0,
+    email= 'dev@dev',
+)
+developer.save()
+
 #Proyecto
 	#1
 primer_proyecto= Proyecto(
@@ -47,6 +63,7 @@ primer_proyecto= Proyecto(
 )
 primer_proyecto.save()
 primer_proyecto.miembros.add(administrador)
+primer_proyecto.miembros.add(developer)
 primer_proyecto.miembros.add(u_base)
 primer_proyecto.save()
 
@@ -97,7 +114,7 @@ fase3.save()
 #Rol para realizar las distintas operaciones...
 rol_operaciones= Rol(
 	nombre= 'Administrador del Proyecto',
-	usuario= u_base,
+	usuario= developer,
 	proyecto= primer_proyecto,
 	crear_item= True,
 	eliminar_item= True,
@@ -116,3 +133,44 @@ rol_operaciones= Rol(
 	crear_lineabase= True,
 )
 rol_operaciones.save()
+
+l_base1= LineaBase(
+    nombre= 'PrimeraLB',
+    fase= fase2,
+)
+
+l_base1.save()
+
+tipo_item1= Tipo_de_Item(
+    nombre= 'Tipo1 de item',
+    descripcion= 'Primer Tipo',
+    cantidad_de_item=1,
+    proyecto=primer_proyecto,
+)
+
+tipo_item1.save()
+
+item_fase2= Item(
+    nombre= 'item',
+    prioridad= 1,
+    tipodeItemAsociado= tipo_item1.nombre,
+    tipo_de_item= tipo_item1,
+    fase=fase2,
+    lineaBase=l_base1,
+)
+item_fase2.save()
+
+tipo_atributo1= Tipo_de_Atributo(
+    nombre= 'tipo1_atributo',
+    tipo_de_item= tipo_item1,
+)
+tipo_atributo1.save()
+
+atributo_de_item1= Atributo(
+    nombre='Atributo1',
+    descripcion='primer atributo',
+    tipo_de_atributo_nombre=tipo_atributo1.nombre,
+    tipo_de_atributo_tipo=tipo_atributo1.tipo,
+    item=item_fase2,
+)
+atributo_de_item1.save()
