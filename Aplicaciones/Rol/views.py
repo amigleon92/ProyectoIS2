@@ -148,8 +148,8 @@ class EditarRolConfirmar(EditarRol):
             else: rol_actual.crear_lineabase= False
             if 'crear_tipodeatributo' in request.POST: rol_actual.crear_tipodeatributo= True
             else: rol_actual.crear_tipodeatributo= False
-            if 'eliminar_tipodeatributo' in request.POST: rol_actual.eliminartipodeatributo= True
-            else: rol_actual.eliminartipodeatributo= False
+            if 'eliminar_tipodeatributo' in request.POST: rol_actual.eliminar_tipodeatributo= True
+            else: rol_actual.eliminar_tipodeatributo= False
             rol_actual.save()
         return render(request, self.template_name, diccionario)
 
@@ -266,6 +266,8 @@ class AsignarRolConfirm(RolView):
             crear_tipodeitem= rol_actual.crear_tipodeitem,
             eliminar_tipodeitem= rol_actual.eliminar_tipodeitem,
             crear_lineabase= rol_actual.crear_lineabase,
+            crear_tipodeatributo= rol_actual.crear_tipodeatributo,
+            eliminar_tipodeatributo= rol_actual.eliminar_tipodeatributo,
         )
         nuevo_rol.save()
         return render(request, self.template_name, diccionario)
