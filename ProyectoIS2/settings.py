@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'Aplicaciones.Tipo_de_Atributo',
     'Aplicaciones.Atributo',
     'Aplicaciones.Linea_Base',
+    'Aplicaciones.Relacion',
 
 )
 

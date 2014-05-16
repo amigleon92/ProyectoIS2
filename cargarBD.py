@@ -157,11 +157,24 @@ item_fase2= Item(
     tipo_de_item= tipo_item1,
     fase=fase2,
     lineaBase=l_base1,
-    descripcion='Es un item de fase de desarrollo'
+    descripcion='Es un item de fase de desarrollo',
+    estado= 'B',
 )
 item_fase2.save()
 item_fase2.identificador= item_fase2.id
 item_fase2.save()
+
+item_nuevo= Item(
+    nombre= 'Nuevo Item',
+    prioridad= 9,
+    tipodeItemAsociado= tipo_item1.nombre,
+    tipo_de_item= tipo_item1,
+    fase= fase2,
+    descripcion= 'Segundo Item',
+)
+item_nuevo.save()
+item_nuevo.identificador= item_nuevo.id
+item_nuevo.save()
 
 tipo_atributo1= Tipo_de_Atributo(
     nombre= 'tipo1_atributo',

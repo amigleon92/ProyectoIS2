@@ -110,7 +110,6 @@ class EliminarItem(ItemView):
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
         tipodeitem= Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
-        tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item-1
         diccionario['logueado']= usuario_logueado
         diccionario['item']= item_actual
         diccionario['proyecto']= proyecto_actual
@@ -121,7 +120,39 @@ class EliminarItem(ItemView):
             diccionario['error']= 'Item ya esta Aprobado/Bloqueado'
             return render(request, super(EliminarItem,self).template_name, diccionario)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
+            #Antes de poner una nueva version debemos modificar los atributos
+            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+            for atributo in lista_atributos:
+                nuevo_atributo= Atributo(
+                    nombre= atributo.nombre,
+                    descripcion= atributo.descripcion,
+                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                    tipo_numerico= atributo.tipo_numerico,
+                    tipo_texto= atributo.tipo_texto,
+                    tipo_boolean= atributo.tipo_boolean,
+                    tipo_fecha= atributo.tipo_fecha,
+                    item= item_actual,
+                )
+                nuevo_atributo.save()
+            #Guardamos la version anterior
+            version_anterior= Item(
+                nombre= item_actual.nombre,
+                prioridad= item_actual.prioridad,
+                descripcion= item_actual.descripcion,
+                version= item_actual.version,
+                estado= item_actual.estado,
+                tipodeItemAsociado= item_actual.tipodeItemAsociado,
+                tipo_de_item= item_actual.tipo_de_item,
+                fase= item_actual.fase,
+                lineaBase= item_actual.lineaBase,
+                costo= item_actual.costo,
+                activo= False,
+                identificador= item_actual.identificador
+            )
+            version_anterior.save()
             item_actual.activo= False
+            tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item-1
             tipodeitem.save()
             item_actual.save()
             return render(request, self.template_name, diccionario)
@@ -248,6 +279,22 @@ class AprobarItem(ItemView):
                 diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
                 diccionario['error']= 'Existe atributos sin completar.'
                 return render(request, super(AprobarItem, self).template_name, diccionario)
+            #Guardamos la version anterior
+            version_anterior= Item(
+                nombre= item_actual.nombre,
+                prioridad= item_actual.prioridad,
+                descripcion= item_actual.descripcion,
+                version= item_actual.version,
+                estado= item_actual.estado,
+                tipodeItemAsociado= item_actual.tipodeItemAsociado,
+                tipo_de_item= item_actual.tipo_de_item,
+                fase= item_actual.fase,
+                lineaBase= item_actual.lineaBase,
+                costo= item_actual.costo,
+                activo= False,
+                identificador= item_actual.identificador
+            )
+            version_anterior.save()
             item_actual.estado='A'
             item_actual.version= item_actual.version + 1
             item_actual.save()
