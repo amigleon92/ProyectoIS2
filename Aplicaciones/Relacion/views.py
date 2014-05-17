@@ -150,7 +150,7 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
             diccionario['error']= 'Nombre de Relacion ya fue utilizado'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
         elif not len(lista_relaciones):
-            lista_relaciones= Relacion.objects.filter(item1=item_actual2, item2=item_actual, tipo='P/H',activo=True)
+            lista_relaciones= Relacion.objects.filter(item1=item_actual2, item2=item_actual, tipo='P/H', activo=True)
             if not len(lista_relaciones):
                 nueva_relacion= Relacion()
                 nueva_relacion.nombre=new_nombre
@@ -165,3 +165,30 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
         else:
             diccionario['error']= 'El item selecionado ya posee un PADRE.'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
+
+
+#Eliminar Relacion
+class EliminarRelacion(RelacionView):
+    template_name = 'Relacion/EliminarRelacion.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual=Item.objects.get(id=request.POST['item'])
+        relacion_actual=Relacion.objects.get(id=request.POST['relacion'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['item']= item_actual
+        diccionario['proyecto']= proyecto_actual
+        diccionario['fase']= fase_actual
+        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_relacion=True, activo=True)):
+            relacion_actual.activo= False
+            relacion_actual.save()
+            return render(request, self.template_name, diccionario)
+        else:
+            diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+            diccionario['error']= 'No puedes realizar esta accion'
+            return render(request, super(EliminarRelacion,self).template_name, diccionario)
+
+
+
