@@ -381,7 +381,22 @@ class ReversionarItem(ItemView):
 class RevivirItem(ItemView):
     template_name = 'Item/RevivirItem.html'
     def post(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        diccionario= {}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+        if not len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual, revivir_item=True, activo=True)):
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'No posee permisos para realizar esta accion'
+            return render(request, super(RevivirItem, self).template_name, diccionario)
+        else:
+            lista_eliminados= Item.objects.filter(activo= False, version_descripcion= 'Item eliminado', fase= fase_actual)
+            diccionario['lista_eliminados']= lista_eliminados
+            return render(request, self.template_name, diccionario)
+
 
 class ReversionarItemConfirm(ItemView):
     template_name = 'Item/ReversionarItemConfirmar.html'
@@ -409,9 +424,12 @@ class ReversionarItemConfirm(ItemView):
             costo= item_actual.costo,
             activo= True,
             identificador= item_actual.identificador,
-            version_descripcion= 'Reversion' + item_actual.version_descripcion,
+            version_descripcion= item_actual.version_descripcion,
         )
         nueva_version.save()
+        if nueva_version.version_descripcion== 'Item eliminado_':
+            nueva_version.version_descripcion= 'Item_eliminado'
+            nueva_version.save()
         lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
         for atributo in lista_atributos:
             nuevo_atributo= Atributo(
@@ -433,5 +451,47 @@ class ReversionarItemConfirm(ItemView):
 class RevivirItemConfirm(ItemView):
     template_name = 'Item/RevivirItemConfirmar.html'
     def post(self, request, *args, **kwargs):
+        diccionario= {}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+        item_actual= Item.objects.get(id= request.POST['item'])
 
-        return render(request, self.template_name)
+        nueva_version= Item(
+            nombre= item_actual.nombre,
+            prioridad= item_actual.prioridad,
+            descripcion= item_actual.descripcion,
+            version= item_actual.version +1,
+            estado= item_actual.estado,
+            tipodeItemAsociado= item_actual.tipodeItemAsociado,
+            tipo_de_item= item_actual.tipo_de_item,
+            fase= item_actual.fase,
+            lineaBase= item_actual.lineaBase,
+            costo= item_actual.costo,
+            activo= True,
+            identificador= item_actual.identificador,
+            version_descripcion= item_actual.version_descripcion,
+        )
+        nueva_version.save()
+        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+        for atributo in lista_atributos:
+            nuevo_atributo= Atributo(
+                nombre= atributo.nombre,
+                descripcion= atributo.descripcion,
+                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                tipo_numerico= atributo.tipo_numerico,
+                tipo_texto= atributo.tipo_texto,
+                tipo_boolean= atributo.tipo_boolean,
+                tipo_fecha= atributo.tipo_fecha,
+                item= nueva_version,
+            )
+            nuevo_atributo.save()
+
+        item_actual.version_descripcion += '_'
+        item_actual.save()
+
+        return render(request, self.template_name, diccionario)
