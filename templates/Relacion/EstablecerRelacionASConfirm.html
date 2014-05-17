@@ -1,0 +1,16 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Establecer Relación A/S::{% endblock %}
+{% block TituloMenu %} ESTABLECER RELACIÓN A/S - {{ fase.nombre }}{% endblock %}
+{% block TituloOperacion %} Relación Creada {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>La Relación se cre&oacute exitosamente. </h3></center>
+{% endblock %}
+{% block Botones %}
+   <form action="/proyecto/fase/item/relacion/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+       <input type="hidden" name='item' value={{ item.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+   </form>
+{% endblock %}

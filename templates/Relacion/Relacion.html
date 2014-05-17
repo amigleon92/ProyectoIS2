@@ -17,7 +17,7 @@
             <td>{{ relacion.item1.nombre }}</td>
             <td>{{ relacion.item2.nombre }}</td>
             <td>{{ relacion.tipo }}</td>
-            <td>{{ relacion.item1.fase.nombre }}/{{ relacion.item2.fase.nombre }}</td>
+            <td>{{ relacion.item1.fase.nombre }} / {{ relacion.item2.fase.nombre }}</td>
             <td>
                 <form action="/proyecto/construccion/" method="post">{% csrf_token %}
                     <input type="hidden" name='item' value={{ item.id }} >
@@ -31,7 +31,8 @@
     {% endfor %}
 {% endblock %}
 {% block Botones %}
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/fase/item/relacion/establecerRelacionAS/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='item' value={{ item.id }} >
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >

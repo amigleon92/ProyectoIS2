@@ -1,0 +1,46 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Establecer Relación A/S::{% endblock %}
+{% block TituloMenu %} ESTABLECER RELACIÓN A/S - {{ fase.nombre }}{% endblock %}
+{% block TituloOperacion %} Formulario de Relación A/S {% endblock %}
+{% block DatosOperacion %}
+    <form action="/proyecto/fase/item/relacion/establecerRelacionAS/Confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Nombre:</label></dt>
+                <dd><input type="text" name="nombre_relacion" size="54" required/></dd>
+            </dl>
+            <dl>
+                <dt><label>Antecesor: {{ item.nombre }}</label></dt>
+            </dl>
+            <dl>
+                <dt><label>Sucesor:</label></dt>
+                <dd>
+                    <select name="item2" required>
+                        <option value="" disabled>Seleccionar ítem</option>
+                        {% for item in lista_items %}
+                             <option value={{ item.id }}>{{ item.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </dd>
+            </dl>
+
+        </fieldset>
+        <table>
+            <input type="hidden" name="fase" value={{ fase.id }} >
+            <input type="hidden" name='item' value={{ item.id }} >
+            <input type="hidden" name='lista_items' value={{ lista_items }} >
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Crear">
+        </table>
+    </form>
+{% endblock %}
+{% block Botones%}
+    <form action="/proyecto/fase/item/relacion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='item' value={{ item.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}
