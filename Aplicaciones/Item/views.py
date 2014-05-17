@@ -473,7 +473,7 @@ class RevivirItemConfirm(ItemView):
             costo= item_actual.costo,
             activo= True,
             identificador= item_actual.identificador,
-            version_descripcion= item_actual.version_descripcion,
+            version_descripcion= 'Item revivido',
         )
         nueva_version.save()
         lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
@@ -491,7 +491,11 @@ class RevivirItemConfirm(ItemView):
             )
             nuevo_atributo.save()
 
-        item_actual.version_descripcion += '_'
+        item_actual.version_descripcion= 'Item Revivido'
         item_actual.save()
+
+        tipodeitem= Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
+        tipodeitem.cantidad_de_item +=1
+        tipodeitem.save()
 
         return render(request, self.template_name, diccionario)
