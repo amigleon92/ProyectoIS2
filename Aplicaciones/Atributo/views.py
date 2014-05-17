@@ -84,7 +84,8 @@ class AgregarAtributoConfirm(AgregarAtributo):
                 lineaBase= item_actual.lineaBase,
                 costo= item_actual.costo,
                 activo= False,
-                identificador= item_actual.identificador
+                identificador= item_actual.identificador,
+                version_descripcion= item_actual.version_descripcion,
             )
             version_anterior.save()
 
@@ -114,6 +115,7 @@ class AgregarAtributoConfirm(AgregarAtributo):
             nuevo_atributo.save()
 
             item_actual.version+=1 #Nueva Version con el atributo creado
+            item_actual.version_descripcion='Atributo ' + new_nombre + ' agregado'
             item_actual.save()
             return render(request, self.template_name, diccionario)
 
@@ -148,7 +150,8 @@ class EliminarAtributo(AtributoView):
                 lineaBase= item_actual.lineaBase,
                 costo= item_actual.costo,
                 activo= False,
-                identificador= item_actual.identificador
+                identificador= item_actual.identificador,
+                version_descripcion= item_actual.version_descripcion,
             )
             version_anterior.save()
             #modificar los atributos para que apunten a una nueva version
@@ -167,6 +170,7 @@ class EliminarAtributo(AtributoView):
                 )
                 nuevo_atributo.save()
             item_actual.version+=1 #Atributo Eliminado NuevaVersion
+            item_actual.version_descripcion= 'Atributo ' + atributo_actual.nombre + ' eliminado'
             item_actual.save()
             atributo_actual.activo= False
             atributo_actual.save()
@@ -232,7 +236,8 @@ class CompletarAtributoConfirm(CompletarAtributo):
             lineaBase= item_actual.lineaBase,
             costo= item_actual.costo,
             activo= False,
-            identificador= item_actual.identificador
+            identificador= item_actual.identificador,
+            version_descripcion= item_actual.version_descripcion,
         )
         version_anterior.save()
         #modificar los atributos para que apunten a una nueva version
@@ -251,6 +256,7 @@ class CompletarAtributoConfirm(CompletarAtributo):
             )
             nuevo_atributo.save()
         item_actual.version+=1 #Atributo Eliminado NuevaVersion
+        item_actual.version_descripcion='Atributo '+ atributo_actual.nombre + ' completado'
         item_actual.save()
 
         if atributo_actual.tipo_de_atributo_tipo == 'N':

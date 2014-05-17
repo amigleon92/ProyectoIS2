@@ -159,6 +159,7 @@ item_fase2= Item(
     fase=fase2,
     lineaBase=l_base1,
     descripcion='Es un item de fase de desarrollo',
+    version_descripcion= 'Item Bloqueado',
     estado= 'B',
 )
 item_fase2.save()
@@ -172,6 +173,7 @@ item_nuevo= Item(
     tipo_de_item= tipo_item1,
     fase= fase2,
     descripcion= 'Segundo Item',
+    version_descripcion= 'Item creado',
 )
 item_nuevo.save()
 item_nuevo.identificador= item_nuevo.id
