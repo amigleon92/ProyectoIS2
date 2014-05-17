@@ -71,6 +71,39 @@ class AgregarAtributoConfirm(AgregarAtributo):
             diccionario['error']= 'Nombre del atributo ya existe'
             return render(request, super(AgregarAtributoConfirm, self).template_name, diccionario)
         else:
+            #Guardamos la version anterior
+            version_anterior= Item(
+                nombre= item_actual.nombre,
+                prioridad= item_actual.prioridad,
+                descripcion= item_actual.descripcion,
+                version= item_actual.version,
+                estado= item_actual.estado,
+                tipodeItemAsociado= item_actual.tipodeItemAsociado,
+                tipo_de_item= item_actual.tipo_de_item,
+                fase= item_actual.fase,
+                lineaBase= item_actual.lineaBase,
+                costo= item_actual.costo,
+                activo= False,
+                identificador= item_actual.identificador
+            )
+            version_anterior.save()
+
+            #modificar los atributos para que apunten a una nueva version
+            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+            for atributo in lista_atributos:
+                nuevo_atributo= Atributo(
+                    nombre= atributo.nombre,
+                    descripcion= atributo.descripcion,
+                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                    tipo_numerico= atributo.tipo_numerico,
+                    tipo_texto= atributo.tipo_texto,
+                    tipo_boolean= atributo.tipo_boolean,
+                    tipo_fecha= atributo.tipo_fecha,
+                    item= version_anterior,
+                )
+                nuevo_atributo.save()
+
             nuevo_atributo= Atributo()
             nuevo_atributo.nombre= new_nombre
             nuevo_atributo.descripcion= request.POST['descripcion_atributo']
@@ -79,6 +112,9 @@ class AgregarAtributoConfirm(AgregarAtributo):
             nuevo_atributo.tipo_de_atributo_tipo= tipo_de_atributo.tipo
             nuevo_atributo.item = item_actual
             nuevo_atributo.save()
+
+            item_actual.version+=1 #Nueva Version con el atributo creado
+            item_actual.save()
             return render(request, self.template_name, diccionario)
 
 
@@ -99,6 +135,39 @@ class EliminarAtributo(AtributoView):
         diccionario['proyecto']= proyecto_actual
 
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_atributo=True, activo=True)):
+            #Guardamos la version anterior
+            version_anterior= Item(
+                nombre= item_actual.nombre,
+                prioridad= item_actual.prioridad,
+                descripcion= item_actual.descripcion,
+                version= item_actual.version,
+                estado= item_actual.estado,
+                tipodeItemAsociado= item_actual.tipodeItemAsociado,
+                tipo_de_item= item_actual.tipo_de_item,
+                fase= item_actual.fase,
+                lineaBase= item_actual.lineaBase,
+                costo= item_actual.costo,
+                activo= False,
+                identificador= item_actual.identificador
+            )
+            version_anterior.save()
+            #modificar los atributos para que apunten a una nueva version
+            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+            for atributo in lista_atributos:
+                nuevo_atributo= Atributo(
+                    nombre= atributo.nombre,
+                    descripcion= atributo.descripcion,
+                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                    tipo_numerico= atributo.tipo_numerico,
+                    tipo_texto= atributo.tipo_texto,
+                    tipo_boolean= atributo.tipo_boolean,
+                    tipo_fecha= atributo.tipo_fecha,
+                    item= version_anterior,
+                )
+                nuevo_atributo.save()
+            item_actual.version+=1 #Atributo Eliminado NuevaVersion
+            item_actual.save()
             atributo_actual.activo= False
             atributo_actual.save()
             return render(request, self.template_name, diccionario)
@@ -149,6 +218,41 @@ class CompletarAtributoConfirm(CompletarAtributo):
         diccionario['item']=item_actual
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
+
+        #Guardamos la version anterior
+        version_anterior= Item(
+            nombre= item_actual.nombre,
+            prioridad= item_actual.prioridad,
+            descripcion= item_actual.descripcion,
+            version= item_actual.version,
+            estado= item_actual.estado,
+            tipodeItemAsociado= item_actual.tipodeItemAsociado,
+            tipo_de_item= item_actual.tipo_de_item,
+            fase= item_actual.fase,
+            lineaBase= item_actual.lineaBase,
+            costo= item_actual.costo,
+            activo= False,
+            identificador= item_actual.identificador
+        )
+        version_anterior.save()
+        #modificar los atributos para que apunten a una nueva version
+        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+        for atributo in lista_atributos:
+            nuevo_atributo= Atributo(
+                nombre= atributo.nombre,
+                descripcion= atributo.descripcion,
+                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                tipo_numerico= atributo.tipo_numerico,
+                tipo_texto= atributo.tipo_texto,
+                tipo_boolean= atributo.tipo_boolean,
+                tipo_fecha= atributo.tipo_fecha,
+                item= version_anterior,
+            )
+            nuevo_atributo.save()
+        item_actual.version+=1 #Atributo Eliminado NuevaVersion
+        item_actual.save()
+
         if atributo_actual.tipo_de_atributo_tipo == 'N':
             atributo_actual.tipo_numerico= request.POST['tipo_numerico']
         elif atributo_actual.tipo_de_atributo_tipo == 'T':
