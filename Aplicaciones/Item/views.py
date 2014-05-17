@@ -90,6 +90,7 @@ class CrearItemConfirm(CrearItem):
             tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item+1
             nuevo_item.tipodeItemAsociado= tipodeitem.nombre
             nuevo_item.tipo_de_item=tipodeitem
+            nuevo_item.version_descripcion='Item Creado'
             nuevo_item.save()
             #Identificador para las versiones anteriores
             nuevo_item.identificador= nuevo_item.id
@@ -120,6 +121,44 @@ class EliminarItem(ItemView):
             diccionario['error']= 'Item ya esta Aprobado/Bloqueado'
             return render(request, super(EliminarItem,self).template_name, diccionario)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
+
+            #Guardamos la version anterior
+            version_anterior= Item(
+                nombre= item_actual.nombre,
+                prioridad= item_actual.prioridad,
+                descripcion= item_actual.descripcion,
+                version= item_actual.version,
+                estado= item_actual.estado,
+                tipodeItemAsociado= item_actual.tipodeItemAsociado,
+                tipo_de_item= item_actual.tipo_de_item,
+                fase= item_actual.fase,
+                lineaBase= item_actual.lineaBase,
+                costo= item_actual.costo,
+                activo= False,
+                identificador= item_actual.identificador,
+                version_descripcion= item_actual.version_descripcion,
+            )
+            version_anterior.save()
+
+            #modificar los atributos para que apunten a una nueva version
+            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+            for atributo in lista_atributos:
+                nuevo_atributo= Atributo(
+                    nombre= atributo.nombre,
+                    descripcion= atributo.descripcion,
+                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                    tipo_numerico= atributo.tipo_numerico,
+                    tipo_texto= atributo.tipo_texto,
+                    tipo_boolean= atributo.tipo_boolean,
+                    tipo_fecha= atributo.tipo_fecha,
+                    item= version_anterior,
+                )
+                nuevo_atributo.save()
+
+
+            item_actual.version+=1
+            item_actual.version_descripcion= 'Item eliminado'
             item_actual.activo= False
             tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item-1
             tipodeitem.save()
@@ -181,7 +220,8 @@ class EditarItemConfirm(CrearItem):
             lineaBase= item_actual.lineaBase,
             costo= item_actual.costo,
             activo= False,
-            identificador= item_actual.identificador
+            identificador= item_actual.identificador,
+            version_descripcion= item_actual.version_descripcion,
         )
         version_anterior.save()
 
@@ -211,6 +251,7 @@ class EditarItemConfirm(CrearItem):
         item_actual.descripcion= request.POST['descripcion_item']
         item_actual.fase=Fase.objects.get(id=request.POST['fase_item'])
         item_actual.version=item_actual.version + 1
+        item_actual.version_descripcion= 'Item modificado'
         item_actual.save()
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
@@ -278,7 +319,8 @@ class AprobarItem(ItemView):
                 lineaBase= item_actual.lineaBase,
                 costo= item_actual.costo,
                 activo= False,
-                identificador= item_actual.identificador
+                identificador= item_actual.identificador,
+                version_descripcion= item_actual.version_descripcion,
             )
             version_anterior.save()
             #modificar los atributos para que apunten a una nueva version
@@ -299,6 +341,7 @@ class AprobarItem(ItemView):
 
             item_actual.estado='A'
             item_actual.version= item_actual.version + 1
+            item_actual.version_descripcion= 'Item Aprobado'
             item_actual.save()
             diccionario['item']= item_actual
             return render(request, self.template_name, diccionario)
@@ -318,7 +361,22 @@ class AprobarItem(ItemView):
 class ReversionarItem(ItemView):
     template_name = 'Item/ReversionarItem.html'
     def post(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        diccionario= {}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual=Item.objects.get(id=request.POST['item'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+        if not len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual, revertir_item=True, activo=True)):
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'No posee permisos para realizar esta accion'
+            return render(request, super(ReversionarItem, self).template_name, diccionario)
+        else:
+            diccionario['item']= item_actual
+            diccionario['lista_de_items']= (Item.objects.filter(identificador= item_actual.identificador, activo= False )).order_by('version')
+            return render(request, self.template_name, diccionario)
 
 class RevivirItem(ItemView):
     template_name = 'Item/RevivirItem.html'
@@ -328,9 +386,52 @@ class RevivirItem(ItemView):
 class ReversionarItemConfirm(ItemView):
     template_name = 'Item/ReversionarItemConfirmar.html'
     def post(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        diccionario= {}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        item_actual=Item.objects.get(id=request.POST['item'])
+        item_ultima_version= Item.objects.get(id= request.POST['item_actual'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+
+        nueva_version= Item(
+            nombre= item_actual.nombre,
+            prioridad= item_actual.prioridad,
+            descripcion= item_actual.descripcion,
+            version= item_ultima_version.version +1,
+            estado= item_actual.estado,
+            tipodeItemAsociado= item_actual.tipodeItemAsociado,
+            tipo_de_item= item_actual.tipo_de_item,
+            fase= item_actual.fase,
+            lineaBase= item_actual.lineaBase,
+            costo= item_actual.costo,
+            activo= True,
+            identificador= item_actual.identificador,
+            version_descripcion= 'Reversion' + item_actual.version_descripcion,
+        )
+        nueva_version.save()
+        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+        for atributo in lista_atributos:
+            nuevo_atributo= Atributo(
+                nombre= atributo.nombre,
+                descripcion= atributo.descripcion,
+                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                tipo_numerico= atributo.tipo_numerico,
+                tipo_texto= atributo.tipo_texto,
+                tipo_boolean= atributo.tipo_boolean,
+                tipo_fecha= atributo.tipo_fecha,
+                item= nueva_version,
+            )
+            nuevo_atributo.save()
+        item_ultima_version.activo= False
+        item_ultima_version.save()
+        return render(request, self.template_name, diccionario)
 
 class RevivirItemConfirm(ItemView):
     template_name = 'Item/RevivirItemConfirmar.html'
     def post(self, request, *args, **kwargs):
+
         return render(request, self.template_name)

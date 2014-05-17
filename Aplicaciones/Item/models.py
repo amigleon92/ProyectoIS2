@@ -29,6 +29,7 @@ class Item(models.Model):
     prioridad= models.PositiveIntegerField(default=0, null=False)
     descripcion= models.TextField(max_length=200, null=True)
     version=models.PositiveIntegerField(default=1, null=True)
+    version_descripcion= models.CharField(max_length=80, null=True)
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables, default='D' )
     tipodeItemAsociado= models.CharField(max_length=50, null=False)
     tipo_de_item= models.ForeignKey(Tipo_de_Item, related_name='fkTipodeItemI',null=True)

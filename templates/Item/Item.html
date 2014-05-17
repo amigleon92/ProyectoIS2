@@ -85,10 +85,12 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Crear">
     </form>
-    <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+    <form action="/proyecto/fase/item/revivir/" method="post">{% csrf_token %}
+        <input type="hidden" name='item' value={{ item.id }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Revivir">
+        <input type="submit" value="Revivir Items">
     </form>
     <form action="/proyecto/fase/item/lineaBase/" method="post">{% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
@@ -102,17 +104,18 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="<Atras" >
     </form>
-    <form action="/proyecto/construccion/" method="post" class="niceform">{% csrf_token %}
+    <form action="/proyecto/fase/item/reversionar/" method="post" class="niceform">{% csrf_token %}
         <fieldset>
-              <select name="fase" required>
-                   <option value="">Seleccionar Item/s</option>
-                   {% for item in lista_items %}
-                       <option value={{ item.id }}>{{ item.nombre }}</option>
-                   {% endfor %}
-              </select>
-              <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-              <input type="hidden" name='login' value={{ logueado.id }} >
-              <input type="submit" value="Reversionar Item">
+            <select name="item" required>
+                <option value="">Seleccionar Item/s</option>
+                {% for item in lista_items %}
+                    <option value={{ item.id }}>{{ item.nombre }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name='fase' value={{ fase.id }} >
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" value="Reversionar Item">
         </fieldset>
     </form>
 {% endblock %}

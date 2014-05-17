@@ -1,0 +1,39 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %}::Reversionar Item::{% endblock %}
+{% block TituloMenu %} REVERSIONAR ITEM - {{ item.nombre }} {% endblock %}
+{% block TituloLista %} Versiones Anteriores del Item {% endblock %}
+{% block Columnas %}
+    <tr>
+        <th scope="col" class="rounded">Nombre</th>
+        <th scope="col" class="rounded">Version</th>
+        <th scope="col" class="rounded">Detalles</th>
+        <th scope="col" class="rounded"></th>
+    </tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for item_iterator in lista_de_items %}
+        <tr>
+            <td>{{ item_iterator.nombre }}</td>
+            <td>{{ item_iterator.version }}</td>
+            <td>{{ item_iterator.version_descripcion }}</td>
+            <td>
+                <form action="/proyecto/fase/item/reversionar/confirmar/" method="POST">{% csrf_token %}
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='item_actual' value={{ item.id }} >
+                    <input type="hidden" name='item' value={{ item_iterator.id }} >
+                    <input type="submit" value="Reversionar">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras">
+    </form>
+{% endblock %}
