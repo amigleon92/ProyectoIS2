@@ -137,6 +137,7 @@ rol_operaciones.save()
 l_base1= LineaBase(
     nombre= 'PrimeraLB',
     fase= fase2,
+    estado='C',
 )
 
 l_base1.save()
