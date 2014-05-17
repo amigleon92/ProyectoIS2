@@ -20,5 +20,8 @@ urlpatterns= patterns('',
     #linea base urls
     url(r'^lineaBase/', include('Aplicaciones.Linea_Base.urls')),
 
+    #Relaciones
+    url(r'^relacion/', include('Aplicaciones.Relacion.urls')),
+
 
 )

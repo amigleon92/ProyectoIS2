@@ -14,13 +14,13 @@ class Relacion(models.Model):
     - tipo= Puede tener 2 tipos: RelacionAntecesorSucesor, RelacionPadreHijo
     """
     relaciones_probables= (
-        ('A', 'RelacionAntecesorSucesor'),
-        ('P', 'RelacionPadreHijo')
+        ('A/S', 'RelacionAntecesorSucesor'),
+        ('P/H', 'RelacionPadreHijo')
     )
     nombre= models.CharField(max_length=50)
     item1= models.ForeignKey(Item, related_name='fkItem1')
     item2= models.ForeignKey(Item, related_name='fkItem2')
-    tipo= models.CharField(max_length=1, choices=relaciones_probables)
+    tipo= models.CharField(max_length=3, choices=relaciones_probables)
     activo= models.BooleanField(default=True)
     def __unicode__(self):
         return self.nombre

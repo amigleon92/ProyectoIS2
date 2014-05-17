@@ -1,0 +1,53 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Relacion:: {% endblock %}
+{% block TituloMenu %} MENU Relacion - {{ item.nombre }}{% endblock %}
+{% block TituloLista %} Lista de Relaciones {% endblock %}
+{% block Columnas %}
+    <tr>
+		<th scope="col" class="rounded">Antecesor/Padre</th>
+		<th scope="col" class="rounded">Sucesor/Hijo</th>
+        <th scope="col" class="rounded">Tipo</th>
+        <th scope="col" class="rounded">Fase/s</th>
+        <th scope="col" class="rounded"></th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for relacion in lista_relaciones %}
+        <tr>
+            <td>{{ relacion.item1.nombre }}</td>
+            <td>{{ relacion.item2.nombre }}</td>
+            <td>{{ relacion.tipo }}</td>
+            <td>{{ relacion.item1.fase.nombre }}/{{ relacion.item2.fase.nombre }}</td>
+            <td>
+                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+                    <input type="hidden" name='item' value={{ item.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }}>
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Eliminar">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Establecer Relacion A/S">
+    </form>
+    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Establecer Relacion P/H">
+    </form>
+    <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='item' value={{ item.id }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras" >
+    </form>
+{% endblock %}
