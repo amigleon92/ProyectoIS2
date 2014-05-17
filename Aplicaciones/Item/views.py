@@ -314,3 +314,23 @@ class AprobarItem(ItemView):
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             diccionario['error']= 'Item Bloqueado. No puede realizar accion.'
             return render(request, super(AprobarItem, self).template_name, diccionario)
+
+class ReversionarItem(ItemView):
+    template_name = 'Item/ReversionarItem.html'
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+class RevivirItem(ItemView):
+    template_name = 'Item/RevivirItem.html'
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+class ReversionarItemConfirm(ItemView):
+    template_name = 'Item/ReversionarItemConfirmar.html'
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+class RevivirItemConfirm(ItemView):
+    template_name = 'Item/RevivirItemConfirmar.html'
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
