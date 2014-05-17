@@ -85,8 +85,8 @@ class EditarRol(RolView):
         rol_actual= Rol.objects.get(id= request.POST['rol'])
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        if rol_actual.nombre== 'Lider del Proyecto':
-            diccionario['error']= 'Rol: Lider del Proyecto - No se puede modificar'
+        if rol_actual.nombre== 'Lider del Proyecto' or rol_actual.nombre== 'Miembro del Comite':
+            diccionario['error']= 'Rol: '+ rol_actual.nombre + ' - No se puede editar'
             diccionario[super(EditarRol, self).context_object_name]= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
             return render(request, super(EditarRol, self).template_name, diccionario)
         diccionario['rol']= rol_actual
