@@ -17,10 +17,18 @@
             <td>{{ relacion.item1.nombre }}</td>
             <td>{{ relacion.item2.nombre }}</td>
             <td>{{ relacion.tipo }}</td>
-            <td>{{ relacion.item1.fase.nombre }} / {{ relacion.item2.fase.nombre }}</td>
             <td>
-                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+                {% ifequal relacion.tipo 'A/S' %}
+                    {{ relacion.item1.fase.nombre }} / {{ relacion.item2.fase.nombre }}
+                {% endifequal %}
+                {% ifequal relacion.tipo 'P/H' %}
+                    {{ relacion.item1.fase.nombre }}
+                {% endifequal %}
+            </td>
+            <td>
+                <form action="/proyecto/fase/item/relacion/eliminarRelacion/" method="post">{% csrf_token %}
                     <input type="hidden" name='item' value={{ item.id }} >
+                    <input type="hidden" name='relacion' value={{ relacion.id }} >
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
@@ -38,8 +46,9 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Establecer Relacion A/S">
     </form>
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/fase/item/relacion/establecerRelacionPH/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='item' value={{ item.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" value="Establecer Relacion P/H">

@@ -1,0 +1,16 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Eliminar Relación::{% endblock %}
+{% block TituloMenu %} ELIMINAR RELACIÓN {% endblock %}
+{% block TituloOperacion %} Relación Eliminada {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>Se elimino la relación &lt;&lt;&lt;{{ relacion.nombre }}&gt;&gt;&gt;</h3></center>
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/relacion/" method="post">{% csrf_token %}
+        <input type="hidden" name='item' value="{{ item.id }}" >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }}>
+        <input type="hidden" name='fase' value="{{ fase.id }}" >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+    </form>
+{% endblock %}
