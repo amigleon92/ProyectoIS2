@@ -87,11 +87,11 @@ class EstablecerRelacionASConfirm(EstablecerRelacionAS):
                     lista_items.append(item)
         diccionario['lista_items']=lista_items
         existe= Relacion.objects.filter(nombre= new_nombre, item1=item_actual, activo=True)
-        lista_relaciones= Relacion.objects.filter(item2=item_actual2, activo=True)
+        lista_relaciones= Relacion.objects.filter(item2=item_actual2, tipo='A/S', activo=True)
         if existe:
             diccionario['error']= 'Nombre de Relacion ya fue utilizado'
             return render(request, super(EstablecerRelacionASConfirm, self).template_name, diccionario)
-        elif not lista_relaciones:
+        elif not len(lista_relaciones):
                 nueva_relacion= Relacion()
                 nueva_relacion.nombre=new_nombre
                 nueva_relacion.item1=item_actual
@@ -102,3 +102,66 @@ class EstablecerRelacionASConfirm(EstablecerRelacionAS):
         else:
             diccionario['error']= 'El item selecionado ya posee un ANTECESOR.'
             return render(request, super(EstablecerRelacionASConfirm, self).template_name, diccionario)
+
+
+#Establecer Relacion padre hijo
+class EstablecerRelacionPH(RelacionView):
+    template_name = 'Relacion/EstablecerRelacionPH.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        diccionario['fase']=fase_actual
+        item_actual=Item.objects.get(id=request.POST['item'])
+        diccionario['item']=item_actual
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        diccionario['lista_items']= Item.objects.filter(fase=fase_actual)
+        if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
+              return render(request, self.template_name, diccionario)
+        else:
+            diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+            diccionario['error']= 'No puedes realizar esta accion'
+            return render(request, super(EstablecerRelacionPH, self).template_name, diccionario)
+
+
+
+
+#Establecer Relacion padre hijo confirmar
+class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
+    template_name = 'Relacion/EstablecerRelacionPHConfirm.html'
+    def post(self, request, *args, **kwargs):
+        diccionario= {}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        diccionario['fase']=fase_actual
+        item_actual=Item.objects.get(id=request.POST['item'])
+        diccionario['item']=item_actual
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        item_actual2=Item.objects.get(id=request.POST['item2'])
+        new_nombre= request.POST['nombre_relacion']
+        diccionario['lista_items']=Item.objects.filter(fase=fase_actual)
+        existe= Relacion.objects.filter(nombre= new_nombre, item1=item_actual, activo=True)
+        lista_relaciones= Relacion.objects.filter(item2=item_actual2, tipo='P/H',activo=True)
+        if existe:
+            diccionario['error']= 'Nombre de Relacion ya fue utilizado'
+            return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
+        elif not len(lista_relaciones):
+            lista_relaciones= Relacion.objects.filter(item1=item_actual2, item2=item_actual, tipo='P/H',activo=True)
+            if not len(lista_relaciones):
+                nueva_relacion= Relacion()
+                nueva_relacion.nombre=new_nombre
+                nueva_relacion.item1=item_actual
+                nueva_relacion.item2=item_actual2
+                nueva_relacion.tipo='P/H'
+                nueva_relacion.save()
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['error']= 'No pueden ser P/H e H/P  entre si.'
+            return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
+        else:
+            diccionario['error']= 'El item selecionado ya posee un PADRE.'
+            return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
