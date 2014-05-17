@@ -18,8 +18,8 @@ class Relacion(models.Model):
         ('P/H', 'RelacionPadreHijo')
     )
     nombre= models.CharField(max_length=50)
-    item1= models.ForeignKey(Item, related_name='fkItem1')
-    item2= models.ForeignKey(Item, related_name='fkItem2')
+    item1= models.ForeignKey(Item, related_name='fkItem1',null=True)
+    item2= models.ForeignKey(Item, related_name='fkItem2',null=True)
     tipo= models.CharField(max_length=3, choices=relaciones_probables)
     activo= models.BooleanField(default=True)
     def __unicode__(self):

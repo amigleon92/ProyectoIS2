@@ -43,7 +43,7 @@ class EstablecerRelacionAS(RelacionView):
         lista_fases= Fase.objects.filter(proyecto=proyecto_actual)
         for fase in lista_fases:
             if fase_actual.numeroSecuencia < fase.numeroSecuencia:
-                lista_items_fase=Item.objects.filter(fase=fase)
+                lista_items_fase=Item.objects.filter(fase=fase, activo= True)
                 for item in lista_items_fase:
                     lista_items.append(item)
         diccionario['lista_items']=lista_items
@@ -82,7 +82,7 @@ class EstablecerRelacionASConfirm(EstablecerRelacionAS):
         lista_fases= Fase.objects.filter(proyecto=proyecto_actual)
         for fase in lista_fases:
             if fase_actual.numeroSecuencia < fase.numeroSecuencia:
-                lista_items_fase=Item.objects.filter(fase=fase)
+                lista_items_fase=Item.objects.filter(fase=fase, activo= True)
                 for item in lista_items_fase:
                     lista_items.append(item)
         diccionario['lista_items']=lista_items
@@ -117,7 +117,7 @@ class EstablecerRelacionPH(RelacionView):
         diccionario['item']=item_actual
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        diccionario['lista_items']= Item.objects.filter(fase=fase_actual)
+        diccionario['lista_items']= Item.objects.filter(fase=fase_actual, activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
               return render(request, self.template_name, diccionario)
         else:
@@ -143,7 +143,7 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
         diccionario['proyecto']= proyecto_actual
         item_actual2=Item.objects.get(id=request.POST['item2'])
         new_nombre= request.POST['nombre_relacion']
-        diccionario['lista_items']=Item.objects.filter(fase=fase_actual)
+        diccionario['lista_items']=Item.objects.filter(fase=fase_actual, activo= True)
         existe= Relacion.objects.filter(nombre= new_nombre, item1=item_actual, activo=True)
         lista_relaciones= Relacion.objects.filter(item2=item_actual2, tipo='P/H',activo=True)
         if existe:

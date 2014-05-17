@@ -7,6 +7,7 @@ from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Fase.views import FaseView
 from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
 from Aplicaciones.Atributo.models import Atributo
+from Aplicaciones.Relacion.models import Relacion
 from Aplicaciones.Tipo_de_Atributo.models import Tipo_de_Atributo
 
 
