@@ -6,9 +6,9 @@
     <tr>
         <th scope="col" class="rounded">Código</th>
 		<th scope="col" class="rounded">Nombre</th>
-		<th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
+		<th scope="col" class="rounded">Editar</th>
+        <th scope="col" class="rounded">Eliminar</th>
+        <th scope="col" class="rounded">Mostrar</th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos %}
@@ -20,21 +20,21 @@
                     <form action="/proyecto/usuario/editar/" method="post">{% csrf_token %}
                         <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                         <input type="hidden" name='login' value={{ logueado.id }} >
-                        <input type="submit" value="Editar"><br>
+                        <input type="submit" value=">>" id="submitt"><br>
                     </form>
                 </td>
 		        <td>
                     <form action="/proyecto/usuario/eliminar/" method="post">{% csrf_token %}
                         <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                         <input type="hidden" name='login' value={{ logueado.id }} >
-                        <input type="submit" value="Eliminar"><br>
+                        <input type="submit" value=">>" id="submitt"><br>
                     </form>
 		        </td>
                 <td>
                     <form action="/proyecto/usuario/mostrar/" method="post">{% csrf_token %}
                         <input type="hidden" name='codigo' value="{{ usuario.id }}" >
                         <input type="hidden" name='login' value={{ logueado.id }} >
-                        <input type="submit" value="Mostrar"><br>
+                        <input type="submit" value=">>" id="submitt"><br>
                     </form>
 		        </td>
 		    </tr>
@@ -43,10 +43,10 @@
 {% block Botones%}
     <form action= "/proyecto/usuario/crear/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear">
+        <input type="submit" value="Crear" id="submitt">
     </form>
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Menú Inicio"><br>
+        <input type="submit" value="<Menú Inicio" id="submitt"><br>
     </form>
 {% endblock %}

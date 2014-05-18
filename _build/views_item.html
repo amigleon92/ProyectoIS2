@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +15,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '',
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -242,6 +244,7 @@
 <span class="kn">from</span> <span class="nn">Aplicaciones.Fase.views</span> <span class="kn">import</span> <span class="n">FaseView</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Tipo_de_Item.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Item</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Atributo.models</span> <span class="kn">import</span> <span class="n">Atributo</span>
+<span class="kn">from</span> <span class="nn">Aplicaciones.Relacion.models</span> <span class="kn">import</span> <span class="n">Relacion</span>
 <span class="kn">from</span> <span class="nn">Aplicaciones.Tipo_de_Atributo.models</span> <span class="kn">import</span> <span class="n">Tipo_de_Atributo</span>
 
 
@@ -257,13 +260,15 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">fase_actual</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;N&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;I&#39;</span><span class="p">:</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_items&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puede ingresar a la fase - Fase Finalizada&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">)</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Debe inicializar fase&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">ItemView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">ItemView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
 
 
@@ -307,9 +312,9 @@
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_item&#39;</span><span class="p">]</span>
-        <span class="n">existe</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">)</span>
+        <span class="n">existe</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span><span class="p">,</span> <span class="n">fase</span><span class="o">=</span><span class="n">fase_actual</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">existe</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre de Item ya existe&#39;</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Nombre de Item ya fue utilizado&#39;</span>
             <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_tipo_de_item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CrearItemConfirm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -323,7 +328,12 @@
             <span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">=</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">+</span><span class="mi">1</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">tipodeItemAsociado</span><span class="o">=</span> <span class="n">tipodeitem</span><span class="o">.</span><span class="n">nombre</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">tipo_de_item</span><span class="o">=</span><span class="n">tipodeitem</span>
+            <span class="n">nuevo_item</span><span class="o">.</span><span class="n">version_descripcion</span><span class="o">=</span><span class="s">&#39;Item Creado&#39;</span>
             <span class="n">nuevo_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c">#Identificador para las versiones anteriores</span>
+            <span class="n">nuevo_item</span><span class="o">.</span><span class="n">identificador</span><span class="o">=</span> <span class="n">nuevo_item</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">nuevo_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="c">#######################</span>
             <span class="n">tipodeitem</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
 
@@ -339,14 +349,56 @@
         <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
         <span class="n">item_actual</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
         <span class="n">tipodeitem</span><span class="o">=</span> <span class="n">Tipo_de_Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="n">item_actual</span><span class="o">.</span><span class="n">tipodeItemAsociado</span><span class="p">)</span>
-        <span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">=</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">-</span><span class="mi">1</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">item_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
         <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;D&#39;</span><span class="p">:</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_items&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Item ya esta Aprobado/Bloqueado&#39;</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EliminarItem</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">eliminar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+
+            <span class="c">#Guardamos la version anterior</span>
+            <span class="n">version_anterior</span><span class="o">=</span> <span class="n">Item</span><span class="p">(</span>
+                <span class="n">nombre</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span>
+                <span class="n">prioridad</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">prioridad</span><span class="p">,</span>
+                <span class="n">descripcion</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span>
+                <span class="n">version</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                <span class="n">estado</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">estado</span><span class="p">,</span>
+                <span class="n">tipodeItemAsociado</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">tipodeItemAsociado</span><span class="p">,</span>
+                <span class="n">tipo_de_item</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">tipo_de_item</span><span class="p">,</span>
+                <span class="n">fase</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">fase</span><span class="p">,</span>
+                <span class="n">lineaBase</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">lineaBase</span><span class="p">,</span>
+                <span class="n">costo</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">costo</span><span class="p">,</span>
+                <span class="n">activo</span><span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+                <span class="n">identificador</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">identificador</span><span class="p">,</span>
+                <span class="n">version_descripcion</span><span class="o">=</span> <span class="n">item_actual</span><span class="o">.</span><span class="n">version_descripcion</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">version_anterior</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="c">#modificar los atributos para que apunten a una nueva version</span>
+            <span class="n">lista_atributos</span><span class="o">=</span> <span class="n">Atributo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">item</span><span class="o">=</span> <span class="n">item_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atributo</span> <span class="ow">in</span> <span class="n">lista_atributos</span><span class="p">:</span>
+                <span class="n">nuevo_atributo</span><span class="o">=</span> <span class="n">Atributo</span><span class="p">(</span>
+                    <span class="n">nombre</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span>
+                    <span class="n">descripcion</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span>
+                    <span class="n">tipo_de_atributo_nombre</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_de_atributo_nombre</span><span class="p">,</span>
+                    <span class="n">tipo_de_atributo_tipo</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_de_atributo_tipo</span><span class="p">,</span>
+                    <span class="n">tipo_numerico</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_numerico</span><span class="p">,</span>
+                    <span class="n">tipo_texto</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_texto</span><span class="p">,</span>
+                    <span class="n">tipo_boolean</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_boolean</span><span class="p">,</span>
+                    <span class="n">tipo_fecha</span><span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">tipo_fecha</span><span class="p">,</span>
+                    <span class="n">item</span><span class="o">=</span> <span class="n">version_anterior</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">nuevo_atributo</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+
+            <span class="n">item_actual</span><span class="o">.</span><span class="n">version</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">item_actual</span><span class="o">.</span><span class="n">version_descripcion</span><span class="o">=</span> <span class="s">&#39;Item eliminado&#39;</span>
             <span class="n">item_actual</span><span class="o">.</span><span class="n">activo</span><span class="o">=</span> <span class="bp">False</span>
+            <span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">=</span><span class="n">tipodeitem</span><span class="o">.</span><span class="n">cantidad_de_item</span><span class="o">-</span><span class="mi">1</span>
             <span class="n">tipodeitem</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">item_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
@@ -361,56 +413,6 @@
 <span class="c">#editar Item</span>
 <span class="k">class</span> <span class="nc">EditarItem</span><span class="p">(</span><span class="n">ItemView</span><span class="p">):</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/EditarItem.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">item_actual</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">item_actual</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuario</span><span class="o">=</span><span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_actual</span><span class="p">,</span><span class="n">editar_item</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
-            <span class="k">del</span> <span class="n">diccionario</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_object_name</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_items&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-
-
-
-<span class="c">#editar item confirmacion</span>
-<span class="k">class</span> <span class="nc">EditarItemConfirm</span><span class="p">(</span><span class="n">CrearItem</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/EditarItemConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span> <span class="p">{}</span>
-        <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">item_actual</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">])</span>
-
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">new_nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_item&#39;</span><span class="p">]</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">new_nombre</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">costo</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;costo_item&#39;</span><span class="p">]</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">prioridad</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;prioridad_item&#39;</span><span class="p">]</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_item&#39;</span><span class="p">]</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase_item&#39;</span><span class="p">])</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">version</span><span class="o">=</span><span class="n">item_actual</span><span class="o">.</span><span class="n">version</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">item_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;item&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">item_actual</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-
-
-<span class="c">#Generacion de Informe del Item</span>
-<span class="k">class</span> <span class="nc">InformeItem</span><span class="p">(</span><span class="n">ItemView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Item/InformeItem.html&#39;</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
 </pre></div>
@@ -471,7 +473,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2014, GR05.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

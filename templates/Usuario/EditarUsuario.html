@@ -8,17 +8,17 @@
             <dl><dt><label>Usuario:</label></dt><dd><input type="text" value= "{{ usuario.nick }}" name="user" id="" size="54" required/></dd></dl>
             <dl><dt><label>Nombre:</label></dt><dd><input type="text" value= "{{ usuario.nombre }}" name="nombre" id="" size="54" /></dd></dl>
             <dl><dt><label>Apellido:</label></dt><dd><input type="text" value= "{{ usuario.apellido }}" name="apellido" id="" size="54" /></dd></dl>
-            <dl><dt><label>CI:</label></dt><dd><input type="text" value= "{{ usuario.cedula }}" name="cedula" id="" size="54" required/></dd></dl>
+            <dl><dt><label>CI:</label></dt><dd><input type="number" value= "{{ usuario.cedula }}" name="cedula" id="" size="54" required/></dd></dl>
             <dl><dt><label>Email:</label></dt><dd><input type="text" value= "{{ usuario.email }}" name="email" id="" size="54" /></dd></dl>
             <dl><dt><label>Contraseña:</label></dt><dd><input type="password" value="{{ usuario.password }}" name="pass" id="" size="54" required/></dd></dl>
         </fieldset>
         <input type="hidden" name='codigo' value={{ usuario.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Actualizar">
+        <input type="submit" value="Actualizar" id="submitt">
     </form>
     <form action="/proyecto/usuario/" method="POST">{% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Cancelar">
+        <input type="submit" value="Cancelar" id="submitt">
     </form>
 {% endblock %}
 {% block Botones %}

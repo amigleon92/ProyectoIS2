@@ -8,10 +8,10 @@
 		<th scope="col" class="rounded">Nombre</th>
 		<th scope="col" class="rounded">Estado</th>
 		<th scope="col" class="rounded">Lider</th>
-		<th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
+		<th scope="col" class="rounded">Eliminar</th>
+        <th scope="col" class="rounded">Informe</th>
+        <th scope="col" class="rounded">Inicializar</th>
+        <th scope="col" class="rounded">Ingresar</th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos%}
@@ -27,28 +27,29 @@
                             <form action= "/proyecto/eliminar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value="Eliminar">
+                                <input type="submit" value=">>" id="submitt">
+                                <!--input type="submit" value="Eliminar"-->
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/informe/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value="Informe">
+                                <input type="submit" value=">>" id ='submitt'>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/inicializar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id}} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value="Inicializar">
+                                <input type="submit" value=">>" id="submitt">
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/fase/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value="Ingresar>">
+                                <input type="submit" value=">>" id="submitt">
                             </form>
                         </td>
                     </tr>
@@ -59,10 +60,10 @@
 {% block Botones %}
     <form action= "/proyecto/usuario/" method="post"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-     	<input type="submit" value="Administrar Usuarios">
+     	<input type="submit" value="Administrar Usuarios" id="submitt">
     </form>
     <form action= "/proyecto/crear/" method="post"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-     	<input type="submit" value="Crear Proyecto">
+     	<input type="submit" value="Crear Proyecto" id="submitt">
     </form>
 {% endblock %}

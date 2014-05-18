@@ -17,6 +17,6 @@
 {% block Botones %}
     <form action="/proyecto/" method="POST">{% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atrás">
+        <center><input type="submit" value="aceptar" id="submitt"></center>>
     </form>
 {% endblock %}

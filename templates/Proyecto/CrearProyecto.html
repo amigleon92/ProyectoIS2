@@ -16,24 +16,22 @@
             <dl>
                 <dt><label>Usuario Líder:</label></dt>
                 <dd>
-                    <select  name="lider_proyecto" required>
+                    <select  name="lider_proyecto"id="submitt" required>
                         <option value="">Seleccione un usuario</option>
                         {% for usuario in lista_usuarios %}
-                            <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
+                            <option value={{ usuario.nick }}>{{ usuario.nick }} </option>
                         {% endfor %}
                     </select>
                 </dd>
             </dl>
         </fieldset>
-        <table>
-            <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Crear">
-        </table>
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="Crear" id="submitt">
+    </form>
+    <form action="/proyecto/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" value="<Atras" id="submitt">
     </form>
 {% endblock %}
 {% block Botones%}
-    <form action="/proyecto/" method="POST"> {% csrf_token %}
-        <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
-    </form>
 {% endblock %}

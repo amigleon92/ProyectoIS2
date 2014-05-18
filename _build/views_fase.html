@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +15,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '',
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -54,283 +56,150 @@
             
   <div class="section" id="vista-de-las-fases">
 <h1>vista de las fases<a class="headerlink" href="#vista-de-las-fases" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138</pre></div></td><td class="code"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-</span><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Fase</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Usuario.models</span> <span class="kn">import</span> <span class="n">Usuario</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Proyecto.views</span> <span class="kn">import</span> <span class="n">ProyectoView</span>
-<span class="kn">from</span> <span class="nn">Aplicaciones.Item.models</span> <span class="kn">import</span> <span class="n">Item</span>
+<div class="highlight-python"><pre>from django.shortcuts import render
+from .models import Fase
+from Aplicaciones.Usuario.models import Usuario
+from Aplicaciones.Proyecto.models import Proyecto
+from Aplicaciones.Rol.models import Rol
+from Aplicaciones.Proyecto.views import ProyectoView
+from Aplicaciones.Item.models import Item
 
-<span class="c"># Create your views here.</span>
+# Create your views here.
 
-<span class="c">#Lista de Fases correspondientes al Proyecto dentro</span>
-<span class="k">class</span> <span class="nc">FaseView</span><span class="p">(</span><span class="n">ProyectoView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/Fase.html&#39;</span>
-    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s">&#39;lista_fases&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;N&#39;</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_proyectos&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Debe inicializar proyecto&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">FaseView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+#Lista de Fases correspondientes al Proyecto dentro
+class FaseView(ProyectoView):
+    template_name = 'Fase/Fase.html'
+    context_object_name = 'lista_fases'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        if not proyecto_actual.estado=='N':
+            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+            return render(request, self.template_name, diccionario)
+        else:
+            diccionario['lista_proyectos']= Proyecto.objects.filter(activo= True)
+            diccionario['error']= 'Debe inicializar proyecto'
+            return render(request, super(FaseView, self).template_name, diccionario)
 
-<span class="c">#Editar los campos de los detalles de las fases</span>
-<span class="k">class</span> <span class="nc">EditarFase</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/EditarFase.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
-            <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;N&#39;</span><span class="p">:</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">fase_actual</span>
-                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;La fase ya fue inicializada&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">EditarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+#Editar los campos de los detalles de las fases
+class EditarFase(FaseView):
+    template_name = 'Fase/EditarFase.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
+            fase_actual= Fase.objects.get(id= request.POST['fase'])
+            if fase_actual.estado=='N':
+                diccionario['fase']= fase_actual
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['error']= 'La fase ya fue inicializada'
+        else:
+            diccionario['error']= 'No puedes realizar esta accion'
+        diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+        return render(request, super(EditarFase, self).template_name, diccionario)
 
-<span class="k">class</span> <span class="nc">EditarFaseConfirm</span><span class="p">(</span><span class="n">EditarFase</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/EditarFaseConfirm.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">modificar_fase</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">nombre</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;nombre_fase&#39;</span><span class="p">]</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">descripcion</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;descripcion_fase&#39;</span><span class="p">]</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">fechaInicio</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaInicio_fase&#39;</span><span class="p">]</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">fechaFin</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fechaFin_fase&#39;</span><span class="p">]</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="s">&#39;I&#39;</span>
-        <span class="n">modificar_fase</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+class EditarFaseConfirm(EditarFase):
+    template_name = 'Fase/EditarFaseConfirm.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        modificar_fase= Fase.objects.get(id=request.POST['fase'])
+        modificar_fase.nombre= request.POST['nombre_fase']
+        modificar_fase.descripcion= request.POST['descripcion_fase']
+        modificar_fase.fechaInicio= request.POST['fechaInicio_fase']
+        modificar_fase.fechaFin=request.POST['fechaFin_fase']
+        modificar_fase.estado= 'I'
+        modificar_fase.save()
+        return render(request, self.template_name, diccionario)
 
-<span class="c">#Muestra un informe de la fase.</span>
-<span class="k">class</span> <span class="nc">InformeFase</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/InformeFase.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">mostrar_fase</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">mostrar_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span> <span class="s">&#39;N&#39;</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">mostrar_fase</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede mostrar - Fase No Iniciada&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">InformeFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+#Muestra un informe de la fase.
+class InformeFase(FaseView):
+    template_name = 'Fase/InformeFase.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        mostrar_fase= Fase.objects.get(id= request.POST['fase'])
+        if not mostrar_fase.estado== 'N':
+            diccionario['fase']= mostrar_fase
+            return render(request, self.template_name, diccionario)
+        else:
+            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+            diccionario['error']= 'No se puede mostrar - Fase No Iniciada'
+            return render(request, super(InformeFase, self).template_name, diccionario)
 
-<span class="k">class</span> <span class="nc">CerrarFase</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/CerrarFase.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
-            <span class="n">fase_actual</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;fase&#39;</span><span class="p">])</span>
-            <span class="n">lista_de_items</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase_actual</span><span class="p">,</span> <span class="n">activo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;I&#39;</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]:</span>
-                    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">numeroSecuencia</span> <span class="o">&lt;</span> <span class="n">fase_actual</span><span class="o">.</span><span class="n">numeroSecuencia</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">i</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
-                        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede cerra la fase - Fase Anterior No Finalizadda&#39;</span>
-                        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lista_de_items</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s">&#39;B&#39;</span><span class="p">:</span>
-                        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede cerra la fase - Exite items NO BLOQUEADO&#39;</span>
-                        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-                <span class="n">fase_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span><span class="s">&#39;F&#39;</span>
-                <span class="n">fase_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No se puede cerrar - Fase No Iniciada&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">CerrarFase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
+class CerrarFase(FaseView):
+    template_name = 'Fase/CerrarFase.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
+            fase_actual= Fase.objects.get(id= request.POST['fase'])
+            lista_de_items= Item.objects.filter(fase=fase_actual, activo=True)
+            if fase_actual.estado=='I':
+                for i in diccionario['lista_fases']:
+                    if i.numeroSecuencia &lt; fase_actual.numeroSecuencia and not i.estado=='F':
+                        diccionario['error']= 'No se puede cerrar la fase - Fase Anterior No Finalizadda'
+                        return render(request, super(CerrarFase, self).template_name, diccionario)
+                for item in lista_de_items:
+                    if not item.estado == 'B':
+                        diccionario['error']= 'No se puede cerrar la fase - Exite items NO BLOQUEADO'
+                        return render(request, super(CerrarFase, self).template_name, diccionario)
+                fase_actual.estado='F'
+                fase_actual.save()
+                return render(request, self.template_name, diccionario)
+            else:
+                diccionario['error']= 'No se puede cerrar - Fase No Iniciada'
+        else:
+            diccionario['error']= 'No puedes realizar esta accion'
+        return render(request, super(CerrarFase, self).template_name, diccionario)
 
-<span class="c">#Finalizar el proyecto una vez terminadas las fases</span>
-<span class="k">class</span> <span class="nc">FinalizarProyecto</span><span class="p">(</span><span class="n">FaseView</span><span class="p">):</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;Fase/FinalizarProyecto.html&#39;</span>
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">diccionario</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">usuario_logueado</span><span class="o">=</span> <span class="n">Usuario</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;login&#39;</span><span class="p">])</span>
-        <span class="n">proyecto_actual</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">])</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;logueado&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">usuario_logueado</span>
-        <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;proyecto&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">proyecto_actual</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s">&#39;Lider del Proyecto&#39;</span><span class="p">,</span> <span class="n">usuario</span><span class="o">=</span> <span class="n">usuario_logueado</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)):</span>
-            <span class="n">ultima_fase</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">numeroSecuencia</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">numeroFase</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>       <span class="c">#comporbamos si se termino la ultima fase</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ultima_fase</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s">&#39;F&#39;</span><span class="p">:</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;Para finalizar, todas las fases deberian de estar cerradas&#39;</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">FinalizarProyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="s">&#39;F&#39;</span>
-                <span class="n">proyecto_actual</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-                <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_proyectos&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">activo</span><span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">ProyectoView</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;lista_fases&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_actual</span><span class="p">)</span>
-            <span class="n">diccionario</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s">&#39;No puedes realizar esta accion&#39;</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">super</span><span class="p">(</span><span class="n">FinalizarProyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">diccionario</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
+#Finalizar el proyecto una vez terminadas las fases
+class FinalizarProyecto(FaseView):
+    template_name = 'Fase/FinalizarProyecto.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
+            ultima_fase= Fase.objects.get(numeroSecuencia= proyecto_actual.numeroFase, proyecto= proyecto_actual)       #comporbamos si se termino la ultima fase
+            if not ultima_fase.estado=='F':
+                diccionario['error']= 'Para finalizar, todas las fases deberian de estar cerradas'
+                diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+                return render(request, super(FinalizarProyecto, self).template_name, diccionario)
+            else:
+                proyecto_actual.estado= 'F'
+                proyecto_actual.save()
+                diccionario['lista_proyectos']= Proyecto.objects.filter(activo= True)
+                return render(request, ProyectoView.template_name, diccionario)
+        else:
+            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+            diccionario['error']= 'No puedes realizar esta accion'
+            return render(request, super(FinalizarProyecto, self).template_name, diccionario)
+
+class AsignarNuevosMiembros(FaseView):
+    template_name = 'Fase/AsignarNuevosMiembros.html'
+    def post(self, request, *args, **kwargs):
+</pre>
+</div>
 </div>
 
 
@@ -387,7 +256,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2014, GR05.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
