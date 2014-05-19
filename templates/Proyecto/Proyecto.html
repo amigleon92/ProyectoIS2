@@ -27,22 +27,21 @@
                             <form action= "/proyecto/eliminar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value=">>" id="submitt">
-                                <!--input type="submit" value="Eliminar"-->
+                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png" alt=""/></button></center>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/informe/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value=">>" id ='submitt'>
+                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/infor.png" alt=""/></button></center>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/inicializar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id}} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value=">>" id="submitt">
+                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/arrow_refresh.png" alt=""/></button></center>
                             </form>
                         </td>
                         <td>

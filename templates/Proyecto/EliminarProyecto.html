@@ -3,7 +3,7 @@
 {% block TituloMenu %} ELIMINAR PROYECTO {% endblock %}
 {% block TituloOperacion %} Proyecto Eliminado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>El proyecto pasó a modo &lt;&lt;&lt;INACTIVO&gt;&gt;&gt;</h3></center>
+    <center><h3>El proyecto pasó a modo &lt;&lt;&lt;INACTIVO&gt;&gt;&gt;</h3></center><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" alt=""/>
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/" method="POST"> {% csrf_token %}

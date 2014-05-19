@@ -9,11 +9,11 @@
             <dl><dt><label>Nombre:</label></dt><dd><input type="text" name="nombre" id="" size="54" /></dd></dl>
             <dl><dt><label>Apellido:</label></dt><dd><input type="text" name="apellido" id="" size="54" /></dd></dl>
             <dl><dt><label>CI:</label></dt><dd><input type="number" name="cedula" id="" size="54" required/></dd></dl>
-            <dl><dt><label>Email:</label></dt><dd><input type="text" name="email" id="" size="54" /></dd></dl>
+            <dl><dt><label>Email:</label></dt><dd><input type="email" name="email" id="" size="54" /></dd></dl>
             <dl><dt><label>Contraseña:</label></dt><dd><input type="password" name="pass" id="" size="54" required/></dd></dl>
         </fieldset>
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear" id="submitt">
+        <input type="submit" value="Guardar" id="submitt">
     </form>
     <form action="/proyecto/usuario/" method="POST">{% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >

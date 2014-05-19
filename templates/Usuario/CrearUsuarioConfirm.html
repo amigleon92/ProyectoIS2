@@ -3,7 +3,7 @@
 {% block TituloMenu %} CREAR USUARIO {% endblock %}
 {% block TituloOperacion %} Usuario Creado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>El usuario se cre&oacute exitosamente. </h3></center>
+    <center><h3>El usuario se cre&oacute exitosamente. </h3></center><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" alt=""/>
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/usuario/" method="POST"> {% csrf_token %}
