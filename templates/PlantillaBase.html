@@ -48,7 +48,26 @@
 		}
 		#submitt:hover {background: #ddd;}
     </style>
+
+    <script type="text/javascript">
+			function mostrarVentana()
+			{
+			    var ventana = document.getElementById('miVentana'); // Accedemos al contenedor
+			    ventana.style.marginTop = "50px";
+			    ventana.style.marginLeft = ((document.body.clientWidth-1000) / 2) +  "px";
+			    ventana.style.display = 'block';
+			}
+			function ocultarVentana()
+			{
+			    var ventana = document.getElementById('miVentana'); // Accedemos al contenedor
+			    ventana.style.display = 'none';
+			}
+	</script>
+
+
 </head>
+{% block poup %}{% endblock %}
+
 <body>
     <div id="main_container">
        {% block Content %}{% endblock %}
