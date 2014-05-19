@@ -1,24 +1,5 @@
 {% extends 'PlantillaBase.html' %}
-{% block poup %}
-
-    <body onload="mostrarVentana()">
-    <!-- aqui hay que poner el el if para controlar li existe solicitud pendiente y si el usuario es miembro de comite-->
-        <div  id="miVentana" style="position: fixed; width: 1000px; height: 500px; top: 0; left: 0;
-         font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: normal;
-         border: 1px solid #ccc; background-color: #FAFAFA; color: #000000; display:none; border-radius: 8px 8px 8px 8px;">
-            <br><br><br><br><br><br>
-            <div><center><h1>ATENCION MIEMBRO DE COMITÉ DE PROYECTO</h1></center></div>
-            <br><br><br>
-            <center><h1>Existe Solisitud de Cambio Pendiente.</h1></center>
-            <br><br><br><br><br><br><br>
-            <center><input id="submitt" onclick="ocultarVentana();" name="btnAceptar" size="20" type="button" value="Revisar" />
-            <input id="submitt" onclick="ocultarVentana();" name="btnAceptar" size="20" type="button" value="Recordar mas tarde" /></center>
-
-        </div>
-    </body>
-
-
-{% endblock %}
+{% block poup %}{% endblock %}
 
 {% block Content %}
     <div class="header">
