@@ -1,13 +1,13 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Asignar Nuevos Miembros::{% endblock %}
-{% block TituloMenu %}ASIGNAR NUEVOS MIEMBROS{% endblock %}
+{% block TituloMenu %}ASIGNAR NUEVOS MIEMBROS - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %}Lista de Usuarios que no son miembros del proyecto{% endblock %}
 {% block DatosOperacion %}
     <form action="/proyecto/fase/asignar_nuevos_miembros/confirmar/" method="POST" class="niceform">{% csrf_token %}
         <dl>
             <dt><label>Usuarios:</label></dt>
             <dd>
-                <select multiple name="miembros[]" required>
+                <select multiple name="miembros[]" id="submitt" required>
                     <option value="" disabled>Seleccionar usuarios</option>
                     {% for usuario in lista_no_miembros %}
                         <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
@@ -17,12 +17,12 @@
         </dl>
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Aceptar">
+        <input type="submit" id="submitt" value="Aceptar">
     </form>
     <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
         <input type="hidden" name="proyecto" value="{{ proyecto.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras"><br>
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
 {% endblock %}
 {% block Botones %}

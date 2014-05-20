@@ -24,8 +24,8 @@
             <dl>
                 <dt><label>Tipo de Ítem:</label></dt>
                 <dd>
-                    <select name="tipo_item" required>
-                        <option value="">Seleccionar tipo</option>
+                    <select name="tipo_item" id="submitt" required>
+                        <option value="" disabled >Seleccionar tipo</option>
                         {% for tipo_de_item in lista_tipo_de_item %}
                              <option value={{ tipo_de_item.id }}>{{ tipo_de_item.nombre }}</option>
                         {% endfor %}
@@ -34,19 +34,17 @@
             </dl>
 
         </fieldset>
-        <table>
             <input type="hidden" name="fase_item" value={{ fase.id }} >
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Crear">
-        </table>
+            <input type="submit" id="submitt" value="Guardar">
     </form>
-{% endblock %}
-{% block Botones%}
     <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
+{% endblock %}
+{% block Botones%}
 {% endblock %}

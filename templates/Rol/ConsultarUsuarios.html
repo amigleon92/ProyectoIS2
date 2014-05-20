@@ -18,6 +18,6 @@
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
-        <input type="submit" value="<Atrás">
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
     </form>
 {% endblock %}

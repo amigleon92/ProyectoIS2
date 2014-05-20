@@ -19,6 +19,7 @@
 {% endblock %}
 {% block title %}::Menu Inicio::{% endblock %}
 {% block TituloMenu %} BIENVENIDOS, ¡MENU INICIO! {% endblock %}
+{% block MigasDePan %}>>>Inicio{% endblock %}
 {% block TituloLista %} Lista de Proyectos {% endblock %}
 {% block Columnas %}
     <tr>
@@ -45,28 +46,28 @@
                             <form action= "/proyecto/eliminar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png" alt=""/></button></center>
+                                <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png"/></button></div>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/informe/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/infor.png" alt=""/></button></center>
+                                <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/infor.png" /></button></div>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/inicializar/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id}} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <center><button type="submit" id="submitt" name="save"><img src="{{ STATIC_URL }}/Imagenes/images/arrow_refresh.png" alt=""/></button></center>
+                                <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/arrow_refresh.png"/></button></div>
                             </form>
                         </td>
                         <td>
                             <form action= "/proyecto/fase/" method="post"> {% csrf_token %}
                                 <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                                 <input type="hidden" name='login' value={{ logueado.id }} >
-                                <input type="submit" value=">>" id="submitt">
+                                <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/ingresar1.png"/></button></div>
                             </form>
                         </td>
                     </tr>

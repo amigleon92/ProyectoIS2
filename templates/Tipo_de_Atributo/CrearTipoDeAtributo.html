@@ -12,7 +12,7 @@
             <dl>
                 <dt><label>Tipo:</label></dt>
                 <dd>
-                    <select name="tipo_tipo_de_atributo" required>
+                    <select name="tipo_tipo_de_atributo" id="submitt" required>
                         <option value="N">Numérico</option>
                         <option value="B">Buleano</option>
                         <option value="T">Texto</option>
@@ -22,19 +22,18 @@
             </dl>
 
         </fieldset>
-        <table>
+
             <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Crear">
-        </table>
+            <input type="submit" id="submitt" value="Guardar">
     </form>
-{% endblock %}
-{% block Botones%}
     <form action="/proyecto/fase/tipoDeItem/tipoDeAtributo/" method="POST"> {% csrf_token %}
         <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
+{% endblock %}
+{% block Botones%}
 {% endblock %}>

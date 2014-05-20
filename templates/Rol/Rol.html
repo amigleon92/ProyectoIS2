@@ -1,16 +1,17 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Administracion de Roles:: {% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Roles{% endblock %}
 {% block TituloMenu %} ADMINISTRACION DE ROLES DEL PROYECTO {% endblock %}
 {% block TituloLista %} Lista de Roles {% endblock %}
 {% block Columnas %}
     <tr>
         <th scope="col" class="rounded">Nombre</th>
         <th scope="col" class="rounded">Usuario</th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded">Editar</th>
+        <th scope="col" class="rounded">Asignar</th>
+        <th scope="col" class="rounded">Desasignar</th>
+        <th scope="col" class="rounded">Usuarios</th>
+        <th scope="col" class="rounded">Eliminar</th>
     </tr>
 {% endblock %}
 {% block MostrarDatos%}
@@ -23,16 +24,7 @@
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='rol' value={{ rol.id }} >
-                    <input type="submit" value="Editar">
-                </form>
-            </td>
-            <td>
-                <form action= "/proyecto/fase/rol/eliminar/" method="post"> {% csrf_token %}
-                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-                    <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
-                    <input type="hidden" name='rol' value={{ rol.id }} >
-                    <input type="submit" value="Eliminar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/edit.png"/></button></div>
                 </form>
             </td>
             <td>
@@ -40,7 +32,7 @@
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='rol' value={{ rol.id }} >
-                    <input type="submit" value="Asignar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/user_add.png"/></button></div>
                 </form>
             </td>
             <td>
@@ -48,7 +40,7 @@
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='rol' value={{ rol.id }} >
-                    <input type="submit" value="Desasignar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/user_delete.png"/></button></div>
                 </form>
             </td>
             <td>
@@ -57,7 +49,16 @@
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='rol' value={{ rol.id }} >
                     <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
-                    <input type="submit" value="Consultar Usuarios">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/group.png"/></button></div>
+                </form>
+            </td>
+            <td>
+                <form action= "/proyecto/fase/rol/eliminar/" method="post"> {% csrf_token %}
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name="usuario" value="{{ rol.usuario.id }}">
+                    <input type="hidden" name='rol' value={{ rol.id }} >
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png"/></button></div>
                 </form>
             </td>
         </tr>
@@ -65,18 +66,18 @@
 {% endblock %}
 {% block Botones%}
     <form action="/proyecto/fase/rol/crear/" method="POST">{% csrf_token %}
-        <input type="submit" value="Crear nuevo rol">
+        <input type="submit" id="submitt" value="Crear Rol">
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
     </form>
      <form action="/proyecto/fase/rol/asignar_miembro_comite/" method="POST">{% csrf_token %}
-        <input type="submit" value="Definir Comite de Cambios">
+        <input type="submit" id="submitt" value="Definir Comite de Cambios">
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
     </form>
     <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Menú Proyecto"><br>
+        <input type="submit" id="submitt" value="<Menú Proyecto"><br>
     </form>
 {% endblock %}

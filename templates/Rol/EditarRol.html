@@ -48,11 +48,11 @@
         <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name='rol' value={{ rol.id }}>
-        <input type="submit" value="Actualizar">
+        <input type="submit" id="submitt" value="Aceptar">
     </form>
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
 {% endblock %}

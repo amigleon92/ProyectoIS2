@@ -15,18 +15,16 @@
             </dl>
            
         </fieldset>
-        <table>
             <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }} >
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Aceptar">
-        </table>
+            <input type="submit" id="submitt" value="Guardar">
     </form>
-{% endblock %}
-{% block Botones%}
     <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
+{% endblock %}
+{% block Botones%}
 {% endblock %}

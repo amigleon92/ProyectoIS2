@@ -27,13 +27,13 @@
             <input type="hidden" name="fase_item" value={{ fase.id }} >
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Aceptar">
+            <input type="submit" id="submitt" value="Guardar">
     </form>
     <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
 {% endblock %}
 {% block Botones%}

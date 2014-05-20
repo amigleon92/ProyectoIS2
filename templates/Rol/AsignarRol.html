@@ -8,10 +8,10 @@
             <dl><dt><label>Nombre del Rol</label></dt><dt>{{ rol.nombre }}</dt></dl>
             <dl><dt><label>Usuarios:</label></dt>
                 <dd>
-                    <select name="usuario" required>
-                        <option>Seleccionar usuario</option>
+                    <select name="usuario" id="submitt" required>
+                        <option value="" disabled>Seleccionar usuario</option>
                         {% for usuario in lista_usuarios %}
-                            <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
+                            <option value={{ usuario.nick }} >{{ usuario.nick }}</option>
                         {% endfor %}
                     </select>
                 </dd>
@@ -20,12 +20,12 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name='rol' value={{ rol.id }} >
-        <input type="submit" value="Asignar">
+        <input type="submit" id="submitt" value="Asignar">
     </form>
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name="proyecto" value={{ proyecto.id }}>
-        <input type="submit" value="<Atrás">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
 {% endblock %}
 {% block Botones %}

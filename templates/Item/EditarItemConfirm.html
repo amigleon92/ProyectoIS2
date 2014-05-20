@@ -3,13 +3,13 @@
 {% block TituloMenu %} EDITAR ITEM {% endblock %}
 {% block TituloOperacion %} Item Editado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>El item se edito exitosamente. </h3></center>
+    <div align="center"><h3>El item se edito exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
    <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
         <input type="hidden" name='fase' value="{{ fase.id }}" >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar"></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
    </form>
 {% endblock %}

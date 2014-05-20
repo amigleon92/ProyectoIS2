@@ -1,12 +1,13 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Tipo de Atributo:: {% endblock %}
 {% block TituloMenu %} MENU TIPO DE ATRIBUTO - {{ tipo_de_item.nombre }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Tipo de Ítem: {{ tipo_de_item.nombre }}>>Tipos de atributos{% endblock %}
 {% block TituloLista %} Lista de tipos de atributos {% endblock %}
 {% block Columnas %}
     <tr>
 		<th scope="col" class="rounded">Nombre</th>
         <th scope="col" class="rounded">Tipo</th>
-        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded">Eliminar</th>
 
 	</tr>
 {% endblock %}
@@ -21,7 +22,7 @@
                     <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Eliminar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png"/></button></div>
                 </form>
             </td>
         </tr>
@@ -32,11 +33,11 @@
         <input type="hidden" name='tipo_de_item' value={{ tipo_de_item.id }}>
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear">
+        <input type="submit" id="submitt" value="Crear">
     </form>
     <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras" >
+        <input type="submit" id="submitt" value="<Atras" >
     </form>
 {% endblock %}

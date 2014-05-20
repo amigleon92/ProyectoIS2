@@ -3,12 +3,12 @@
 {% block TituloMenu %} CREAR TIPO DE ÍTEM - {{ proyecto.nombre }}{% endblock %}
 {% block TituloOperacion %} Tipo de Ítem Creado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>El tipo de ítem se cre&oacute exitosamente. </h3></center>
+    <div align="center"><h3>El tipo de ítem se cre&oacute exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" alt=""/>
 {% endblock %}
 {% block Botones %}
    <form action="/proyecto/fase/tipoDeItem/" method="post">{% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar"></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
    </form>
 {% endblock %}

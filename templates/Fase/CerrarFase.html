@@ -3,12 +3,12 @@
 {% block TituloMenu %} CERRAR FASE{% endblock %}
 {% block TituloOperacion %} Fase Terminada {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>Los cambios han sido guardados. </h3></center>
+    <div align="center"><h3>Los cambios han sido guardados. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <center><input type="submit" value="Aceptar"></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
     </form>
 {% endblock %}

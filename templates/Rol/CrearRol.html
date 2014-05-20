@@ -9,7 +9,7 @@
             <dl>
                 <dt><label>Usuario:</label></dt>
                 <dd>
-                    <select  name="usuario_rol" required>
+                    <select  name="usuario_rol" id="submitt" required>
                         <option value="">Seleccione un usuario</option>
                         {% for usuario in proyecto.miembros.all %}
                             <option value={{ usuario.nick }}>{{ usuario.nick }}</option>
@@ -55,11 +55,11 @@
         </fieldset>
         <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear">
+        <input type="submit" id="submitt" value="Guardar">
     </form>
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='proyecto' value="{{ proyecto.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
 {% endblock %}

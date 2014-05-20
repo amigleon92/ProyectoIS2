@@ -3,11 +3,11 @@
 {% block TituloMenu %} INICIALIZAR PROYECTO {% endblock %}
 {% block TituloOperacion %} Proyecto Iniciado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>El proyecto se inici&oacute exitosamente. </h3></center><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" alt=""/>
+    <div align="center"><h3>El proyecto se inici&oacute exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar" id="submitt"></center>
+        <div align="center"><input type="submit" value="Aceptar" id="submitt"></div>
     </form>
 {% endblock %}
