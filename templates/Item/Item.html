@@ -13,6 +13,7 @@
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
         <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded"></th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos %}
@@ -46,6 +47,15 @@
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="submit" value="Eliminar">
+                </form>
+            </td>
+            <td>
+                <form action="/proyecto/fase/item/revertir/" method="post">{% csrf_token %}
+                    <input type="hidden" name='item' value={{ item.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }}>
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="submit" value="Revertir">
                 </form>
             </td>
             <td>

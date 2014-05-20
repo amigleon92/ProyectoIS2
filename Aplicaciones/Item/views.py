@@ -506,3 +506,63 @@ class RevivirItemConfirm(ItemView):
         tipodeitem.save()
 
         return render(request, self.template_name, diccionario)
+
+class RevertirItem(ItemView):
+    template_name = 'Item/RevertirItem.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['fase']= fase_actual
+        diccionario['proyecto']= proyecto_actual
+        #Permisos pertinentes?
+        if not len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual, revertir_item=True, activo=True)):
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'No posee permisos para realizar esta accion'
+            return render(request, super(RevertirItem, self).template_name, diccionario)
+
+        item_actual= Item.objects.get(id= request.POST['item'])
+        if item_actual.version== 1:
+            diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+            diccionario['error']= 'Esta es la primera version del item - Nada que revertir'
+            return render(request, super(RevertirItem, self).template_name, diccionario)
+
+        item_version_anterior= Item.objects.get(identificador= item_actual.identificador, version= item_actual.version-1)
+
+        nueva_version= Item(
+            nombre= item_version_anterior.nombre,
+            prioridad= item_version_anterior.prioridad,
+            descripcion= item_version_anterior.descripcion,
+            version= item_actual.version +1,
+            estado= item_version_anterior.estado,
+            tipodeItemAsociado= item_version_anterior.tipodeItemAsociado,
+            tipo_de_item= item_version_anterior.tipo_de_item,
+            fase= item_version_anterior.fase,
+            lineaBase= item_version_anterior.lineaBase,
+            costo= item_version_anterior.costo,
+            identificador= item_actual.identificador,
+            version_descripcion= 'Item revertido',
+        )
+        nueva_version.save()
+
+        lista_atributos= Atributo.objects.filter(item= item_version_anterior, activo= True)
+        for atributo in lista_atributos:
+            nuevo_atributo= Atributo(
+                nombre= atributo.nombre,
+                descripcion= atributo.descripcion,
+                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                tipo_numerico= atributo.tipo_numerico,
+                tipo_texto= atributo.tipo_texto,
+                tipo_boolean= atributo.tipo_boolean,
+                tipo_fecha= atributo.tipo_fecha,
+                item= nueva_version,
+            )
+            nuevo_atributo.save()
+
+        item_actual.activo= False
+        item_actual.save()
+
+        return render(request, self.template_name, diccionario)

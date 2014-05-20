@@ -80,7 +80,7 @@ fase1= Fase(
 	nombre= 'Fase Inicial',
 	numeroSecuencia= 1,
 	descripcion= 'Primera fase',
-	estado= 'F',
+	estado= 'I',
 	fechaInicio= '2014-04-29',
 	fechaFin= '2014-08-15',
 	proyecto= primer_proyecto,
@@ -131,6 +131,9 @@ rol_operaciones= Rol(
 	crear_tipodeatributo= True,
 	eliminar_tipodeatributo= True,
 	crear_lineabase= True,
+    revivir_item= True,
+    revertir_item= True,
+    reversionar_item= True,
 )
 rol_operaciones.save()
 

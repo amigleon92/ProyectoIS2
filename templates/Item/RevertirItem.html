@@ -1,0 +1,15 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Revertir Item::{% endblock %}
+{% block TituloMenu %} REVERTIR ITEM {% endblock %}
+{% block TituloOperacion %} Item Revertido {% endblock %}
+{% block DatosOperacion %}
+    <center><h3>Los cambios han sido revertidos </h3></center>
+{% endblock %}
+{% block Botones %}
+   <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <center><input type="submit" value="Aceptar"></center>
+   </form>
+{% endblock %}
