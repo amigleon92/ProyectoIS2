@@ -370,7 +370,7 @@ class ReversionarItem(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        if not len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual, revertir_item=True, activo=True)):
+        if not len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual, reversionar_item=True, activo=True)):
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
             diccionario['error']= 'No posee permisos para realizar esta accion'
             return render(request, super(ReversionarItem, self).template_name, diccionario)
@@ -406,32 +406,37 @@ class ReversionarItemConfirm(ItemView):
         fase_actual= Fase.objects.get(id=request.POST['fase'])
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        item_actual=Item.objects.get(id=request.POST['item'])
+        item_a_reversionar=Item.objects.get(id=request.POST['item_a_reversionar'])
         item_ultima_version= Item.objects.get(id= request.POST['item_actual'])
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
 
+        print item_a_reversionar.version_descripcion
         nueva_version= Item(
-            nombre= item_actual.nombre,
-            prioridad= item_actual.prioridad,
-            descripcion= item_actual.descripcion,
+            nombre= item_a_reversionar.nombre,
+            prioridad= item_a_reversionar.prioridad,
+            descripcion= item_a_reversionar.descripcion,
             version= item_ultima_version.version +1,
-            estado= item_actual.estado,
-            tipodeItemAsociado= item_actual.tipodeItemAsociado,
-            tipo_de_item= item_actual.tipo_de_item,
-            fase= item_actual.fase,
-            lineaBase= item_actual.lineaBase,
-            costo= item_actual.costo,
-            activo= True,
-            identificador= item_actual.identificador,
-            version_descripcion= item_actual.version_descripcion,
+            estado= item_a_reversionar.estado,
+            tipodeItemAsociado= item_a_reversionar.tipodeItemAsociado,
+            tipo_de_item= item_a_reversionar.tipo_de_item,
+            fase= item_a_reversionar.fase,
+            lineaBase= item_a_reversionar.lineaBase,
+            costo= item_a_reversionar.costo,
+            identificador= item_a_reversionar.identificador,
+            version_descripcion= item_a_reversionar.version_descripcion,
         )
         nueva_version.save()
         if nueva_version.version_descripcion== 'Item eliminado_':
-            nueva_version.version_descripcion= 'Item_eliminado'
+            nueva_version.version_descripcion= 'Item eliminado'
+            nueva_version.activo= False
             nueva_version.save()
-        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
+        else:
+            nueva_version.version_descripcion= 'Item reversionado - Version ' + str(item_a_reversionar.version)
+            nueva_version.save()
+
+        lista_atributos= Atributo.objects.filter(item= item_a_reversionar, activo= True)
         for atributo in lista_atributos:
             nuevo_atributo= Atributo(
                 nombre= atributo.nombre,
@@ -445,6 +450,7 @@ class ReversionarItemConfirm(ItemView):
                 item= nueva_version,
             )
             nuevo_atributo.save()
+
         item_ultima_version.activo= False
         item_ultima_version.save()
         return render(request, self.template_name, diccionario)
@@ -492,7 +498,7 @@ class RevivirItemConfirm(ItemView):
             )
             nuevo_atributo.save()
 
-        item_actual.version_descripcion= 'Item Revivido'
+        item_actual.version_descripcion= 'Item eliminado_'
         item_actual.save()
 
         tipodeitem= Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)

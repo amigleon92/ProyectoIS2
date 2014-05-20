@@ -72,6 +72,7 @@ class CrearRolConfirm(CrearRol):
         if 'crear_tipodeatributo' in request.POST: nuevo_rol.crear_tipodeatributo= True
         if 'eliminar_tipodeatributo' in request.POST: nuevo_rol.eliminar_tipodeatributo= True
         if 'crear_lineabase' in request.POST: nuevo_rol.crear_lineabase= True
+        if 'reversionar_item' in request.POST: nuevo_rol.reversionar_item= True
         nuevo_rol.save()
         return render(request, self.template_name, diccionario)
 
@@ -150,6 +151,8 @@ class EditarRolConfirmar(EditarRol):
             else: rol_actual.crear_tipodeatributo= False
             if 'eliminar_tipodeatributo' in request.POST: rol_actual.eliminar_tipodeatributo= True
             else: rol_actual.eliminar_tipodeatributo= False
+            if 'reversionar_item' in request.POST: rol_actual.reversionar_item= True
+            else: rol_actual.reversionar_item= False
             rol_actual.save()
         return render(request, self.template_name, diccionario)
 
@@ -268,6 +271,7 @@ class AsignarRolConfirm(RolView):
             crear_lineabase= rol_actual.crear_lineabase,
             crear_tipodeatributo= rol_actual.crear_tipodeatributo,
             eliminar_tipodeatributo= rol_actual.eliminar_tipodeatributo,
+            reversionar_item= rol_actual.reversionar_item,
         )
         nuevo_rol.save()
         return render(request, self.template_name, diccionario)

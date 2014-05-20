@@ -32,6 +32,7 @@ class Rol(models.Model):
     aprobar_item= models.BooleanField(default=False)
     revivir_item= models.BooleanField(default=False)
     revertir_item= models.BooleanField(default=False)
+    reversionar_item= models.BooleanField(default=False)
     consultar_relaciones= models.BooleanField(default=False)
     agregar_atributo= models.BooleanField(default=False)            # - Permisos de Administracion de atributos
     eliminar_atributo= models.BooleanField(default=False)
