@@ -9,7 +9,7 @@
             <dl>
                 <dt><label>Ítems Aprobados: </label></dt>
                 <dd>
-                    <select multiple name="items_en_linea_base[]" required>
+                    <select multiple name="items_en_linea_base[]" id="submitt" required>
                         <option value="" disabled>Seleccionar ítems</option>
                         {% for item in lista_de_items %}
                                 <option value={{ item.id }}>{{ item.nombre }}</option>
@@ -21,14 +21,14 @@
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear">
+        <input type="submit" id="submitt" value="Guardar">
     </form>
-{% endblock %}
-{% block Botones %}
     <form action="/proyecto/fase/item/lineaBase/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras"><br>
+        <input type="submit" id="submitt" value="Cancelar"><br>
     </form>
+{% endblock %}
+{% block Botones %}
 {% endblock %}

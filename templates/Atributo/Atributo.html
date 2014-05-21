@@ -1,6 +1,7 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Atributo:: {% endblock %}
 {% block TituloMenu %} MENU ATRIBUTO - {{ item.nombre }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Fase: {{ fase.nombre }}>>Ítem: {{ item.nombre }}>>Atributos{% endblock %}
 {% block TituloLista %} Lista de atributos {% endblock %}
 {% block Columnas %}
     <tr>
@@ -8,8 +9,8 @@
 		<th scope="col" class="rounded">Descripcion</th>
         <th scope="col" class="rounded">Tipo</th>
         <th scope="col" class="rounded">Valor</th>
-        <th scope="col" class="rounded"></th>
-        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded">Completar</th>
+        <th scope="col" class="rounded">Eliminar</th>
 
 	</tr>
 {% endblock %}
@@ -38,7 +39,7 @@
                     <input type="hidden" name='item' value={{ item.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Completar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/edit.png"/></button></div>
                 </form>
             </td>
             <td>
@@ -48,7 +49,7 @@
                     <input type="hidden" name='atributo' value={{ atributo.id }}>
                     <input type="hidden" name='proyecto' value={{ proyecto.id }}>
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Eliminar">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/trash.png"/></button></div>
                 </form>
             </td>
         </tr>
@@ -60,12 +61,12 @@
         <input type="hidden" name='item' value={{ item.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Agregar">
+        <input type="submit" id="submitt" value="Agregar">
     </form>
     <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras" >
+        <input type="submit" id="submitt" value="<Atras" >
     </form>
 {% endblock %}

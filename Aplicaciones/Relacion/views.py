@@ -181,6 +181,7 @@ class EliminarRelacion(RelacionView):
         diccionario['item']= item_actual
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']= fase_actual
+        diccionario['relacion']=relacion_actual
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_relacion=True, activo=True)):
             relacion_actual.activo= False
             relacion_actual.save()

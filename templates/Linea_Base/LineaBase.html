@@ -1,13 +1,14 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Linea Base:: {% endblock %}
 {% block TituloMenu %} MENU LINEA BASE - {{ fase.nombre }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Fase: {{ fase.nombre }}>>Lineas Base{% endblock %}
 {% block TituloLista %} Lista de Lineas Bases {% endblock %}
 {% block Columnas %}
     <tr>
         <th scope="col" class="rounded">Número</th>
 		<th scope="col" class="rounded">Nombre</th>
         <th scope="col" class="rounded">Estado</th>
-        <th scope="col" class="rounded"></th>
+        <th scope="col" class="rounded">Mostrar Ítems</th>
 	</tr>
 {% endblock %}
 {% block MostrarDatos %}
@@ -22,7 +23,7 @@
                     <input type="hidden" name='fase' value={{ fase.id }} >
                     <input type="hidden" name='proyecto' value={{ proyecto.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
-                    <input type="submit" value="Mostrar Items.">
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/magnifier.png" /></button></div>
                 </form>
             </td>
         </tr>
@@ -33,12 +34,12 @@
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Crear">
+        <input type="submit" id="submitt" value="Crear">
     </form>
     <form action="/proyecto/fase/item/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras" >
+        <input type="submit" id="submitt" value="<Atras" >
     </form>
 {% endblock %}

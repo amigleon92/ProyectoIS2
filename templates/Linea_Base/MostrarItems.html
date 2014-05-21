@@ -1,6 +1,7 @@
 {% extends 'PlantillaBaseListas.html' %}
 {% block title %} ::Menu Linea base :: {% endblock %}
 {% block TituloMenu %} MENU LINEA BASE - {{ linea_base.nombre }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Fase: {{ fase.nombre }}>>Linea Base: {{ linea_base.nombre }}>>Ítems en Linea Base{% endblock %}
 {% block TituloLista %} Lista de items en Linea Base {% endblock %}
 {% block Columnas %}
     <tr>
@@ -23,6 +24,6 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar" ></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar" ></div>
     </form>
 {% endblock %}
