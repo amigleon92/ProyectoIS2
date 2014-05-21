@@ -6,7 +6,7 @@ from Aplicaciones.Usuario.models import Usuario
 # Create your models here.
 
 
-class Solicitud_de_Cambios(models):
+class Solicitud_de_Cambios(models.Model):
     estados_probables= (
         ('D','Desaprobado'),
         ('V','Votacion'),
@@ -24,7 +24,9 @@ class Solicitud_de_Cambios(models):
     def __unicode__(self):
         return self.descripcion
 
-class Voto(models):
+
+#modelo de voto
+class Voto(models.Model):
     estados_probables=(
         ('Si', 'Si'),
         ('No', 'No'),

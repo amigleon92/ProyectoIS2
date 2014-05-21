@@ -145,26 +145,44 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
         new_nombre= request.POST['nombre_relacion']
         diccionario['lista_items']=Item.objects.filter(fase=fase_actual, activo= True)
         existe= Relacion.objects.filter(nombre= new_nombre, item1=item_actual, activo=True)
-        lista_relaciones= Relacion.objects.filter(item2=item_actual2, tipo='P/H',activo=True)
+        relacion_hijo= Relacion.objects.filter(item2=item_actual2, tipo='P/H',activo=True) #comprabar si ya tiene padre
+        lista_relaciones_padre= Relacion.objects.filter(item1=item_actual2, tipo='P/H', activo=True)
         if existe:
             diccionario['error']= 'Nombre de Relacion ya fue utilizado'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
-        elif not len(lista_relaciones):
-            lista_relaciones= Relacion.objects.filter(item1=item_actual2, item2=item_actual, tipo='P/H', activo=True)
-            if not len(lista_relaciones):
-                nueva_relacion= Relacion()
-                nueva_relacion.nombre=new_nombre
-                nueva_relacion.item1=item_actual
-                nueva_relacion.item2=item_actual2
-                nueva_relacion.tipo='P/H'
-                nueva_relacion.save()
-                return render(request, self.template_name, diccionario)
-            else:
-                diccionario['error']= 'No pueden ser P/H e H/P  entre si.'
-            return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
-        else:
+            #verificamos si el item ya tiene padre
+        elif len(relacion_hijo):
             diccionario['error']= 'El item selecionado ya posee un PADRE.'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
+        elif len(lista_relaciones_padre): #verificamos ciclos
+            hola= EstablecerRelacionPHConfirm()
+            hola.ciclos(item_actual,item_actual2)
+
+        #si no existe ciclos se guarda
+        nueva_relacion= Relacion()
+        nueva_relacion.nombre=new_nombre
+        nueva_relacion.item1=item_actual
+        nueva_relacion.item2=item_actual2
+        nueva_relacion.tipo='P/H'
+        #nueva_relacion.save()
+        return render(request, self.template_name, diccionario)
+    def ciclos(itemPadre, itemP , item):
+        lista_relaciones_padre= Relacion.objects.filter(item1=item, tipo='P/H', activo=True)
+        b=0
+        for relacion_padre in lista_relaciones_padre:
+            if relacion_padre.item2 == itemP:
+              print('hay ciclos')
+              b=1
+            else:
+                lista_relaciones_padre= Relacion.objects.filter(item1=relacion_padre.item2, tipo='P/H', activo=True)
+                if len(lista_relaciones_padre):
+                    E=EstablecerRelacionPHConfirm()
+                    E.ciclos(itemP,relacion_padre.item2)
+        if b == 0:
+            print('no hay ciclos')
+
+
+
 
 
 #Eliminar Relacion
