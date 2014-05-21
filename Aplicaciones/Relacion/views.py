@@ -155,32 +155,33 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
             diccionario['error']= 'El item selecionado ya posee un PADRE.'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
         elif len(lista_relaciones_padre): #verificamos ciclos
-            hola= EstablecerRelacionPHConfirm()
-            hola.ciclos(item_actual,item_actual2)
+                verificar_ciclos= EstablecerRelacionPHConfirm()
+                if verificar_ciclos.ciclos(item_actual,item_actual2, False):
+                    diccionario['error']= 'La relacion que desea realizar forma un ciclo'
+                    return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
 
-        #si no existe ciclos se guarda
         nueva_relacion= Relacion()
         nueva_relacion.nombre=new_nombre
         nueva_relacion.item1=item_actual
         nueva_relacion.item2=item_actual2
         nueva_relacion.tipo='P/H'
-        #nueva_relacion.save()
+        nueva_relacion.save()
         return render(request, self.template_name, diccionario)
-    def ciclos(itemPadre, itemP , item):
-        lista_relaciones_padre= Relacion.objects.filter(item1=item, tipo='P/H', activo=True)
-        b=0
+
+    def ciclos(self, item_padre, item, ciclo):
+        lista_relaciones_padre = Relacion.objects.filter(item1=item, tipo='P/H', activo=True)
+        print(item.nombre)
         for relacion_padre in lista_relaciones_padre:
-            if relacion_padre.item2 == itemP:
-              print('hay ciclos')
-              b=1
+            if relacion_padre.item2 == item_padre:
+                  print('hay ciclos')
+                  return True
             else:
                 lista_relaciones_padre= Relacion.objects.filter(item1=relacion_padre.item2, tipo='P/H', activo=True)
                 if len(lista_relaciones_padre):
-                    E=EstablecerRelacionPHConfirm()
-                    E.ciclos(itemP,relacion_padre.item2)
-        if b == 0:
-            print('no hay ciclos')
-
+                    verificar_ciclos=EstablecerRelacionPHConfirm()
+                    ciclo=verificar_ciclos.ciclos(item_padre, relacion_padre.item2, ciclo)
+                    print (ciclo)
+        return ciclo
 
 
 
