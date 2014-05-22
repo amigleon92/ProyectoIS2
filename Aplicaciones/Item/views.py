@@ -283,6 +283,7 @@ class AprobarItem(ItemView):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
+        relacion_donde_es_hijo= Relacion.objects.filter(item2=item_actual, tipo='P/H', activo=True)
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
@@ -301,11 +302,15 @@ class AprobarItem(ItemView):
                 elif atributo_actual.tipo_de_atributo_tipo == 'F' and not atributo_actual.tipo_fecha:
                     existe_atributo_nulo=True
                     break
-
         if item_actual.estado == 'D' and len(lista_de_atributos):
             if existe_atributo_nulo:
                 diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
                 diccionario['error']= 'Existe atributos sin completar.'
+                return render(request, super(AprobarItem, self).template_name, diccionario)
+            #verificamos si su padre esta aprobado
+            elif len(relacion_donde_es_hijo) and relacion_donde_es_hijo[0].item1.estado == 'D':
+                diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
+                diccionario['error']= 'El padre del Item debe de estar aprobado.'
                 return render(request, super(AprobarItem, self).template_name, diccionario)
             #Guardamos la version anterior
             version_anterior= Item(

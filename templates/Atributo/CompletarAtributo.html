@@ -8,13 +8,13 @@
             {% ifequal atributo.tipo_de_atributo_tipo 'N' %}
                 <dl>
                     <dt><label>Valor tipo 'numerico':</label></dt>
-                    <dd><input type="number" name="tipo_numerico" min=1 required/></dd>
+                    <dd><input type="number" value={{ atributo.tipo_numerico }} name="tipo_numerico" min=1 required/></dd>
                 </dl>
             {% endifequal %}
             {% ifequal atributo.tipo_de_atributo_tipo 'T' %}
                 <dl>
                     <dt><label>Valor tipo 'texto':</label></dt>
-                    <dd><input type="text" name="tipo_texto" required/></dd>
+                    <dd><input type="text" value={{ atributo.tipo_texto }} name="tipo_texto" required/></dd>
                 </dl>
             {% endifequal %}
             {% ifequal atributo.tipo_de_atributo_tipo 'B' %}
@@ -23,7 +23,7 @@
             {% ifequal atributo.tipo_de_atributo_tipo 'F' %}
                 <dl>
                     <dt><label>Valor tipo 'fecha':</label></dt>
-                    <dd><input type="date" name="tipo_fecha" required/></dd>
+                    <dd><input type="date" value={{ atributo.tipo_fecha }} name="tipo_fecha" required/></dd>
                 </dl>
             {% endifequal %}
         </fieldset>

@@ -159,7 +159,6 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
                 if verificar_ciclos.ciclos(item_actual,item_actual2, False):
                     diccionario['error']= 'La relacion que desea realizar forma un ciclo'
                     return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
-
         nueva_relacion= Relacion()
         nueva_relacion.nombre=new_nombre
         nueva_relacion.item1=item_actual

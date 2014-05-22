@@ -6,6 +6,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Item.models import Item
 from Aplicaciones.Item.views import ItemView
+from Aplicaciones.Relacion.models import Relacion
 
 # Create your views here.
 #Lista de Lineas Bases correspondientes a la Fase
@@ -68,6 +69,13 @@ class CrearLineaBaseConfirm(CrearLineaBase):
             return render(request, super(CrearLineaBaseConfirm, self).template_name, diccionario)
         else:
             items_en_linea_base=request.POST.getlist('items_en_linea_base[]')
+            #comprobar si sus padres estan en LB
+            for item_hijo in items_en_linea_base:
+                relacion_padre_de_item_hijo=Relacion.objects.filter(item2=item_hijo, tipo='P/H', activo=True)
+                if len(relacion_padre_de_item_hijo) and not relacion_padre_de_item_hijo[0].item1.estado =='B':
+                    diccionario['error']= 'Padre/s de item/s debe/n de estar en Linea Base.'
+                    diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
+                    return render(request, super(CrearLineaBaseConfirm, self).template_name, diccionario)
             nueva_lienea_base=LineaBase()
             nueva_lienea_base.nombre= new_nombre
             nueva_lienea_base.fase=fase_actual
