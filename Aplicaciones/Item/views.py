@@ -32,7 +32,60 @@ class ItemView(FaseView):
             diccionario['error']= 'Debe inicializar fase'
         diccionario['lista_fases']= Fase.objects.filter(proyecto=proyecto_actual)
         return render(request, super(ItemView, self).template_name, diccionario)
-
+    def crear_copia(self, item_a_copiar):
+        copia= Item(
+            nombre= item_a_copiar.nombre,
+            prioridad= item_a_copiar.prioridad,
+            descripcion= item_a_copiar.descripcion,
+            version= item_a_copiar.version,
+            version_descripcion= item_a_copiar.version_descripcion,
+            estado= item_a_copiar.estado,
+            tipodeItemAsociado= item_a_copiar.tipodeItemAsociado,
+            tipo_de_item= item_a_copiar.tipo_de_item,
+            fase= item_a_copiar.fase,
+            lineaBase= item_a_copiar.lineaBase,
+            costo= item_a_copiar.costo,
+            identificador= item_a_copiar.identificador,
+        )
+        copia.save()
+        #Copiamos los atributos
+        lista_atributos= Atributo.objects.filter(item= item_a_copiar, activo= True)
+        for atributo in lista_atributos:
+            nuevo_atributo= Atributo(
+                nombre= atributo.nombre,
+                descripcion= atributo.descripcion,
+                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
+                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
+                tipo_numerico= atributo.tipo_numerico,
+                tipo_texto= atributo.tipo_texto,
+                tipo_boolean= atributo.tipo_boolean,
+                tipo_fecha= atributo.tipo_fecha,
+                item= copia,
+            )
+            nuevo_atributo.save()
+        #Copiamos las relaciones en donde el item es padre o antecesor
+        lista_relaciones= Relacion.objects.filter(item1= item_a_copiar, activo= True)
+        for relacion in lista_relaciones:
+            nueva_relacion= Relacion(
+                nombre= relacion.nombre,
+                item1= copia,
+                item2= relacion.item2,
+                tipo= relacion.tipo,
+                activo= relacion.activo,
+            )
+            nueva_relacion.save()
+        #Copiamos las relaciones en donde el item es hijo o sucesor
+        lista_relaciones= Relacion.objects.filter(item2= item_a_copiar, activo= True)
+        for relacion in lista_relaciones:
+            nueva_relacion= Relacion(
+                nombre= relacion.nombre,
+                item1= relacion.item1,
+                item2= copia,
+                tipo= relacion.tipo,
+                activo= relacion.activo,
+            )
+            nueva_relacion.save()
+        return copia
 
 
 
@@ -124,46 +177,17 @@ class EliminarItem(ItemView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_item=True, activo=True)):
 
             #Guardamos la version anterior
-            version_anterior= Item(
-                nombre= item_actual.nombre,
-                prioridad= item_actual.prioridad,
-                descripcion= item_actual.descripcion,
-                version= item_actual.version,
-                estado= item_actual.estado,
-                tipodeItemAsociado= item_actual.tipodeItemAsociado,
-                tipo_de_item= item_actual.tipo_de_item,
-                fase= item_actual.fase,
-                lineaBase= item_actual.lineaBase,
-                costo= item_actual.costo,
-                activo= False,
-                identificador= item_actual.identificador,
-                version_descripcion= item_actual.version_descripcion,
-            )
+            version_anterior= self.crear_copia(item_actual)
+            version_anterior.activo= False
             version_anterior.save()
-
-            #modificar los atributos para que apunten a una nueva version
-            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
-            for atributo in lista_atributos:
-                nuevo_atributo= Atributo(
-                    nombre= atributo.nombre,
-                    descripcion= atributo.descripcion,
-                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                    tipo_numerico= atributo.tipo_numerico,
-                    tipo_texto= atributo.tipo_texto,
-                    tipo_boolean= atributo.tipo_boolean,
-                    tipo_fecha= atributo.tipo_fecha,
-                    item= version_anterior,
-                )
-                nuevo_atributo.save()
-
-
+            #Actualizamos la version existente
             item_actual.version+=1
             item_actual.version_descripcion= 'Item eliminado'
             item_actual.activo= False
+            item_actual.save()
+            #Actualizamos cantidad de items
             tipodeitem.cantidad_de_item=tipodeitem.cantidad_de_item-1
             tipodeitem.save()
-            item_actual.save()
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_items']= Item.objects.filter(fase= fase_actual, activo=True)
@@ -207,46 +231,15 @@ class EditarItemConfirm(CrearItem):
         usuario_logueado= Usuario.objects.get(id= request.POST['login'])
         proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
         item_actual=Item.objects.get(id=request.POST['item'])
-
-        #Guardamos la version anterior
-        version_anterior= Item(
-            nombre= item_actual.nombre,
-            prioridad= item_actual.prioridad,
-            descripcion= item_actual.descripcion,
-            version= item_actual.version,
-            estado= item_actual.estado,
-            tipodeItemAsociado= item_actual.tipodeItemAsociado,
-            tipo_de_item= item_actual.tipo_de_item,
-            fase= item_actual.fase,
-            lineaBase= item_actual.lineaBase,
-            costo= item_actual.costo,
-            activo= False,
-            identificador= item_actual.identificador,
-            version_descripcion= item_actual.version_descripcion,
-        )
-        version_anterior.save()
-
-        #modificar los atributos para que apunten a una nueva version
-        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
-        for atributo in lista_atributos:
-            nuevo_atributo= Atributo(
-                nombre= atributo.nombre,
-                descripcion= atributo.descripcion,
-                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                tipo_numerico= atributo.tipo_numerico,
-                tipo_texto= atributo.tipo_texto,
-                tipo_boolean= atributo.tipo_boolean,
-                tipo_fecha= atributo.tipo_fecha,
-                item= version_anterior,
-            )
-            nuevo_atributo.save()
-
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        new_nombre= request.POST['nombre_item']
-        item_actual.nombre= new_nombre
+        #Guardamos la versrion anterior
+        version_anterior= self.crear_copia(item_actual)
+        version_anterior.activo= False
+        version_anterior.save()
+        #Actualizamos la version
+        item_actual.nombre= request.POST['nombre_item']
         item_actual.costo=request.POST['costo_item']
         item_actual.prioridad=request.POST['prioridad_item']
         item_actual.descripcion= request.POST['descripcion_item']
@@ -271,7 +264,6 @@ class InformeItem(ItemView):
         diccionario['item']=item_actual
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        tipo_de_item_actual=Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
         diccionario['lista_de_atributos']= Atributo.objects.filter(item=item_actual, activo= True)
         return render(request, self.template_name, diccionario)
 
@@ -313,38 +305,10 @@ class AprobarItem(ItemView):
                 diccionario['error']= 'El padre del Item debe de estar aprobado.'
                 return render(request, super(AprobarItem, self).template_name, diccionario)
             #Guardamos la version anterior
-            version_anterior= Item(
-                nombre= item_actual.nombre,
-                prioridad= item_actual.prioridad,
-                descripcion= item_actual.descripcion,
-                version= item_actual.version,
-                estado= item_actual.estado,
-                tipodeItemAsociado= item_actual.tipodeItemAsociado,
-                tipo_de_item= item_actual.tipo_de_item,
-                fase= item_actual.fase,
-                lineaBase= item_actual.lineaBase,
-                costo= item_actual.costo,
-                activo= False,
-                identificador= item_actual.identificador,
-                version_descripcion= item_actual.version_descripcion,
-            )
+            version_anterior= self.crear_copia(item_actual)
+            version_anterior.activo= False
             version_anterior.save()
-            #modificar los atributos para que apunten a una nueva version
-            lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
-            for atributo in lista_atributos:
-                nuevo_atributo= Atributo(
-                    nombre= atributo.nombre,
-                    descripcion= atributo.descripcion,
-                    tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                    tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                    tipo_numerico= atributo.tipo_numerico,
-                    tipo_texto= atributo.tipo_texto,
-                    tipo_boolean= atributo.tipo_boolean,
-                    tipo_fecha= atributo.tipo_fecha,
-                    item= version_anterior,
-                )
-                nuevo_atributo.save()
-
+            #Actualizamos
             item_actual.estado='A'
             item_actual.version= item_actual.version + 1
             item_actual.version_descripcion= 'Item Aprobado'
@@ -417,21 +381,9 @@ class ReversionarItemConfirm(ItemView):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
 
-        print item_a_reversionar.version_descripcion
-        nueva_version= Item(
-            nombre= item_a_reversionar.nombre,
-            prioridad= item_a_reversionar.prioridad,
-            descripcion= item_a_reversionar.descripcion,
-            version= item_ultima_version.version +1,
-            estado= item_a_reversionar.estado,
-            tipodeItemAsociado= item_a_reversionar.tipodeItemAsociado,
-            tipo_de_item= item_a_reversionar.tipo_de_item,
-            fase= item_a_reversionar.fase,
-            lineaBase= item_a_reversionar.lineaBase,
-            costo= item_a_reversionar.costo,
-            identificador= item_a_reversionar.identificador,
-            version_descripcion= item_a_reversionar.version_descripcion,
-        )
+        #Creamos una nueva version
+        nueva_version= self.crear_copia(item_a_reversionar)
+        nueva_version.version= item_ultima_version.version + 1
         nueva_version.save()
         if nueva_version.version_descripcion== 'Item eliminado_':
             nueva_version.version_descripcion= 'Item eliminado'
@@ -440,22 +392,7 @@ class ReversionarItemConfirm(ItemView):
         else:
             nueva_version.version_descripcion= 'Item reversionado - Version ' + str(item_a_reversionar.version)
             nueva_version.save()
-
-        lista_atributos= Atributo.objects.filter(item= item_a_reversionar, activo= True)
-        for atributo in lista_atributos:
-            nuevo_atributo= Atributo(
-                nombre= atributo.nombre,
-                descripcion= atributo.descripcion,
-                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                tipo_numerico= atributo.tipo_numerico,
-                tipo_texto= atributo.tipo_texto,
-                tipo_boolean= atributo.tipo_boolean,
-                tipo_fecha= atributo.tipo_fecha,
-                item= nueva_version,
-            )
-            nuevo_atributo.save()
-
+        #Actualizamos la version anterior
         item_ultima_version.activo= False
         item_ultima_version.save()
         return render(request, self.template_name, diccionario)
@@ -471,45 +408,17 @@ class RevivirItemConfirm(ItemView):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         item_actual= Item.objects.get(id= request.POST['item'])
-
-        nueva_version= Item(
-            nombre= item_actual.nombre,
-            prioridad= item_actual.prioridad,
-            descripcion= item_actual.descripcion,
-            version= item_actual.version +1,
-            estado= item_actual.estado,
-            tipodeItemAsociado= item_actual.tipodeItemAsociado,
-            tipo_de_item= item_actual.tipo_de_item,
-            fase= item_actual.fase,
-            lineaBase= item_actual.lineaBase,
-            costo= item_actual.costo,
-            activo= True,
-            identificador= item_actual.identificador,
-            version_descripcion= 'Item revivido',
-        )
+        #Creamos una nueva version
+        nueva_version= self.crear_copia(item_actual)
+        nueva_version.version+=1
         nueva_version.save()
-        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
-        for atributo in lista_atributos:
-            nuevo_atributo= Atributo(
-                nombre= atributo.nombre,
-                descripcion= atributo.descripcion,
-                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                tipo_numerico= atributo.tipo_numerico,
-                tipo_texto= atributo.tipo_texto,
-                tipo_boolean= atributo.tipo_boolean,
-                tipo_fecha= atributo.tipo_fecha,
-                item= nueva_version,
-            )
-            nuevo_atributo.save()
-
+        #Actualizamos la version
         item_actual.version_descripcion= 'Item eliminado_'
         item_actual.save()
-
+        #Actualizamos los tipos de items
         tipodeitem= Tipo_de_Item.objects.get(nombre=item_actual.tipodeItemAsociado)
         tipodeitem.cantidad_de_item +=1
         tipodeitem.save()
-
         return render(request, self.template_name, diccionario)
 
 class RevertirItem(ItemView):
@@ -536,37 +445,18 @@ class RevertirItem(ItemView):
 
         item_version_anterior= Item.objects.get(identificador= item_actual.identificador, version= item_actual.version-1)
 
-        nueva_version= Item(
-            nombre= item_version_anterior.nombre,
-            prioridad= item_version_anterior.prioridad,
-            descripcion= item_version_anterior.descripcion,
-            version= item_actual.version +1,
-            estado= item_version_anterior.estado,
-            tipodeItemAsociado= item_version_anterior.tipodeItemAsociado,
-            tipo_de_item= item_version_anterior.tipo_de_item,
-            fase= item_version_anterior.fase,
-            lineaBase= item_version_anterior.lineaBase,
-            costo= item_version_anterior.costo,
-            identificador= item_actual.identificador,
-            version_descripcion= 'Item revertido',
-        )
+        #Creamos una nueva version
+        nueva_version= self.crear_copia(item_version_anterior)
+        nueva_version.version= item_actual.version + 1
         nueva_version.save()
-
-        lista_atributos= Atributo.objects.filter(item= item_version_anterior, activo= True)
-        for atributo in lista_atributos:
-            nuevo_atributo= Atributo(
-                nombre= atributo.nombre,
-                descripcion= atributo.descripcion,
-                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                tipo_numerico= atributo.tipo_numerico,
-                tipo_texto= atributo.tipo_texto,
-                tipo_boolean= atributo.tipo_boolean,
-                tipo_fecha= atributo.tipo_fecha,
-                item= nueva_version,
-            )
-            nuevo_atributo.save()
-
+        if nueva_version.version_descripcion== 'Item eliminado_':
+            nueva_version.version_descripcion= 'Item eliminado'
+            nueva_version.activo= False
+            nueva_version.save()
+        else:
+            nueva_version.version_descripcion= 'Item revertido - Version ' + str(item_version_anterior.version)
+            nueva_version.save()
+        #Actualizamos la version anterior
         item_actual.activo= False
         item_actual.save()
 
