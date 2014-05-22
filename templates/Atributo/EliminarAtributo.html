@@ -3,7 +3,7 @@
 {% block TituloMenu %} ELIMINAR ATRIBUTO - {{ tipo_de_item.nombre }}{% endblock %}
 {% block TituloOperacion %} Atributo Eliminado {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>Se elimino el atributo &lt;&lt;&lt;{{ atributo.nombre }}&gt;&gt;&gt;</h3></center>
+    <div align="center"><h3>Se eliminó el atributo &lt;&lt;&lt;{{ atributo.nombre }}&gt;&gt;&gt;</h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/fase/item/atributo/" method="post">{% csrf_token %}
@@ -11,6 +11,6 @@
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }}>
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar"></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
     </form>
 {% endblock %}

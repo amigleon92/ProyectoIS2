@@ -6,7 +6,7 @@ from Aplicaciones.Usuario.models import Usuario
 # Create your models here.
 
 
-class Solicitud_de_Cambios(models):
+class Solicitud_de_Cambios(models.Model):
     estados_probables= (
         ('D','Desaprobado'),
         ('V','Votacion'),
@@ -19,13 +19,22 @@ class Solicitud_de_Cambios(models):
     fase=models.ForeignKey(Fase, related_name='fkFaseSC')
     item_sc_aprobado=models.ForeignKey(Item, related_name='fkItemSCA')
     item_sc_desaprobado=models.ForeignKey(Item, related_name='fkItemSCD')
-    usuario1= models.ForeignKey(Usuario, related_name= 'fkvoto1')
-    usuario2= models.ForeignKey(Usuario, related_name= 'fkvoto2')
-    usuario3= models.ForeignKey(Usuario, related_name= 'fkvoto3')
-    voto1= models.BooleanField(default= False)
-    voto2= models.BooleanField(default= False)
-    voto3= models.BooleanField(default= False)
 
     activo= models.BooleanField(default= True)
     def __unicode__(self):
         return self.descripcion
+
+
+#modelo de voto
+class Voto(models.Model):
+    estados_probables=(
+        ('Si', 'Si'),
+        ('No', 'No'),
+        ('Pe', 'Pendiente')
+    )
+    usuario= models.ForeignKey(Usuario, related_name='fkusuariovoto')
+    solicitud_de_cambios= models.ForeignKey(Solicitud_de_Cambios, related_name= 'fkSC')
+    voto= models.CharField(max_length=2, choices= estados_probables, default='Pe')
+    activo= models.BooleanField(default= True)
+    def __unicode__(self):
+        return self.usuario.nombre + ' -> ' + self.voto

@@ -3,7 +3,7 @@
 {% block TituloMenu %} ELIMINAR RELACIÓN {% endblock %}
 {% block TituloOperacion %} Relación Eliminada {% endblock %}
 {% block DatosOperacion %}
-    <center><h3>Se elimino la relación &lt;&lt;&lt;{{ relacion.nombre }}&gt;&gt;&gt;</h3></center>
+    <div alig="center"><h3>Se elimino la relación &lt;&lt;&lt;{{ relacion.nombre }}&gt;&gt;&gt;</h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
     <form action="/proyecto/fase/item/relacion/" method="post">{% csrf_token %}
@@ -11,6 +11,6 @@
         <input type="hidden" name='proyecto' value={{ proyecto.id }}>
         <input type="hidden" name='fase' value="{{ fase.id }}" >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <center><input type="submit" value="Aceptar"></center>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
     </form>
 {% endblock %}

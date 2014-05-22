@@ -15,7 +15,7 @@
             <dl>
                 <dt><label>Sucesor:</label></dt>
                 <dd>
-                    <select name="item2" required>
+                    <select name="item2" id="submitt" required>
                         <option value="" disabled>Seleccionar ítem</option>
                         {% for item2 in lista_items %}
                             {% ifnotequal item2 item %}
@@ -27,22 +27,20 @@
             </dl>
 
         </fieldset>
-        <table>
             <input type="hidden" name="fase" value={{ fase.id }} >
             <input type="hidden" name='item' value={{ item.id }} >
             <input type="hidden" name='lista_items' value={{ lista_items }} >
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Crear">
-        </table>
+            <input type="submit" id="submitt" value="Guardar">
     </form>
-{% endblock %}
-{% block Botones%}
     <form action="/proyecto/fase/item/relacion/" method="POST"> {% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='item' value={{ item.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras">
+        <input type="submit" id="submitt" value="Cancelar">
     </form>
+{% endblock %}
+{% block Botones%}
 {% endblock %}

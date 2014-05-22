@@ -100,29 +100,29 @@
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Revivir Items">
+        <input type="submit" id="submitt" value="Revivir Items">
     </form>
     <form action="/proyecto/fase/item/lineaBase/" method="post">{% csrf_token %}
         <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Linea Base">
+        <input type="submit" id="submitt" value="Linea Base">
     </form>
     <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='fases' value={{ lista_fases }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="Ver Solicitudes" >
+        <input type="submit" id="submitt" value="Ver Solicitudes" >
     </form>
     <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='fases' value={{ lista_fases }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" value="<Atras" >
+        <input type="submit" id="submitt" value="<Atras" >
     </form>
     <form action="/proyecto/fase/item/reversionar/" method="post" class="niceform">{% csrf_token %}
         <fieldset>
-            <select name="item" required>
+            <select name="item" id="submitt" required>
                 <option value="">Seleccionar Item/s</option>
                 {% for item in lista_items %}
                     <option value={{ item.id }}>{{ item.nombre }}</option>
@@ -131,7 +131,7 @@
             <input type="hidden" name='fase' value={{ fase.id }} >
             <input type="hidden" name='proyecto' value={{ proyecto.id }} >
             <input type="hidden" name='login' value={{ logueado.id }} >
-            <input type="submit" value="Reversionar Item">
+            <input type="submit" id="submitt" value="Reversionar Item">
         </fieldset>
     </form>
 {% endblock %}

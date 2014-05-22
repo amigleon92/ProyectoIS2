@@ -3,13 +3,13 @@
 {% block TituloMenu %} APROBAR ÍTEM {% endblock %}
 {% block TituloOperacion %} Ítem Aprobado {% endblock %}
 {% block DatosOperacion %}
-    <div alegn="center"><h3>El item se ha aprobado exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
+    <div align="center"><h3>El item se ha aprobado exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
 {% endblock %}
 {% block Botones %}
    <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
         <input type="hidden" name='fase' value="{{ fase.id }}" >
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <div alegn="center"><input type="submit" id="submitt" value="Aceptar"></div>
+        <div align="center"><input type="submit" id="submitt" value="Aceptar"></div>
    </form>
 {% endblock %}
