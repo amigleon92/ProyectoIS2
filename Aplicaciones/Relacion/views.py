@@ -92,13 +92,29 @@ class EstablecerRelacionASConfirm(EstablecerRelacionAS):
             diccionario['error']= 'Nombre de Relacion ya fue utilizado'
             return render(request, super(EstablecerRelacionASConfirm, self).template_name, diccionario)
         elif not len(lista_relaciones):
-                nueva_relacion= Relacion()
-                nueva_relacion.nombre=new_nombre
-                nueva_relacion.item1=item_actual
-                nueva_relacion.item2=item_actual2
-                nueva_relacion.tipo='A/S'
-                nueva_relacion.save()
-                return render(request, self.template_name, diccionario)
+            #Guardamos la version anterior para el item antecesor
+            version_anterior_item1= self.crear_copia(item_actual)
+            version_anterior_item1.activo= False
+            version_anterior_item1.save()
+            #Guardamos la version anterior para el item sucesor
+            version_anterior_item2= self.crear_copia(item_actual2)
+            version_anterior_item2.activo= False
+            version_anterior_item2.save()
+            #Actualizamos ambas versiones
+            item_actual.version +=1
+            item_actual.version_descripcion= 'Relacion Agregada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+            item_actual.save()
+            item_actual2.version +=1
+            item_actual2.version_descripcion= 'Relacion Agregada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+            item_actual2.save()
+            #Establecemos la relacion
+            nueva_relacion= Relacion()
+            nueva_relacion.nombre=new_nombre
+            nueva_relacion.item1=item_actual
+            nueva_relacion.item2=item_actual2
+            nueva_relacion.tipo='A/S'
+            nueva_relacion.save()
+            return render(request, self.template_name, diccionario)
         else:
             diccionario['error']= 'El item selecionado ya posee un ANTECESOR.'
             return render(request, super(EstablecerRelacionASConfirm, self).template_name, diccionario)
@@ -159,6 +175,22 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
                 if verificar_ciclos.ciclos(item_actual,item_actual2, False):
                     diccionario['error']= 'La relacion que desea realizar forma un ciclo'
                     return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
+        #Guardamos la version anterior para el item antecesor
+        version_anterior_item1= self.crear_copia(item_actual)
+        version_anterior_item1.activo= False
+        version_anterior_item1.save()
+        #Guardamos la version anterior para el item sucesor
+        version_anterior_item2= self.crear_copia(item_actual2)
+        version_anterior_item2.activo= False
+        version_anterior_item2.save()
+        #Actualizamos ambas versiones
+        item_actual.version +=1
+        item_actual.version_descripcion= 'Relacion Agregada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+        item_actual.save()
+        item_actual2.version +=1
+        item_actual2.version_descripcion= 'Relacion Agregada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+        item_actual2.save()
+        #Establecemos la relacion
         nueva_relacion= Relacion()
         nueva_relacion.nombre=new_nombre
         nueva_relacion.item1=item_actual
@@ -201,6 +233,23 @@ class EliminarRelacion(RelacionView):
         diccionario['fase']= fase_actual
         diccionario['relacion']=relacion_actual
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_relacion=True, activo=True)):
+            item_actual2= relacion_actual.item2
+            #Guardamos la version anterior para el item antecesor
+            version_anterior_item1= self.crear_copia(item_actual)
+            version_anterior_item1.activo= False
+            version_anterior_item1.save()
+            #Guardamos la version anterior para el item sucesor
+            version_anterior_item2= self.crear_copia(item_actual2)
+            version_anterior_item2.activo= False
+            version_anterior_item2.save()
+            #Actualizamos ambas versiones
+            item_actual.version +=1
+            item_actual.version_descripcion= 'Relacion Eliminada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+            item_actual.save()
+            item_actual2.version +=1
+            item_actual.version_descripcion= 'Relacion Eliminada ' + item_actual.nombre + ' -> ' + item_actual2.nombre
+            item_actual2.save()
+            #Eliminamos la relacion
             relacion_actual.activo= False
             relacion_actual.save()
             return render(request, self.template_name, diccionario)

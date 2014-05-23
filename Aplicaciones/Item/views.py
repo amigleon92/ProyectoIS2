@@ -380,7 +380,11 @@ class ReversionarItemConfirm(ItemView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-
+        #Las relaciones actuales quedaran obsoletas
+        lista_relaciones= Relacion.objects.filter(item1= item_ultima_version, activo= True)
+        for i in lista_relaciones: i.activo= False
+        lista_relaciones= Relacion.objects.filter(item2= item_ultima_version, activo= True)
+        for i in lista_relaciones: i.activo= False
         #Creamos una nueva version
         nueva_version= self.crear_copia(item_a_reversionar)
         nueva_version.version= item_ultima_version.version + 1
@@ -444,7 +448,11 @@ class RevertirItem(ItemView):
             return render(request, super(RevertirItem, self).template_name, diccionario)
 
         item_version_anterior= Item.objects.get(identificador= item_actual.identificador, version= item_actual.version-1)
-
+        #Las relaciones actuales quedaran obsoletas
+        lista_relaciones= Relacion.objects.filter(item1= item_actual, activo= True)
+        for i in lista_relaciones: i.activo= False
+        lista_relaciones= Relacion.objects.filter(item2= item_actual, activo= True)
+        for i in lista_relaciones: i.activo= False
         #Creamos una nueva version
         nueva_version= self.crear_copia(item_version_anterior)
         nueva_version.version= item_actual.version + 1

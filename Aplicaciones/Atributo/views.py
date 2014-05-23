@@ -22,7 +22,7 @@ class AtributoView(ItemView):
         diccionario['proyecto']= proyecto_actual
         diccionario['item']=item_actual
         diccionario['fase']=fase_actual
-        diccionario['lista_atributos']= Atributo.objects.filter(item= item_actual, activo=True)
+        diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
         return render(request, self.template_name, diccionario)
 
 
@@ -46,6 +46,7 @@ class AgregarAtributo(AtributoView):
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(tipo_de_item= item_actual.tipo_de_item, activo=True)
+            diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(AgregarAtributo, self).template_name, diccionario,)
 
@@ -122,6 +123,7 @@ class EliminarAtributo(AtributoView):
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(tipo_de_item= item_actual.tipo_de_item, activo=True)
+            diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(EliminarAtributo,self).template_name, diccionario)
 
@@ -145,11 +147,11 @@ class CompletarAtributo(AtributoView):
             if not fase_actual.estado == 'F':
                     return render(request, self.template_name, diccionario)
             else:
-               diccionario['lista_atributos']= Atributo.objects.filter(item= item_actual, activo=True)
+               diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
                diccionario['error']= 'Fase finalizada. No puedes realizar esta accion'
                return render(request, super(CompletarAtributo, self).template_name, diccionario)
         else:
-            diccionario['lista_atributos']= Atributo.objects.filter(item= item_actual, activo=True)
+            diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(CompletarAtributo, self).template_name, diccionario)
 
@@ -169,41 +171,14 @@ class CompletarAtributoConfirm(CompletarAtributo):
         diccionario['proyecto']= proyecto_actual
 
         #Guardamos la version anterior
-        version_anterior= Item(
-            nombre= item_actual.nombre,
-            prioridad= item_actual.prioridad,
-            descripcion= item_actual.descripcion,
-            version= item_actual.version,
-            estado= item_actual.estado,
-            tipodeItemAsociado= item_actual.tipodeItemAsociado,
-            tipo_de_item= item_actual.tipo_de_item,
-            fase= item_actual.fase,
-            lineaBase= item_actual.lineaBase,
-            costo= item_actual.costo,
-            activo= False,
-            identificador= item_actual.identificador,
-            version_descripcion= item_actual.version_descripcion,
-        )
+        version_anterior= self.crear_copia(item_actual)
+        version_anterior.activo= False
         version_anterior.save()
-        #modificar los atributos para que apunten a una nueva version
-        lista_atributos= Atributo.objects.filter(item= item_actual, activo= True)
-        for atributo in lista_atributos:
-            nuevo_atributo= Atributo(
-                nombre= atributo.nombre,
-                descripcion= atributo.descripcion,
-                tipo_de_atributo_nombre= atributo.tipo_de_atributo_nombre,
-                tipo_de_atributo_tipo= atributo.tipo_de_atributo_tipo,
-                tipo_numerico= atributo.tipo_numerico,
-                tipo_texto= atributo.tipo_texto,
-                tipo_boolean= atributo.tipo_boolean,
-                tipo_fecha= atributo.tipo_fecha,
-                item= version_anterior,
-            )
-            nuevo_atributo.save()
-        item_actual.version+=1 #Atributo Eliminado NuevaVersion
+        #Actualizamos la version
+        item_actual.version+=1 #Atributo Completado NuevaVersion
         item_actual.version_descripcion='Atributo '+ atributo_actual.nombre + ' completado'
         item_actual.save()
-
+        #Completamos Atributo
         if atributo_actual.tipo_de_atributo_tipo == 'N':
             atributo_actual.tipo_numerico= request.POST['tipo_numerico']
         elif atributo_actual.tipo_de_atributo_tipo == 'T':

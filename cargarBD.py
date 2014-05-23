@@ -142,7 +142,6 @@ l_base1= LineaBase(
     fase= fase2,
     estado='C',
 )
-
 l_base1.save()
 
 tipo_item1= Tipo_de_Item(
@@ -151,7 +150,6 @@ tipo_item1= Tipo_de_Item(
     cantidad_de_item=1,
     proyecto=primer_proyecto,
 )
-
 tipo_item1.save()
 
 item_fase2= Item(
