@@ -1,9 +1,17 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Completar Atributo::{% endblock %}
-{% block TituloMenu %} COMPLETAR ATRIBUTO {% endblock %}
+{% block TituloMenu %}
+    {% ifequal item.estado 'R' %} SOLICITUD GENERADA {% endifequal %}
+    {% ifnotequal item.estado 'R' %} COMPLETAR ATRIBUTO {% endifnotequal %}
+{% endblock %}
 {% block TituloOperacion %} Atributo Completado {% endblock %}
 {% block DatosOperacion %}
-    <div align="center"><h3>El atributo se ha completado exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
+    {% ifnotequal item.estado 'R' %}
+        <div align="center"><h3>El atributo se ha completado exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
+    {% endifnotequal %}
+    {% ifequal item.estado 'R' %}
+        <div align="center"><h3>La solicitud ha sido generada - Aguarde la Aprobacion </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/hourglass.png" />
+    {% endifequal %}
 {% endblock %}
 {% block Botones %}
    <form action="/proyecto/fase/item/atributo/" method="post">{% csrf_token %}
