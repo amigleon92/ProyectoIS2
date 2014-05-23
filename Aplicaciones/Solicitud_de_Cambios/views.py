@@ -28,3 +28,19 @@ class SolicitudesDeFaseview(ItemView):
 
 
 
+class VotarFase(SolicitudesDeFaseview):
+    template_name = 'Solicitud_de_Cambios/VotarFase.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
+        fase_actual= Fase.objects.get(id=request.POST['fase'])
+        diccionario['logueado']= usuario_logueado
+        diccionario['proyecto']= proyecto_actual
+        diccionario['fase']=fase_actual
+        if len(Rol.objects.filter(nombre='Miembro del Comite', usuario=usuario_logueado, activo=True)):
+            return render(request, self.template_name, diccionario)
+        else:
+            diccionario['lista_solicitudes']= Solicitud_de_Cambios.objects.filter(proyecto=proyecto_actual, fase=fase_actual, activo=True)
+            diccionario['error']= 'No puedes realizar esta accion'
+            return render(request, super(VotarFase, self).template_name, diccionario)
