@@ -172,9 +172,5 @@ class ConstruccionView(TemplateView):
     template_name = 'Proyecto/Construccion.html'
     def post(self, request, *args, **kwargs):
         diccionario={}
-        usuario_logueado= Usuario.objects.get(id= request.POST['login'])
-        proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-        diccionario['logueado']= usuario_logueado
-        diccionario['proyecto']= proyecto_actual
         return render(request, self.template_name, diccionario)
 
