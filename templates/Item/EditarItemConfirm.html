@@ -1,9 +1,17 @@
 {% extends 'PlantillaBaseMetodos.html' %}
 {% block title %}::Editar Item::{% endblock %}
 {% block TituloMenu %} EDITAR ITEM {% endblock %}
-{% block TituloOperacion %} Item Editado {% endblock %}
+{% block TituloOperacion %}
+    {% ifequal item.estado 'R' %} Solicitud Generada {% endifequal %}
+    {% ifnotequal item.estado 'R' %} Item Editado {% endifnotequal %}
+{% endblock %}
 {% block DatosOperacion %}
-    <div align="center"><h3>El item se edito exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
+    {% ifnotequal item.estado 'R' %}
+        <div align="center"><h3>El item se edito exitosamente. </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/valid.png" />
+    {% endifnotequal %}
+    {% ifequal item.estado 'R' %}
+        <div align="center"><h3>La solicitud ha sido generada - Aguarde la Aprobacion </h3></div><img src="{{ STATIC_URL }}/Imagenes/images/hourglass.png" />
+    {% endifequal %}
 {% endblock %}
 {% block Botones %}
    <form action="/proyecto/fase/item/" method="post">{% csrf_token %}

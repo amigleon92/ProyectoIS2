@@ -9,6 +9,7 @@ from Aplicaciones.Tipo_de_Item.models import Tipo_de_Item
 from Aplicaciones.Atributo.models import Atributo
 from Aplicaciones.Relacion.models import Relacion
 from Aplicaciones.Tipo_de_Atributo.models import Tipo_de_Atributo
+from Aplicaciones.Solicitud_de_Cambios.models import Solicitud_de_Cambios, Voto
 
 
 # Create your views here.
@@ -229,8 +230,18 @@ class EditarItem(ItemView):
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
                 diccionario['error']= 'Item aprobado. No puedes realizar esta accion'
                 return render(request, super(EditarItem, self).template_name, diccionario)
-            del diccionario[self.context_object_name]
-            return render(request, self.template_name, diccionario)
+            elif item_actual.estado == 'B':
+                #Si se definio ya los miembros del Comite.
+                if len(Rol.objects.filter(nombre= 'Miembro del Comite', proyecto=proyecto_actual)):
+                    diccionario['aviso']= 'Los cambios que realizara entraran en una Solicitud de Cambios'
+                    return render(request, self.template_name, diccionario)
+                else:
+                    diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+                    diccionario['error']= 'Aun no se definio un Comite de Cambios - No puede realizar esta accion'
+                    return render(request, super(EditarItem, self).template_name, diccionario)
+            else:
+                #El item es desaprobado
+                return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'No puedes realizar esta accion'
@@ -251,19 +262,55 @@ class EditarItemConfirm(CrearItem):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        #Guardamos la versrion anterior
-        version_anterior= self.crear_copia(item_actual)
-        version_anterior.activo= False
-        version_anterior.save()
-        #Actualizamos la version
-        item_actual.nombre= request.POST['nombre_item']
-        item_actual.costo=request.POST['costo_item']
-        item_actual.prioridad=request.POST['prioridad_item']
-        item_actual.descripcion= request.POST['descripcion_item']
-        item_actual.fase=Fase.objects.get(id=request.POST['fase_item'])
-        item_actual.version=item_actual.version + 1
-        item_actual.version_descripcion= 'Item modificado'
-        item_actual.save()
+        if item_actual.estado=='D':
+            #Guardamos la version anterior
+            version_anterior= self.crear_copia(item_actual)
+            version_anterior.activo= False
+            version_anterior.save()
+            #Actualizamos la version
+            item_actual.nombre= request.POST['nombre_item']
+            item_actual.costo=request.POST['costo_item']
+            item_actual.prioridad=request.POST['prioridad_item']
+            item_actual.descripcion= request.POST['descripcion_item']
+            item_actual.fase=Fase.objects.get(id=request.POST['fase_item'])
+            item_actual.version=item_actual.version + 1
+            item_actual.version_descripcion= 'Item modificado'
+            item_actual.save()
+        else:
+            #Versiones de la solicitud
+            version_desaprobada= item_actual
+            version_desaprobada.estado= 'R'
+            version_desaprobada.save()
+            version_aprobada= self.crear_copia(item_actual)
+            version_aprobada.nombre= request.POST['nombre_item']
+            version_aprobada.costo=request.POST['costo_item']
+            version_aprobada.prioridad=request.POST['prioridad_item']
+            version_aprobada.descripcion= request.POST['descripcion_item']
+            version_aprobada.fase=Fase.objects.get(id=request.POST['fase_item'])
+            version_aprobada.version=item_actual.version + 1
+            version_aprobada.version_descripcion= 'Item modificado'
+            version_aprobada.activo= False
+            version_aprobada.save()
+            #Generamos la Solicitud de Cambios
+            nueva_solicitud= Solicitud_de_Cambios(
+                descripcion= 'Editar Item ' + version_desaprobada.nombre,
+                costo_del_impacto= 1000,
+                proyecto= proyecto_actual,
+                fase= fase_actual,
+                item_sc_aprobado= version_aprobada,
+                item_sc_desaprobado= version_desaprobada,
+            )
+            nueva_solicitud.save()
+            #Generamos los votos
+            for miembro in Rol.objects.filter(nombre= 'Miembro del Comite', proyecto= proyecto_actual, activo= True):
+                nuevo_voto= Voto(
+                    usuario= miembro.usuario,
+                    solicitud_de_cambios= nueva_solicitud,
+                )
+                nuevo_voto.save()
+        #Rompemos la Linea Base
+        item_actual.lineaBase.estado= 'A'
+        item_actual.lineaBase.save()
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
 
