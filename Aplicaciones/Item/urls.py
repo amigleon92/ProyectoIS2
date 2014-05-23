@@ -28,5 +28,8 @@ urlpatterns= patterns('',
     #Relaciones
     url(r'^relacion/', include('Aplicaciones.Relacion.urls')),
 
+    #Solicitud de cambio
+    url(r'^solicitudDeCambio/', include('Aplicaciones.Solicitud_de_Cambios.urls')),
+
 
 )

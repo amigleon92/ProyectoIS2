@@ -2,21 +2,22 @@
 {% block poup  %}
 
      <body onload="mostrarVentana()">
-    <!-- aqui hay que poner el el if para controlar li existe solicitud pendiente y si el usuario es miembro de comite-->
-        <div  id="miVentana" style="position: fixed; width: 300px; height: 150px; top: 0; left: 0;
-         font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: normal;
-         border: 1px solid #ccc; background-color: #C32727; color: #000000; display:none; border-radius: 8px 8px 8px 8px;">
-            <br>
-            <div align="center"><h1>ATENCION!!!</h1></div>
-            <div align="center"><h4>Existe Solicitud de Cambio Pendiente.</h4></div>
-            <div align="center">
-                <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
-                    <input type="submit" id="submitt" value="Revisar" >
-                    <input id="submitt" onclick="ocultarVentana();" name="btnAceptar" size="20" type="button" value="Recordar mas tarde" />
-                </form>
-            </div>
+        {% if hay_solicitud %}
+            <div  id="miVentana" style="position: fixed; width: 300px; height: 150px; top: 0; left: 0;
+             font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: normal;
+             border: 1px solid #ccc; background-color: #C32727; color: #000000; display:none; border-radius: 8px 8px 8px 8px;">
+                <br>
+                <div align="center"><h1>ATENCION!!!</h1></div>
+                <div align="center"><h4>Existe Solicitud de Cambio Pendiente.</h4></div>
+                <div align="center">
+                    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+                        <input type="submit" id="submitt" value="Revisar" >
+                        <input id="submitt" onclick="ocultarVentana();" name="btnAceptar" size="20" type="button" value="Recordar mas tarde" />
+                    </form>
+                </div>
 
-        </div>
+            </div>
+         {% endif %}
     </body>
 
 {% endblock %}

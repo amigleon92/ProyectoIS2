@@ -1,0 +1,42 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Solicitud de cambio:: {% endblock %}
+{% block TituloMenu %} MENU Solicitud - Fase: {{ fase.nombre }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Proyecto: {{ proyecto.nombre }}>>Fase: {{ fase.nombre }}>>Solicitudes de Cambio{% endblock %}
+{% block TituloLista %} Lista de Solicitudes de Cambios {% endblock %}
+{% block Columnas %}
+    <tr>
+		<th scope="col" class="rounded">Descripción</th>
+        <th scope="col" class="rounded">Estado</th>
+        <th scope="col" class="rounded">Costo</th>
+        <th scope="col" class="rounded">Votos</th>
+        <th scope="col" class="rounded">Votar</th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for solicitud in lista_solicitudes %}
+        <tr>
+            <td>{{ solicitud.descripcion }}</td>
+            <td>{{ solicitud.estado }}</td>
+            <td>{{ solicitud.costo_del_impacto }}</td>
+            <td>{{ solicitud.cantidad_de_votos }}</td>
+            <td>
+                <form action="/proyecto/construccion/" method="post">{% csrf_token %}
+                    <input type="hidden" name='item' value={{ item.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <input type="hidden" name='fase' value={{ fase.id }} >
+                    <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/arrow_inout.png" /></button></div>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/fase/item/" method="post">{% csrf_token %}
+        <input type="hidden" name='fase' value="{{ fase.id }}" >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" id="submitt" value="<Atras" >
+    </form>
+
+{% endblock %}

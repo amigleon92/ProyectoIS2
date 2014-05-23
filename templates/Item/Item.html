@@ -108,9 +108,9 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Linea Base">
     </form>
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/fase/item/solicitudDeCambio/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
-        <input type="hidden" name='fases' value={{ lista_fases }} >
+        <input type="hidden" name='fase' value={{ fase.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Ver Solicitudes" >
     </form>
