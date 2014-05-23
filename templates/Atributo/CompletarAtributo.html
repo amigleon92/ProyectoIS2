@@ -3,6 +3,7 @@
 {% block TituloMenu %} COMPLETAR ATRIBUTO {% endblock %}
 {% block TituloOperacion %} Atributo - {{ atributo.nombre }}{% endblock %}
 {% block DatosOperacion %}
+    {% ifequal item.estado  'B' %}<h3><div align="center"><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /><span style="color: #fcff11">{{ aviso }}</span><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /></div></h3>{% endifequal %}
     <form action="/proyecto/fase/item/atributo/completarAtributo/confirmar/" method="post">{% csrf_token %}
         <fieldset>
             {% ifequal atributo.tipo_de_atributo_tipo 'N' %}

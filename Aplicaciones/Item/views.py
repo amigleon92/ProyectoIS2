@@ -308,9 +308,9 @@ class EditarItemConfirm(CrearItem):
                     solicitud_de_cambios= nueva_solicitud,
                 )
                 nuevo_voto.save()
-        #Rompemos la Linea Base
-        item_actual.lineaBase.estado= 'A'
-        item_actual.lineaBase.save()
+            #Rompemos la Linea Base
+            item_actual.lineaBase.estado= 'A'
+            item_actual.lineaBase.save()
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
 
