@@ -435,6 +435,7 @@ class RevivirItemConfirm(ItemView):
         item_actual= Item.objects.get(id= request.POST['item'])
         #Creamos una nueva version
         nueva_version= self.crear_copia(item_actual)
+        nueva_version.version_descripcion= 'Item revivido ' + 'Version ' + str(item_actual.version)
         nueva_version.version+=1
         nueva_version.save()
         #Actualizamos la version
