@@ -42,7 +42,10 @@ class AgregarAtributo(AtributoView):
         diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(tipo_de_item= item_actual.tipo_de_item, activo=True)
         diccionario[self.context_object_name]= Atributo.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,agregar_atributo=True, activo=True)):
-            #diccionario['lista_atributos']= Atributo.objects.filter(item= item_actual, activo=True)
+            if not item_actual.estado=='D':
+                diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                return render(request, super(AgregarAtributo, self).template_name, diccionario)
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_tipo_de_atributos']= Tipo_de_Atributo.objects.filter(tipo_de_item= item_actual.tipo_de_item, activo=True)
@@ -109,6 +112,10 @@ class EliminarAtributo(AtributoView):
         diccionario['proyecto']= proyecto_actual
 
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_atributo=True, activo=True)):
+            if not item_actual.estado=='D':
+                diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                return render(request, super(EliminarAtributo, self).template_name, diccionario)
             #Guardamos la version anterior
             version_anterior= self.crear_copia(item_actual)
             version_anterior.activo= False
@@ -144,12 +151,11 @@ class CompletarAtributo(AtributoView):
         diccionario['atributo']=atributo_actual
         diccionario['item']=item_actual
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,completar_atributos=True, activo=True)):
-            if not fase_actual.estado == 'F':
-                    return render(request, self.template_name, diccionario)
-            else:
-               diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
-               diccionario['error']= 'Fase finalizada. No puedes realizar esta accion'
-               return render(request, super(CompletarAtributo, self).template_name, diccionario)
+           if item_actual.estado=='A':
+                diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item Aprobado. No puedes realizar esta accion'
+                return render(request, super(CompletarAtributo, self).template_name, diccionario)
+           return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'No puedes realizar esta accion'

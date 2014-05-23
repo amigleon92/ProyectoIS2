@@ -54,6 +54,10 @@ class EstablecerRelacionAS(RelacionView):
                 diccionario['error']= 'No exite fase sucesora a la actual.'
                 return render(request, super(EstablecerRelacionAS, self).template_name, diccionario)
             else:
+                if not item_actual.estado=='D':
+                    diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
+                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    return render(request, super(EstablecerRelacionAS, self).template_name, diccionario)
                 return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
@@ -135,6 +139,10 @@ class EstablecerRelacionPH(RelacionView):
         diccionario['proyecto']= proyecto_actual
         diccionario['lista_items']= Item.objects.filter(fase=fase_actual, estado='D', activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
+              if not item_actual.estado=='D':
+                    diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
+                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    return render(request, super(EstablecerRelacionPH, self).template_name, diccionario)
               return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
@@ -236,6 +244,10 @@ class EliminarRelacion(RelacionView):
         diccionario['fase']= fase_actual
         diccionario['relacion']=relacion_actual
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_relacion=True, activo=True)):
+            if not item_actual.estado=='D':
+                    diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
+                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    return render(request, super(EliminarRelacion, self).template_name, diccionario)
             item_actual2= relacion_actual.item2
             #Guardamos la version anterior para el item antecesor
             version_anterior_item1= self.crear_copia(item_actual)
