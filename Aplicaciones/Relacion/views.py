@@ -21,7 +21,7 @@ class RelacionView(ItemView):
         diccionario['item']=item_actual
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+        diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
         return render(request, self.template_name, diccionario)
 
 
@@ -43,20 +43,20 @@ class EstablecerRelacionAS(RelacionView):
         lista_fases= Fase.objects.filter(proyecto=proyecto_actual)
         for fase in lista_fases:
             if fase_actual.numeroSecuencia < fase.numeroSecuencia:
-                lista_items_fase=Item.objects.filter(fase=fase, activo= True)
+                lista_items_fase=Item.objects.filter(fase=fase, tipo='D', activo= True)
                 for item in lista_items_fase:
                     lista_items.append(item)
         diccionario['lista_items']=lista_items
         #diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
             if fase_actual.numeroSecuencia == proyecto_actual.numeroFase:
-                diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+                diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
                 diccionario['error']= 'No exite fase sucesora a la actual.'
                 return render(request, super(EstablecerRelacionAS, self).template_name, diccionario)
             else:
                 return render(request, self.template_name, diccionario)
         else:
-            diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+            diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(EstablecerRelacionAS, self).template_name, diccionario)
 
@@ -133,11 +133,11 @@ class EstablecerRelacionPH(RelacionView):
         diccionario['item']=item_actual
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
-        diccionario['lista_items']= Item.objects.filter(fase=fase_actual, activo= True)
+        diccionario['lista_items']= Item.objects.filter(fase=fase_actual, estado='D', activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
               return render(request, self.template_name, diccionario)
         else:
-            diccionario['lista_relaciones']= Relacion.objects.filter(item1=item_actual, activo=True)
+            diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
             diccionario['error']= 'No puedes realizar esta accion'
             return render(request, super(EstablecerRelacionPH, self).template_name, diccionario)
 
@@ -163,6 +163,7 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
         existe= Relacion.objects.filter(nombre= new_nombre, item1=item_actual, activo=True)
         relacion_hijo= Relacion.objects.filter(item2=item_actual2, tipo='P/H',activo=True) #comprabar si ya tiene padre
         lista_relaciones_padre= Relacion.objects.filter(item1=item_actual2, tipo='P/H', activo=True)
+        print(lista_relaciones_padre)
         if existe:
             diccionario['error']= 'Nombre de Relacion ya fue utilizado'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
@@ -171,8 +172,9 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
             diccionario['error']= 'El item selecionado ya posee un PADRE.'
             return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
         elif len(lista_relaciones_padre): #verificamos ciclos
-                verificar_ciclos= EstablecerRelacionPHConfirm()
-                if verificar_ciclos.ciclos(item_actual,item_actual2, False):
+                print('reny')
+                #verificar_ciclos= EstablecerRelacionPHConfirm()
+                if self.ciclos(item_actual,item_actual2, False):
                     diccionario['error']= 'La relacion que desea realizar forma un ciclo'
                     return render(request, super(EstablecerRelacionPHConfirm, self).template_name, diccionario)
         #Guardamos la version anterior para el item antecesor
@@ -209,8 +211,9 @@ class EstablecerRelacionPHConfirm(EstablecerRelacionPH):
             else:
                 lista_relaciones_padre= Relacion.objects.filter(item1=relacion_padre.item2, tipo='P/H', activo=True)
                 if len(lista_relaciones_padre):
-                    verificar_ciclos=EstablecerRelacionPHConfirm()
-                    ciclo=verificar_ciclos.ciclos(item_padre, relacion_padre.item2, ciclo)
+                    #verificar_ciclos=EstablecerRelacionPHConfirm()
+                    #ciclo=verificar_ciclos.ciclos(item_padre, relacion_padre.item2, ciclo)
+                    ciclo=self.ciclos(item_padre, relacion_padre.item2, ciclo)
                     print (ciclo)
         return ciclo
 
