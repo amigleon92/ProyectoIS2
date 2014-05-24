@@ -103,6 +103,9 @@ class CerrarFase(FaseView):
                     if not item.estado == 'B':
                         diccionario['error']= 'No se puede cerrar la fase - Exite items NO BLOQUEADO'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
+                if not len(lista_de_items):
+                        diccionario['error']= 'No se puede cerrar la fase sin items.'
+                        return render(request, super(CerrarFase, self).template_name, diccionario)
                 fase_actual.estado='F'
                 fase_actual.save()
                 return render(request, self.template_name, diccionario)
