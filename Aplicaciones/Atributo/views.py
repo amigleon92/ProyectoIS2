@@ -45,7 +45,7 @@ class AgregarAtributo(AtributoView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,agregar_atributo=True, activo=True)):
             if not item_actual.estado=='D':
                 diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                diccionario['error']= 'Item Aprobado, Bloqueado o Revision. No puedes realizar esta accion'
                 return render(request, super(AgregarAtributo, self).template_name, diccionario)
             return render(request, self.template_name, diccionario)
         else:
@@ -115,7 +115,7 @@ class EliminarAtributo(AtributoView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_atributo=True, activo=True)):
             if not item_actual.estado=='D':
                 diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                diccionario['error']= 'Item Aprobado, Bloqueado o Revision. No puedes realizar esta accion'
                 return render(request, super(EliminarAtributo, self).template_name, diccionario)
             #Guardamos la version anterior
             version_anterior= self.crear_copia(item_actual)
@@ -155,6 +155,10 @@ class CompletarAtributo(AtributoView):
             if item_actual.estado=='A':
                 diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
                 diccionario['error']= 'Item Aprobado. No puedes realizar esta accion'
+                return render(request, super(CompletarAtributo, self).template_name, diccionario)
+            elif item_actual.estado=='R':
+                diccionario['lista_atributos']= (Atributo.objects.filter(item= item_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item en Revision. No puedes realizar esta accion'
                 return render(request, super(CompletarAtributo, self).template_name, diccionario)
             elif item_actual.estado == 'B':
                 #Si se definio ya los miembros del Comite.

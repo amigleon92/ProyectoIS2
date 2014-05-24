@@ -40,9 +40,11 @@ class VotarFase(SolicitudesDeFaseview):
         diccionario['fase']=fase_actual
         if len(Rol.objects.filter(nombre='Miembro del Comite', usuario=usuario_logueado, activo=True)):
             voto_miembro=Voto.objects.filter(usuario=usuario_logueado, solicitud_de_cambios=solicitud_actual, activo=True)
+            #print(voto_miembro[0].voto)
             if not voto_miembro[0].voto=='Pe':
                 diccionario['lista_solicitudes']= Solicitud_de_Cambios.objects.filter(proyecto=proyecto_actual, fase=fase_actual, activo=True)
                 diccionario['error']= 'Usted ya ha votado.'
+                return render(request, super(VotarFase, self).template_name, diccionario)
             return render(request, self.template_name, diccionario)
         else:
             diccionario['lista_solicitudes']= Solicitud_de_Cambios.objects.filter(proyecto=proyecto_actual, fase=fase_actual, activo=True)
@@ -58,10 +60,12 @@ class VotarFaseConfirm(VotarFase):
         fase_actual= Fase.objects.get(id=request.POST['fase'])
         solicitud_actual=Solicitud_de_Cambios.objects.get(id=request.POST['solicitud'])
         voto_actual=request.POST['voto']
-        voto_miembro=Voto.objects.filter(usuario=usuario_logueado, solicitud_de_cambios=solicitud_actual, activo=True)
+        voto_miembro=Voto.objects.get(usuario=usuario_logueado, solicitud_de_cambios=solicitud_actual, activo=True)
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         diccionario['fase']=fase_actual
-        voto_miembro[0].voto=voto_actual
-        voto_miembro[0].save()
+        voto_miembro.voto=voto_actual
+        voto_miembro.save()
+        solicitud_actual.cantidad_de_votos=solicitud_actual.cantidad_de_votos+1
+        solicitud_actual.save()
         return render(request, self.template_name, diccionario)
