@@ -20,6 +20,8 @@ Contiene:
    models_Atributo
    models_tipo_de_atributo
    models_linea_base
+   models_relacion
+   models_solicitud
    views_login
    views_usuario
    views_rol
@@ -30,6 +32,8 @@ Contiene:
    views_Atributo
    views_tipo_de_atributo
    views_linea_base
+   views_relacion
+   views_solicitud
 
 
 Indices and tables
