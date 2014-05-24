@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'Aplicaciones.Atributo',
     'Aplicaciones.Linea_Base',
     'Aplicaciones.Relacion',
-    'Aplicaciones.Solicitud_de_Cambios',
 
 )
 
@@ -71,10 +70,10 @@ WSGI_APPLICATION = 'ProyectoIS2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'produccion',
+        'NAME': 'GrupoR05_IS2',
         'HOST': 'localhost',
-        'USER': 'produccion',
-        'PASSWORD': 'produccion'
+        'USER': 'R05_is2',
+        'PASSWORD': 'R05_is2'
     }
 }
 
@@ -111,4 +110,3 @@ STATICFILES_DIRS= (
 )
 
 STATIC_URL = '/static/'
-PATH = '/home/choffix/PycharmProjects/ProyectoIS2'
