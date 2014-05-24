@@ -37,7 +37,6 @@ class CrearLineaBase(LineaBaseView):
         diccionario['proyecto']= proyecto_actual
         diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
-        print('estoy aqui')
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_lineabase=True, activo=True)):
 
             del diccionario[self.context_object_name]
@@ -72,7 +71,7 @@ class CrearLineaBaseConfirm(CrearLineaBase):
             #comprobar si sus padres estan en LB
             for item_hijo in items_en_linea_base:
                 relacion_padre_de_item_hijo=Relacion.objects.filter(item2=item_hijo, tipo='P/H', activo=True)
-                if len(relacion_padre_de_item_hijo) and not relacion_padre_de_item_hijo[0].item1.estado =='B':
+                if len(relacion_padre_de_item_hijo) and (not relacion_padre_de_item_hijo[0].item1.estado =='B' and not relacion_padre_de_item_hijo[0].item1.estado =='R'):
                     diccionario['error']= 'Padre/s de item/s debe/n de estar en Linea Base.'
                     diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
                     return render(request, super(CrearLineaBaseConfirm, self).template_name, diccionario)
