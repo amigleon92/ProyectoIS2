@@ -1,0 +1,34 @@
+{% extends 'PlantillaBaseMetodos.html' %}
+{% block title %}::Votar en Solicitud::{% endblock %}
+{% block TituloMenu %} VOTAR EN SOLICITUD {% endblock %}
+{% block TituloOperacion %} Votar {% endblock %}
+{% block DatosOperacion %}
+    {% ifequal item.estado  'B' %}<h3><div align="center"><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /><span style="color: #fcff11">{{ aviso }}</span><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /></div></h3>{% endifequal %}
+    <form action="/proyecto/fase/item/solicitudDeCambio/votarFase/confirmar/" method="post">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt><label>Votar:</label></dt>
+                <dd>
+                    <select name="voto" id="submitt" required>
+                        <option value="" disabled>Votación</option>
+                        <option value="Si">Aprobar</option>
+                        <option value="No">Desaprobar</option>
+                    </select>
+                </dd>
+            </dl>
+        </fieldset>
+            <input type="hidden" name='solicitud' value={{ solicitud.id }} >
+            <input type="hidden" name="fase" value={{ fase.id }} >
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <input type="submit" id="submitt" value="Votar">
+    </form>
+    <form action="/proyecto/fase/item/solicitudDeCambio/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='fase' value={{ fase.id }} >
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" id="submitt" value="Cancelar">
+    </form>
+{% endblock %}
+{% block Botones%}
+{% endblock %}

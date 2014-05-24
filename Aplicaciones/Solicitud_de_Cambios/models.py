@@ -7,6 +7,21 @@ from Aplicaciones.Usuario.models import Usuario
 
 
 class Solicitud_de_Cambios(models.Model):
+    """
+    Se crea el modelo Solicitud_de_Cambios
+
+    Estan definidos en la tabla los atributos
+
+
+    - descripcion: Una breve descripcion del cambio a realizar
+    - estado: puede encontrarse en 3 estados: Votacion, Desaprobado, Aprobado.
+    - costo_del_impacto: calculo del impacto al realizar dicho cambio
+    - proyecto: el id proyecto al que pertenece la solicitud
+    - fase: el id de la Fase a la que pertenece
+    - item_sc_aprobado: id del item ya modificado
+    - item_sc_desaprobado: id del item si modificar
+    - cantidad_de_votos: cantidad de votos acumulados
+    """
     estados_probables= (
         ('D','Desaprobado'),
         ('V','Votacion'),
@@ -28,6 +43,17 @@ class Solicitud_de_Cambios(models.Model):
 
 #modelo de voto
 class Voto(models.Model):
+    """
+    Se crea el modelo Voto
+
+    Estan definidos en la tabla los atributos
+
+
+    - estado: puede encontrarse en 3 estados: SI, NO, Pendiente.
+    - usuario: el id usuario al que pertenece el voto
+    - solicitud_de_cambios: el id de la solicitud al a que pertenece el voto
+    - voto: voto del miembro de comite
+    """
     estados_probables=(
         ('Si', 'Si'),
         ('No', 'No'),

@@ -21,6 +21,7 @@
             <td>{{ solicitud.cantidad_de_votos }}</td>
             <td>
                 <form action="/proyecto/fase/item/solicitudDeCambio/votarFase/" method="post">{% csrf_token %}
+                    <input type="hidden" name='solicitud' value={{ solicitud.id }} >
                     <input type="hidden" name='item' value={{ item.id }} >
                     <input type="hidden" name='login' value={{ logueado.id }} >
                     <input type="hidden" name='fase' value={{ fase.id }} >
