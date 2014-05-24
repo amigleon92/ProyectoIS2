@@ -172,7 +172,7 @@ class EliminarItem(ItemView):
         relacion_donde_item_es_padre=Relacion.objects.filter(item1=item_actual, tipo='P/H', activo=True)
         if not item_actual.estado=='D':
             diccionario['lista_items']=(Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-            diccionario['error']= 'Item ya esta Aprobado o Bloqueado'
+            diccionario['error']= 'Item esta Aprobado, Bloqueado o en Revision. No puedes realizar esta accion'
             return render(request, super(EliminarItem,self).template_name, diccionario)
             #verificamos si el item es padre
         elif len(relacion_donde_item_es_padre):
@@ -228,7 +228,11 @@ class EditarItem(ItemView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,editar_item=True, activo=True)):
             if item_actual.estado == 'A':
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Item aprobado. No puedes realizar esta accion'
+                diccionario['error']= 'Item Aprobado. No puedes realizar esta accion'
+                return render(request, super(EditarItem, self).template_name, diccionario)
+            elif item_actual.estado == 'R':
+                diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item en Revision. No puedes realizar esta accion'
                 return render(request, super(EditarItem, self).template_name, diccionario)
             elif item_actual.estado == 'B':
                 #Si se definio ya los miembros del Comite.
@@ -391,6 +395,10 @@ class AprobarItem(ItemView):
             diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'Item Bloqueado. No puede realizar accion.'
             return render(request, super(AprobarItem, self).template_name, diccionario)
+        elif item_actual.estado== 'R':
+            diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+            diccionario['error']= 'Item en Revision. No puede realizar accion.'
+            return render(request, super(AprobarItem, self).template_name, diccionario)
 
 class ReversionarItem(ItemView):
     template_name = 'Item/ReversionarItem.html'
@@ -410,7 +418,11 @@ class ReversionarItem(ItemView):
         else:
             if item_actual.estado=='B':
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Item bloqueado. No puedes realizar esta accion'
+                diccionario['error']= 'Item Bloqueado. No puedes realizar esta accion'
+                return render(request, super(ReversionarItem, self).template_name, diccionario)
+            elif item_actual.estado=='R':
+                diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item en Revision. No puedes realizar esta accion'
                 return render(request, super(ReversionarItem, self).template_name, diccionario)
             diccionario['item']= item_actual
             diccionario['lista_de_items']= (Item.objects.filter(identificador= item_actual.identificador, activo= False )).order_by('version')
@@ -517,7 +529,11 @@ class RevertirItem(ItemView):
             return render(request, super(RevertirItem, self).template_name, diccionario)
         if item_actual.estado=='B':
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Item bloqueado. No puedes realizar esta accion'
+                diccionario['error']= 'Item Bloqueado. No puedes realizar esta accion'
+                return render(request, super(RevertirItem, self).template_name, diccionario)
+        elif item_actual.estado=='R':
+                diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'Item en Revision. No puedes realizar esta accion'
                 return render(request, super(RevertirItem, self).template_name, diccionario)
         item_version_anterior= Item.objects.get(identificador= item_actual.identificador, version= item_actual.version-1)
         #Las relaciones actuales quedaran obsoletas

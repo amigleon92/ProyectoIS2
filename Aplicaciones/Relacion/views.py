@@ -43,11 +43,12 @@ class EstablecerRelacionAS(RelacionView):
         lista_fases= Fase.objects.filter(proyecto=proyecto_actual)
         for fase in lista_fases:
             if fase_actual.numeroSecuencia < fase.numeroSecuencia:
-                lista_items_fase=Item.objects.filter(fase=fase, tipo='D', activo= True)
+                print('1')
+                lista_items_fase=Item.objects.filter(fase=fase, tipo='D', activo=True)
+                print('2')
                 for item in lista_items_fase:
                     lista_items.append(item)
         diccionario['lista_items']=lista_items
-        #diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
             if fase_actual.numeroSecuencia == proyecto_actual.numeroFase:
                 diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
@@ -56,7 +57,7 @@ class EstablecerRelacionAS(RelacionView):
             else:
                 if not item_actual.estado=='D':
                     diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
-                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    diccionario['error']= 'Item Aprobado, Bloqueado o en Revision. No puedes realizar esta accion'
                     return render(request, super(EstablecerRelacionAS, self).template_name, diccionario)
                 return render(request, self.template_name, diccionario)
         else:
@@ -141,7 +142,7 @@ class EstablecerRelacionPH(RelacionView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,establecer_relacion=True, activo=True)):
               if not item_actual.estado=='D':
                     diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
-                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    diccionario['error']= 'Item Aprobado, Bloqueado o en Revision. No puedes realizar esta accion'
                     return render(request, super(EstablecerRelacionPH, self).template_name, diccionario)
               return render(request, self.template_name, diccionario)
         else:
@@ -246,7 +247,7 @@ class EliminarRelacion(RelacionView):
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,eliminar_relacion=True, activo=True)):
             if not item_actual.estado=='D':
                     diccionario['lista_relaciones']= (Relacion.objects.filter(item1=item_actual, activo=True)).order_by('id')
-                    diccionario['error']= 'Item Aprobado o Bloqueado. No puedes realizar esta accion'
+                    diccionario['error']= 'Item Aprobado, Bloqueado o en Revision. No puedes realizar esta accion'
                     return render(request, super(EliminarRelacion, self).template_name, diccionario)
             item_actual2= relacion_actual.item2
             #Guardamos la version anterior para el item antecesor
