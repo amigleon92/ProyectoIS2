@@ -6,7 +6,7 @@ from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Login.views import LoginView
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Solicitud_de_Cambios.models import Solicitud_de_Cambios
-
+from Aplicaciones.Solicitud_de_Cambios.models import Voto
 # Create your views here.
 
 # Lista de Proyectos
@@ -25,8 +25,11 @@ class ProyectoView(TemplateView):
                     diccionario['hay_solicitud']= False
                     for miembro in Rol.objects.filter(nombre='Miembro del Comite', usuario=existe[0]):
                         if Solicitud_de_Cambios.objects.filter(proyecto=miembro.proyecto, activo=True):
-                            diccionario['hay_solicitud']= True
-                            break
+                            for solicitud in Solicitud_de_Cambios.objects.filter(proyecto=miembro.proyecto, activo=True):
+                                voto_actual=Voto.objects.filter(usuario=existe[0], solicitud_de_cambios=solicitud)
+                                if voto_actual[0].voto == 'Pe':
+                                    diccionario['hay_solicitud']= True
+                                    break
                     return render(request, self.template_name, diccionario)
                 else: error= 'Password incorrecto'
             else: error= 'Nombre de usuario no existe'
