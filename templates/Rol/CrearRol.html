@@ -20,35 +20,39 @@
             <dl><dt><label><u>PERMISOS</u></label></dt></dl>
             <dl><dt><label>Permisos de Item:</label></dt></dl>
             <dd>
-                <input type="checkbox" name="crear_item">Crear Item<br>
-                <input type="checkbox" name="editar_item">Editar Item<br>
-                <input type="checkbox" name="eliminar_item">Eliminar Item<br>
-                <input type="checkbox" name="consultar_item">Consultar Item<br>
-                <input type="checkbox" name="aprobar_item">Aprobar Item<br>
-                <input type="checkbox" name="revivir_item">Revivir Item<br>
-                <input type="checkbox" name="revertir_item">Revertir Item<br>
-                <input type="checkbox" name="reversionar_item">Reversionar Item<br>
-                <input type="checkbox" name="establecer_relacion">Establecer Relacion<br>
-                <input type="checkbox" name="eliminar_relacion">Eliminar Relacion<br>
-                <input type="checkbox" name="consultar_relacion">Consultar Relacion<br>
+                <input type="checkbox" onClick="item(this)" />Seleccionar todo<br/>
+                <input type="checkbox" class="item" name="crear_item">Crear Item<br>
+                <input type="checkbox" class="item" name="editar_item">Editar Item<br>
+                <input type="checkbox" class="item" name="eliminar_item">Eliminar Item<br>
+                <input type="checkbox" class="item" name="consultar_item">Consultar Item<br>
+                <input type="checkbox" class="item" name="aprobar_item">Aprobar Item<br>
+                <input type="checkbox" class="item" name="revivir_item">Revivir Item<br>
+                <input type="checkbox" class="item" name="revertir_item">Revertir Item<br>
+                <input type="checkbox" class="item" name="reversionar_item">Reversionar Item<br>
+                <input type="checkbox" class="item" name="establecer_relacion">Establecer Relacion<br>
+                <input type="checkbox" class="item" name="eliminar_relacion">Eliminar Relacion<br>
+                <input type="checkbox" class="item" name="consultar_relacion">Consultar Relacion<br>
             </dd>
             <dl><dt><label>Permisos de Atributo:</label></dt></dl>
             <dd>
-                <input type="checkbox" name="agregar_atributo">Agregar Atributo<br>
-                <input type="checkbox" name="eliminar_atributo">Eliminar Atributo<br>
-                <input type="checkbox" name="completar_atributo">Completar Atributo<br>
-                <input type="checkbox" name="consultar_atributo">Consultar Atributo
+                <input type="checkbox" onClick="atributo(this)" />Seleccionar todo<br/>
+                <input type="checkbox" class="atributo" name="agregar_atributo">Agregar Atributo<br>
+                <input type="checkbox" class="atributo" name="eliminar_atributo">Eliminar Atributo<br>
+                <input type="checkbox" class="atributo" name="completar_atributo">Completar Atributo<br>
+                <input type="checkbox" class="atributo" name="consultar_atributo">Consultar Atributo
             </dd>
             <dl><dt><label>Permisos de Tipo de Item:</label></dt></dl>
             <dd>
-                <input type="checkbox" name="crear_tipodeitem">Crear Tipo de Item<br>
-                <input type="checkbox" name="eliminar_tipodeitem">Eliminar Tipo de Item<br>
-                <input type="checkbox" name="modificar_tipodeitem">Modificar Tipo de Item
+                <input type="checkbox" onClick="tipo_de_item(this)" />Seleccionar todo<br/>
+                <input type="checkbox" class="tipo_de_item" name="crear_tipodeitem">Crear Tipo de Item<br>
+                <input type="checkbox" class="tipo_de_item" name="eliminar_tipodeitem">Eliminar Tipo de Item<br>
+                <input type="checkbox" class="tipo_de_item" name="modificar_tipodeitem">Modificar Tipo de Item
             </dd>
             <dl><dt><label>Permisos de Tipo de Atributo:</label></dt></dl>
             <dd>
-                <input type="checkbox" name="crear_tipodeatributo">Crear Tipo de Atributo<br>
-                <input type="checkbox" name="eliminar_tipodeatributo">Eliminar Tipo de Atributo
+                <input type="checkbox" onClick="tipo_de_atributo(this)" />Seleccionar todo<br/>
+                <input type="checkbox" class="tipo_de_atributo" name="crear_tipodeatributo">Crear Tipo de Atributo<br>
+                <input type="checkbox" class="tipo_de_atributo" name="eliminar_tipodeatributo">Eliminar Tipo de Atributo
             </dd>
             <dl><dt><label>Permisos de Linea Base:</label></dt></dl>
             <dd><input type="checkbox" name="crear_lineabase">Crear Linea Base</dd><br>
