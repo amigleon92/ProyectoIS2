@@ -43,9 +43,7 @@ class EstablecerRelacionAS(RelacionView):
         lista_fases= Fase.objects.filter(proyecto=proyecto_actual)
         for fase in lista_fases:
             if fase_actual.numeroSecuencia < fase.numeroSecuencia:
-                print('1')
                 lista_items_fase=Item.objects.filter(fase=fase, estado='D', activo=True)
-                print('2')
                 for item in lista_items_fase:
                     lista_items.append(item)
         diccionario['lista_items']=lista_items

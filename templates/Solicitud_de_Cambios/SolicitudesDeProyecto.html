@@ -1,0 +1,40 @@
+{% extends 'PlantillaBaseListas.html' %}
+{% block title %} ::Menu Solicitud de cambio:: {% endblock %}
+{% block TituloMenu %} MENU Solicitud - Usuario: {{ logueado.nick }}{% endblock %}
+{% block MigasDePan %}>>>Inicio>>Solicitudes del miembro: {{ logueado.nick }}{% endblock %}
+{% block TituloLista %} Lista de Solicitudes de Cambios {% endblock %}
+{% block Columnas %}
+    <tr>
+        <th scope="col" class="rounded">Proyecto</th>
+		<th scope="col" class="rounded">Descripción</th>
+        <th scope="col" class="rounded">Estado</th>
+        <th scope="col" class="rounded">Costo</th>
+        <th scope="col" class="rounded">Votos</th>
+        <th scope="col" class="rounded">Votar</th>
+	</tr>
+{% endblock %}
+{% block MostrarDatos %}
+    {% for solicitud in lista_solicitudes %}
+        <tr>
+            <td>{{ solicitud.proyecto.nombre }}</td>
+            <td>{{ solicitud.descripcion }}</td>
+            <td>{{ solicitud.estado }}</td>
+            <td>{{ solicitud.costo_del_impacto }}</td>
+            <td>{{ solicitud.cantidad_de_votos }}</td>
+            <td>
+                <form action="/proyecto/solicitudDeCambio/SolicitudMiembro/votarProyecto/" method="post">{% csrf_token %}
+                    <input type="hidden" name='solicitud' value={{ solicitud.id }} >
+                    <input type="hidden" name='login' value={{ logueado.id }} >
+                    <div align="center"><button type="submit" id="submitt"><img src="{{ STATIC_URL }}/Imagenes/images/arrow_inout.png" /></button></div>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block Botones %}
+    <form action="/proyecto/" method="post">{% csrf_token %}
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" id="submitt" value="<Atras" >
+    </form>
+
+{% endblock %}

@@ -16,5 +16,8 @@ urlpatterns= patterns('',
     url(r'^fase/', include('Aplicaciones.Fase.urls')),
 
     #Usuarios
-    url(r'^usuario/', include('Aplicaciones.Usuario.urls'))
+    url(r'^usuario/', include('Aplicaciones.Usuario.urls')),
+
+    #Solicitud de cambio
+    url(r'^solicitudDeCambio/', include('Aplicaciones.Solicitud_de_Cambios.urls')),
 )
