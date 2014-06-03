@@ -87,10 +87,18 @@ class ItemView(FaseView):
             )
             nueva_relacion.save()
         return copia
-
-
-
-
+    def impacto(self, item_padre, costo):
+        lista_relaciones_padre = Relacion.objects.filter(item1=item_padre, activo=True)
+        print(item_padre.nombre)
+        for relacion_padre in lista_relaciones_padre:
+            if len(Relacion.objects.filter(item1=relacion_padre.item2, activo=True)):
+                  costo=self.impacto(relacion_padre.item2, costo)
+                  print(relacion_padre.item2.costo)
+                  costo=costo+relacion_padre.item2.costo
+            else:
+                print(relacion_padre.item2.costo)
+                costo=costo+relacion_padre.item2.costo
+        return costo
 
 #Crear Item
 class CrearItem(ItemView):
@@ -298,7 +306,7 @@ class EditarItemConfirm(CrearItem):
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
                 descripcion= 'Editar Item ' + version_desaprobada.nombre,
-                costo_del_impacto= 1000,
+                costo_del_impacto= self.impacto(item_actual,0)+item_actual.costo,
                 proyecto= proyecto_actual,
                 fase= fase_actual,
                 item_sc_aprobado= version_aprobada,
@@ -368,6 +376,10 @@ class AprobarItem(ItemView):
                 diccionario['error']= 'Existe atributos sin completar.'
                 return render(request, super(AprobarItem, self).template_name, diccionario)
             #verificamos si su padre esta aprobado
+            elif not (len(Relacion.objects.filter(item1=item_actual, activo=True)) or len(Relacion.objects.filter(item2=item_actual, activo=True))):
+                diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
+                diccionario['error']= 'El item no posee ningun tipo de relacion.'
+                return render(request, super(AprobarItem, self).template_name, diccionario)
             elif len(relacion_donde_es_hijo) and relacion_donde_es_hijo[0].item1.estado == 'D':
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
                 diccionario['error']= 'El padre del Item debe de estar aprobado.'

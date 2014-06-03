@@ -35,7 +35,7 @@ class CrearLineaBase(LineaBaseView):
         diccionario['logueado']= usuario_logueado
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
-        diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
+        diccionario['lista_de_items']= (Item.objects.filter(fase= fase_actual, activo=True, estado='A')).order_by('nombre')
         diccionario[self.context_object_name]= Item.objects.filter(activo= True)
         if len(Rol.objects.filter(usuario=usuario_logueado, proyecto=proyecto_actual,crear_lineabase=True, activo=True)):
 
@@ -64,7 +64,7 @@ class CrearLineaBaseConfirm(CrearLineaBase):
         existe= LineaBase.objects.filter(nombre= new_nombre, fase=fase_actual, activo= True)
         if existe:
             diccionario['error']= 'Nombre de Linea base ya existe'
-            diccionario['lista_de_items']= Item.objects.filter(fase= fase_actual, activo=True, estado='A')
+            diccionario['lista_de_items']= (Item.objects.filter(fase= fase_actual, activo=True, estado='A')).order_by('nombre')
             return render(request, super(CrearLineaBaseConfirm, self).template_name, diccionario)
         else:
             items_en_linea_base=request.POST.getlist('items_en_linea_base[]')
@@ -96,7 +96,7 @@ class MostrarItems(LineaBaseView):
          fase_actual= Fase.objects.get(id=request.POST['fase'])
          usuario_logueado= Usuario.objects.get(id= request.POST['login'])
          proyecto_actual= Proyecto.objects.get(id= request.POST['proyecto'])
-         diccionario['lista_de_items']= Item.objects.filter(lineaBase= linea_base_actual, activo= True)
+         diccionario['lista_de_items']= (Item.objects.filter(lineaBase= linea_base_actual, activo= True)).order_by('nombre')
          diccionario['fase']= fase_actual
          diccionario['logueado']= usuario_logueado
          diccionario['proyecto']= proyecto_actual

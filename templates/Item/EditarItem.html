@@ -3,7 +3,7 @@
 {% block TituloMenu %} EDITAR ITEM {% endblock %}
 {% block TituloOperacion %} Formulario Item {% endblock %}
 {% block DatosOperacion %}
-    {% ifequal item.estado  'B' %}<h3><div align="center"><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /><span style="color: #fcff11">{{ aviso }}</span><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /></div></h3>{% endifequal %}
+    {% ifequal item.estado  'B' %}<h3><div align="center"><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /><span style="color: #FCB502">{{ aviso }}</span><img src="{{ STATIC_URL }}/Imagenes/images/warning.png" /></div></h3>{% endifequal %}
     <form action="/proyecto/fase/item/editarItem/confirmarEditado/" method="post">{% csrf_token %}
         <fieldset>
             <dl>
