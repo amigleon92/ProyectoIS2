@@ -5,6 +5,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.views import ProyectoView
 from Aplicaciones.Item.models import Item
+from Aplicaciones.Relacion.models import Relacion
 
 # Create your views here.
 
@@ -95,17 +96,26 @@ class CerrarFase(FaseView):
             fase_actual= Fase.objects.get(id= request.POST['fase'])
             lista_de_items= Item.objects.filter(fase=fase_actual, activo=True)
             if fase_actual.estado=='I':
-                for i in diccionario['lista_fases']:
-                    if i.numeroSecuencia < fase_actual.numeroSecuencia and not i.estado=='F':
-                        diccionario['error']= 'No se puede cerrar la fase - Fase Anterior No Finalizadda'
+                if not len(lista_de_items):
+                        diccionario['error']= 'No se puede cerrar la fase sin items.'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
                 for item in lista_de_items:
                     if not item.estado == 'B':
                         diccionario['error']= 'No se puede cerrar la fase - Exite items NO BLOQUEADO'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
-                if not len(lista_de_items):
-                        diccionario['error']= 'No se puede cerrar la fase sin items.'
+                for i in diccionario['lista_fases']:
+                    if i.numeroSecuencia < fase_actual.numeroSecuencia and not i.estado=='F':
+                        diccionario['error']= 'No se puede cerrar la fase - Fase Anterior No Finalizadda'
                         return render(request, super(CerrarFase, self).template_name, diccionario)
+                if not fase_actual.numeroSecuencia == proyecto_actual.numeroFase:
+                    #comprobacion de sucesor
+                    for itemAntecesor in lista_de_items:
+                        if len(Relacion.objects.filter(item1=itemAntecesor, tipo='A/S', activo=True)):
+                            fase_actual.estado='F'
+                            fase_actual.save()
+                            return render(request, self.template_name, diccionario)
+                    diccionario['error']= 'Se necesita que al menos un item tenga sucesor para no perder consistencia'
+                    return render(request, super(CerrarFase, self).template_name, diccionario)
                 fase_actual.estado='F'
                 fase_actual.save()
                 return render(request, self.template_name, diccionario)

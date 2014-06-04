@@ -237,7 +237,7 @@ class CompletarAtributoConfirm(CompletarAtributo):
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
                 descripcion= 'Editar Item ' + version_desaprobada.nombre,
-                costo_del_impacto= 1000,
+                costo_del_impacto= self.impacto(item_actual,0)+item_actual.costo,
                 proyecto= proyecto_actual,
                 fase= fase_actual,
                 item_sc_aprobado= version_aprobada,

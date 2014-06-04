@@ -34,8 +34,10 @@ class SolicitudesDeFaseview(ItemView):
                 elif voto_solicitud.voto == 'No': no=no+1
             if si>no:
                 solicitud_actual.estado='A'
+                #aca hay que guardar los cambios aprobados, cerrar LB del item aprobado y bloquear los items de la LB
             else:
                 solicitud_actual.estado='D'
+                #aca hay que cerrar LB del item y bloquear los items de la LB
             solicitud_actual.save()
 
 class VotarFase(SolicitudesDeFaseview):
