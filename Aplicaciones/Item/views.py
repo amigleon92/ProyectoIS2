@@ -88,16 +88,12 @@ class ItemView(FaseView):
             nueva_relacion.save()
         return copia
     def impacto(self, item_padre, costo):
+        if not item_padre.activo: return costo          #Para items inactivos que tienen varios hijos...
         lista_relaciones_padre = Relacion.objects.filter(item1=item_padre, activo=True)
-        print(item_padre.nombre)
         for relacion_padre in lista_relaciones_padre:
             if len(Relacion.objects.filter(item1=relacion_padre.item2, activo=True)):
-                  costo=self.impacto(relacion_padre.item2, costo)
-                  print(relacion_padre.item2.costo)
-                  costo=costo+relacion_padre.item2.costo
-            else:
-                print(relacion_padre.item2.costo)
-                costo=costo+relacion_padre.item2.costo
+                costo=self.impacto(relacion_padre.item2, costo)
+            if relacion_padre.item2.activo: costo=costo+relacion_padre.item2.costo        #Sumar solo si corresponde
         return costo
 
 #Crear Item
