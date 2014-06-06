@@ -319,6 +319,10 @@ class EditarItemConfirm(CrearItem):
             #Rompemos la Linea Base
             item_actual.lineaBase.estado= 'A'
             item_actual.lineaBase.save()
+            #Todos los demas items de la linea base
+            for i in Item.objects.filter(activo= True, lineaBase= item_actual.lineaBase):
+                i.estado= 'R'
+                i.save()
         diccionario['item']= item_actual
         return render(request, self.template_name, diccionario)
 

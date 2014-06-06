@@ -82,6 +82,24 @@ class VotarFaseConfirm(VotarFase):
         solicitud_actual.cantidad_de_votos=solicitud_actual.cantidad_de_votos+1
         solicitud_actual.save()
         self.ContarVotos(solicitud_actual)
+        if not solicitud_actual.estado == 'V':
+            lb= solicitud_actual.item_sc_desaprobado.lineaBase
+            if solicitud_actual.estado== 'A':
+                solicitud_actual.item_sc_aprobado.activo= True
+                solicitud_actual.item_sc_aprobado.lineaBase= lb
+                solicitud_actual.item_sc_aprobado.estado= 'B'
+                solicitud_actual.item_sc_aprobado.save()
+                solicitud_actual.item_sc_desaprobado.activo= False
+                solicitud_actual.item_sc_desaprobado.lineaBase= None
+                solicitud_actual.item_sc_desaprobado.save()
+            else:
+                solicitud_actual.item_sc_desaprobado.estado= 'B'
+                solicitud_actual.item_sc_desaprobado.save()
+            lb.estado= 'C'
+            lb.save()
+            for i in Item.objects.filter(activo= True, lineaBase= lb, estado='R'):  #Todos los demas items que estaba desaprobado
+                i.estado= 'B'
+                i.save()
         return render(request, self.template_name, diccionario)
 
 class SolicitudesDeProyectoView(ProyectoView):

@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
+    #'django_extensions',
     'Aplicaciones.Fase',
     'Aplicaciones.Login',
     'Aplicaciones.Proyecto',
@@ -112,4 +112,4 @@ STATICFILES_DIRS= (
 )
 
 STATIC_URL = '/static/'
-PATH = '/home/choffix/PycharmProjects/ProyectoIS2'
+PATH = RUTA_PROYECTO

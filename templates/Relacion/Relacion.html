@@ -14,6 +14,7 @@
 {% endblock %}
 {% block MostrarDatos %}
     {% for relacion in lista_relaciones %}
+        {% if relacion.item2.activo %}
         <tr>
             <td>{{ relacion.item1.nombre }}</td>
             <td>{{ relacion.item2.nombre }}</td>
@@ -37,6 +38,7 @@
                 </form>
             </td>
         </tr>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 {% block Botones %}

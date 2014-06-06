@@ -232,7 +232,7 @@ class CompletarAtributoConfirm(CompletarAtributo):
                 else: atributo_actual.tipo_boolean= False
             elif atributo_actual.tipo_de_atributo_tipo == 'F':
                 atributo_actual.tipo_fecha=request.POST['tipo_fecha']
-            atributo_actual.item= version_desaprobada
+            atributo_actual.item= version_aprobada
             atributo_actual.save()
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
@@ -254,5 +254,9 @@ class CompletarAtributoConfirm(CompletarAtributo):
             #Rompemos la Linea Base
             item_actual.lineaBase.estado= 'A'
             item_actual.lineaBase.save()
+            #Todos los demas items de la linea base
+            for i in Item.objects.filter(activo= True, lineaBase= item_actual.lineaBase):
+                i.estado= 'R'
+                i.save()
         return render(request, self.template_name, diccionario)
 

@@ -291,7 +291,7 @@ class AsignarMiembroComite(RolView):
             return render(request, super(AsignarMiembroComite, self).template_name, diccionario)
         if len(miembros)<3:
             diccionario['lista_roles']= Rol.objects.filter(proyecto= proyecto_actual, activo= True)
-            diccionario['error']= 'El proyecto no posee la cantidad minima de usuarios para definir un Comite'
+            diccionario['error']= 'El proyecto no posee la cantidad minima de usuarios para definir un Comite - MINIMO: 3'
             return render(request, super(AsignarMiembroComite, self).template_name, diccionario)
         diccionario['lista_usuarios']= miembros
         return render(request, self.template_name, diccionario)
@@ -305,9 +305,9 @@ class AsignarMiembroComiteConfirm(AsignarMiembroComite):
         diccionario['logueado']= usuario_logueado
         diccionario['proyecto']= proyecto_actual
         usuarios_comite= request.POST.getlist('miembros[]')
-        if len(usuarios_comite) != 3:
+        if len(usuarios_comite)%2 == 0 or len(usuarios_comite)<3:
             diccionario['lista_usuarios']= proyecto_actual.miembros.all()
-            diccionario['error']= 'Seleccione exactamente 3 (tres) usuarios para definir el Comite'
+            diccionario['error']= 'Seleccione un numero impar de usuarios mayor a 2 para definir el Comite'
             return render(request, super(AsignarMiembroComiteConfirm, self).template_name, diccionario)
         for usuario in usuarios_comite:
             usuario= Usuario.objects.get(nick= usuario)
