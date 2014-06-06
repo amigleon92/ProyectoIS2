@@ -222,18 +222,19 @@ class CompletarAtributoConfirm(CompletarAtributo):
             version_aprobada.version_descripcion= 'Atributo Agregado'
             version_aprobada.activo= False
             version_aprobada.save()
+            #Creamos el atributo para el Aprobado
+            atributo_aprobado= Atributo.objects.get(nombre= atributo_actual.nombre, activo= True, item= version_aprobada)
             #Completamos Atributo
-            if atributo_actual.tipo_de_atributo_tipo == 'N':
-                atributo_actual.tipo_numerico= request.POST['tipo_numerico']
-            elif atributo_actual.tipo_de_atributo_tipo == 'T':
-                atributo_actual.tipo_texto= request.POST['tipo_texto']
-            elif atributo_actual.tipo_de_atributo_tipo == 'B':
-                if 'tipo_buleano' in request.POST: atributo_actual.tipo_boolean= True
-                else: atributo_actual.tipo_boolean= False
-            elif atributo_actual.tipo_de_atributo_tipo == 'F':
-                atributo_actual.tipo_fecha=request.POST['tipo_fecha']
-            atributo_actual.item= version_aprobada
-            atributo_actual.save()
+            if atributo_aprobado.tipo_de_atributo_tipo == 'N':
+                atributo_aprobado.tipo_numerico= request.POST['tipo_numerico']
+            elif atributo_aprobado.tipo_de_atributo_tipo == 'T':
+                atributo_aprobado.tipo_texto= request.POST['tipo_texto']
+            elif atributo_aprobado.tipo_de_atributo_tipo == 'B':
+                if 'tipo_buleano' in request.POST: atributo_aprobado.tipo_boolean= True
+                else: atributo_aprobado.tipo_boolean= False
+            elif atributo_aprobado.tipo_de_atributo_tipo == 'F':
+                atributo_aprobado.tipo_fecha=request.POST['tipo_fecha']
+            atributo_aprobado.save()
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
                 descripcion= 'Editar Item ' + version_desaprobada.nombre,

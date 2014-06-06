@@ -35,9 +35,28 @@ class SolicitudesDeFaseview(ItemView):
             if si>no:
                 solicitud_actual.estado='A'
                 #aca hay que guardar los cambios aprobados, cerrar LB del item aprobado y bloquear los items de la LB
+                solicitud_actual.item_sc_aprobado.activo= True
+                solicitud_actual.item_sc_aprobado.lineaBase= solicitud_actual.item_sc_desaprobado.lineaBase
+                solicitud_actual.item_sc_aprobado.estado= 'B'
+                solicitud_actual.item_sc_aprobado.save()
+                solicitud_actual.item_sc_desaprobado.activo= False
+                solicitud_actual.item_sc_desaprobado.lineaBase= None
+                solicitud_actual.item_sc_desaprobado.save()
+                solicitud_actual.item_sc_aprobado.lineaBase.estado='C'
+                solicitud_actual.item_sc_aprobado.lineaBase.save()
+                for i in Item.objects.filter(activo= True, lineaBase= solicitud_actual.item_sc_aprobado.lineaBase, estado='R'):  #Todos los demas items que estaba desaprobado
+                    i.estado= 'B'
+                    i.save()
             else:
                 solicitud_actual.estado='D'
                 #aca hay que cerrar LB del item y bloquear los items de la LB
+                solicitud_actual.item_sc_desaprobado.estado= 'B'
+                solicitud_actual.item_sc_desaprobado.save()
+                solicitud_actual.item_sc_desaprobado.lineaBase.estado= 'C'
+                solicitud_actual.item_sc_desaprobado.lineaBase.save()
+                for i in Item.objects.filter(activo= True, lineaBase= solicitud_actual.item_sc_desaprobado.lineaBase, estado='R'):  #Todos los demas items que estaba desaprobado
+                    i.estado= 'B'
+                    i.save()
             solicitud_actual.save()
 
 class VotarFase(SolicitudesDeFaseview):
@@ -82,24 +101,6 @@ class VotarFaseConfirm(VotarFase):
         solicitud_actual.cantidad_de_votos=solicitud_actual.cantidad_de_votos+1
         solicitud_actual.save()
         self.ContarVotos(solicitud_actual)
-        if not solicitud_actual.estado == 'V':
-            lb= solicitud_actual.item_sc_desaprobado.lineaBase
-            if solicitud_actual.estado== 'A':
-                solicitud_actual.item_sc_aprobado.activo= True
-                solicitud_actual.item_sc_aprobado.lineaBase= lb
-                solicitud_actual.item_sc_aprobado.estado= 'B'
-                solicitud_actual.item_sc_aprobado.save()
-                solicitud_actual.item_sc_desaprobado.activo= False
-                solicitud_actual.item_sc_desaprobado.lineaBase= None
-                solicitud_actual.item_sc_desaprobado.save()
-            else:
-                solicitud_actual.item_sc_desaprobado.estado= 'B'
-                solicitud_actual.item_sc_desaprobado.save()
-            lb.estado= 'C'
-            lb.save()
-            for i in Item.objects.filter(activo= True, lineaBase= lb, estado='R'):  #Todos los demas items que estaba desaprobado
-                i.estado= 'B'
-                i.save()
         return render(request, self.template_name, diccionario)
 
 class SolicitudesDeProyectoView(ProyectoView):
