@@ -1,0 +1,14 @@
+{% extends 'PlantillaBase.html' %}
+{% block Content %}
+    <br><br><br>
+    <div align="center"><h1><span style="color: #FFFFFF">Grafo del Proyecto {{ proyecto.nombre }}</span></h1></div>
+    <div align="center"><img src="{{ STATIC_URL }}grafico_proyecto.png" /></div>
+    <form action="/proyecto/fase/" method="POST"> {% csrf_token %}
+            <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+            <input type="hidden" name='login' value={{ logueado.id }} >
+            <div align="center"><input type="submit" id="submitt" value="Aceptar"></div><br>
+    </form>
+{% endblock %}
+
+
+

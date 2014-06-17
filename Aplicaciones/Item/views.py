@@ -356,27 +356,9 @@ class AprobarItem(ItemView):
         diccionario['fase']= fase_actual
         diccionario['proyecto']= proyecto_actual
         existe_atributo_nulo= False
-        lista_de_atributos= Atributo.objects.filter(item=item_actual, activo=True)
-        for atributo_actual in lista_de_atributos:
-                if atributo_actual.tipo_de_atributo_tipo == 'N' and not atributo_actual.tipo_numerico:
-                    existe_atributo_nulo=True
-                    break
-                elif atributo_actual.tipo_de_atributo_tipo == 'T' and not atributo_actual.tipo_texto:
-                    existe_atributo_nulo=True
-                    break
-                elif atributo_actual.tipo_de_atributo_tipo == 'B' and not atributo_actual.tipo_boolean:
-                    existe_atributo_nulo=True
-                    break
-                elif atributo_actual.tipo_de_atributo_tipo == 'F' and not atributo_actual.tipo_fecha:
-                    existe_atributo_nulo=True
-                    break
-        if item_actual.estado == 'D' and len(lista_de_atributos):
-            if existe_atributo_nulo:
-                diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-                diccionario['error']= 'Existe atributos sin completar.'
-                return render(request, super(AprobarItem, self).template_name, diccionario)
+        if item_actual.estado == 'D':
             #verificamos si su padre esta aprobado
-            elif not (len(Relacion.objects.filter(item1=item_actual, activo=True)) or len(Relacion.objects.filter(item2=item_actual, activo=True))):
+            if not (len(Relacion.objects.filter(item1=item_actual, activo=True)) or len(Relacion.objects.filter(item2=item_actual, activo=True))):
                 diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
                 diccionario['error']= 'El item no posee ningun tipo de relacion.'
                 return render(request, super(AprobarItem, self).template_name, diccionario)
@@ -395,10 +377,6 @@ class AprobarItem(ItemView):
             item_actual.save()
             diccionario['item']= item_actual
             return render(request, self.template_name, diccionario)
-        elif not len(lista_de_atributos):
-            diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
-            diccionario['error']= 'Item sin atributos.'
-            return render(request, super(AprobarItem, self).template_name, diccionario)
         elif item_actual.estado== 'A':
             diccionario['lista_items']= (Item.objects.filter(fase= fase_actual, activo=True)).order_by('nombre')
             diccionario['error']= 'Item ya esta Aprobado.'

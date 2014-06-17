@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.shortcuts import render
 from .models import Fase
 from Aplicaciones.Usuario.models import Usuario
@@ -6,6 +7,8 @@ from Aplicaciones.Rol.models import Rol
 from Aplicaciones.Proyecto.views import ProyectoView
 from Aplicaciones.Item.models import Item
 from Aplicaciones.Relacion.models import Relacion
+from Aplicaciones.Linea_Base.models import LineaBase
+import os
 
 # Create your views here.
 
@@ -187,4 +190,92 @@ class AsignarNuevosMiembrosConfirm(FaseView):
         for usuario in usuarios_miembros:
             usuario= Usuario.objects.get(nick= usuario)
             proyecto_actual.miembros.add(usuario)
+        return render(request, self.template_name, diccionario)
+
+
+class Graficar(FaseView):
+    template_name = 'Fase/Graficar.html'
+    def post(self, request, *args, **kwargs):
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id=request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id=request.POST['proyecto'])
+        diccionario['logueado']=usuario_logueado
+        diccionario['proyecto']=proyecto_actual
+        fases_proyecto= Fase.objects.filter(proyecto=proyecto_actual)
+        items_proyecto=[]
+        for fase in fases_proyecto:
+            if not fase.estado=='N':
+                items=Item.objects.filter(fase=fase, activo=True)
+                if len(items):
+                    items_proyecto.append(items)
+                else:
+                    diccionario['error']= 'Fase Iniciada sin Items.'
+                    diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+                    return render(request, super(Graficar, self).template_name, diccionario)
+
+        contador=0
+        grafico_fichero=open('grafico_proyecto.dot','w')
+        grafico_fichero.write('digraph G {\n')
+        grafico_fichero.write('     // Informacion de Proyecto\n')
+        grafico_fichero.write('     subgraph cluster'+str(contador)+' {\n')
+        grafico_fichero.write('         label = "Estados de Item";\n')
+        grafico_fichero.write('         color=black;\n')
+        grafico_fichero.write('         Bloqueado[style=filled, width="1", color=blue, fontsize=10];\n')
+        grafico_fichero.write('         Desaprobado[style=filled, width="1", color=yellow,fontsize=8];\n')
+        grafico_fichero.write('         Aprobado[style=filled, width="1", color=green,fontsize=10];\n')
+        grafico_fichero.write('         Revisión[style=filled, width="1", color=red,fontsize=10];\n')
+        grafico_fichero.write('     }\n')
+        grafico_fichero.write('     // Fases\n     rankdir=LR;//orientacion\n     ranksep=1.0;//separacion\n')
+        for fase in fases_proyecto:
+           contador=contador+1
+           grafico_fichero.write('     subgraph cluster'+str(contador)+' {\n')
+           if fase.estado =='F':
+                    grafico_fichero.write('         label = "Fase Nro '+str(fase.numero)+' - '+fase.nombre+' (Finalizada) ";\n')
+                    grafico_fichero.write('         style=filled;\n')
+                    grafico_fichero.write('         color=lightgray;\n')
+           elif fase.estado=='I':
+                    grafico_fichero.write('         label = "Fase Nro '+str(fase.numero)+' - '+fase.nombre+' (Iniciada) ";\n')
+                    grafico_fichero.write('         style=bold;\n')
+                    grafico_fichero.write('         color=blue;\n')
+           lineas_bases= LineaBase.objects.filter(fase=fase, activo=True)
+           if len(lineas_bases):
+                    grafico_fichero.write('         //Lineas Bases\n')
+                    for linea_base in lineas_bases:
+                        contador=contador+1
+                        itemsLB=Item.objects.filter(lineaBase=linea_base, activo=True)
+                        grafico_fichero.write('             subgraph cluster'+str(contador)+' {\n')
+                        if linea_base.estado =='C':
+                            grafico_fichero.write('                 label = "'+linea_base.nombre+' (Cerrada) ";\n')
+                            grafico_fichero.write('                 style=bold;\n')
+                            grafico_fichero.write('                 color=black;\n')
+                            for item in itemsLB:
+                                grafico_fichero.write('                 '+item.nombre+'[style=filled, color=blue];\n')
+                        else:
+                            grafico_fichero.write('                 label = "'+linea_base.nombre+' (Revision) ";\n')
+                            grafico_fichero.write('                 style=dotted;\n')
+                            grafico_fichero.write('                 color=black;\n')
+                            for item in itemsLB:
+                                grafico_fichero.write('                 '+item.nombre+'[style=filled, color=red];\n')
+                        grafico_fichero.write('             }\n')
+           itemsA=Item.objects.filter(fase=fase, estado='A', activo=True)
+           itemsD=Item.objects.filter(fase=fase, estado='D', activo=True)
+           if len(itemsA):
+                    for itemA in itemsA:
+                        grafico_fichero.write('             '+itemA.nombre+'[style=filled, color=green];\n')
+           if len(itemsD):
+                    for itemD in itemsD:
+                        grafico_fichero.write('             '+itemD.nombre+'[style=filled, color=yellow];\n')
+           grafico_fichero.write('     }\n')
+        for item in items_proyecto:
+            relaciones_proyecto= Relacion.objects.filter(item1=item, activo=True)
+            if len(relaciones_proyecto):
+                for relacion in relaciones_proyecto:
+                    if relacion.item2.activo:
+                        grafico_fichero.write('     '+relacion.item1.nombre+' -> '+relacion.item2.nombre+';\n')
+        grafico_fichero.write('}\n')
+        grafico_fichero.close()
+        os.system("dot grafico_proyecto.dot -o grafico_proyecto.png -Tpng")
+        os.system("mv grafico_proyecto.png static")
+
+
         return render(request, self.template_name, diccionario)

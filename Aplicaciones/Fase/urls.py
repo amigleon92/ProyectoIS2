@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
-from .views import FaseView, EditarFase, EditarFaseConfirm, InformeFase, CerrarFase, FinalizarProyecto, AsignarNuevosMiembros, AsignarNuevosMiembrosConfirm
+from .views import FaseView, EditarFase, EditarFaseConfirm, InformeFase, CerrarFase, FinalizarProyecto, AsignarNuevosMiembros, AsignarNuevosMiembrosConfirm, Graficar
 
 urlpatterns= patterns('',
     url(r'^$', FaseView.as_view(), name="fase"),
+     url(r'^graficar/$', Graficar.as_view(), name="graficar_proyecto"),
     url(r'^editar/$', EditarFase.as_view(), name='editar_fase'),
     url(r'^editar/confirmar/$', EditarFaseConfirm.as_view(), name='editar_fase_confirmar'),
     url(r'^informe/$', InformeFase.as_view(), name='informe_fase'),
