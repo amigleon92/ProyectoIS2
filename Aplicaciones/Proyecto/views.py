@@ -158,6 +158,11 @@ class InicializarProyectoConfirm(InicializarProyecto):
         proyecto_detalles.costoMonetario= request.POST['costoMonetario']
         proyecto_detalles.fechaInicio= request.POST['fechaInicio']
         proyecto_detalles.fechaFin= request.POST['fechaFin']
+        if proyecto_detalles.fechaFin < proyecto_detalles.fechaInicio:
+            diccionario['proyecto']= proyecto_detalles
+            diccionario['lista_usuarios']= Usuario.objects.filter(estado= True)
+            diccionario['error']= 'ERROR - Fecha Inicio posterior a Fecha Fin'
+            return render(request, super(InicializarProyectoConfirm, self).template_name, diccionario)
         proyecto_detalles.numeroFase= request.POST['numeroFase']
         usuarios_miembros= request.POST.getlist('miembros[]')
         for i in usuarios_miembros: proyecto_detalles.miembros.add(Usuario.objects.get(nick= i))

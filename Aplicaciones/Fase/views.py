@@ -64,6 +64,10 @@ class EditarFaseConfirm(EditarFase):
         modificar_fase.descripcion= request.POST['descripcion_fase']
         modificar_fase.fechaInicio= request.POST['fechaInicio_fase']
         modificar_fase.fechaFin=request.POST['fechaFin_fase']
+        if modificar_fase.fechaInicio > modificar_fase.fechaFin:
+            diccionario['fase']= modificar_fase
+            diccionario['error']= 'ERROR - Fecha Inicio supera a Fecha Fin'
+            return render(request, super(EditarFaseConfirm, self).template_name, diccionario)
         modificar_fase.estado= 'I'
         modificar_fase.save()
         return render(request, self.template_name, diccionario)

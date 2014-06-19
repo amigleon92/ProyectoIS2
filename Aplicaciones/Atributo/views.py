@@ -260,4 +260,3 @@ class CompletarAtributoConfirm(CompletarAtributo):
                 i.estado= 'R'
                 i.save()
         return render(request, self.template_name, diccionario)
-
