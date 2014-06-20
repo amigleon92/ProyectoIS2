@@ -36,6 +36,7 @@ class Solicitud_de_Cambios(models.Model):
     item_sc_aprobado=models.ForeignKey(Item, related_name='fkItemSCA')
     item_sc_desaprobado=models.ForeignKey(Item, related_name='fkItemSCD')
     cantidad_de_votos=models.IntegerField(default=0)
+    usuario= models.ForeignKey(Usuario, related_name= 'fkEditor')
 
     activo= models.BooleanField(default= True)
     def __unicode__(self):

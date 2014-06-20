@@ -76,7 +76,7 @@ class EditarFaseConfirm(EditarFase):
             diccionario['fase']= modificar_fase
             diccionario['error']= 'ERROR - Fecha Inicio supera a Fecha Fin'
             return render(request, super(EditarFaseConfirm, self).template_name, diccionario)
-        if modificar_fase.fechaInicio < proyecto_actual.fechaInicio or modificar_fase.fechaFin > proyecto_actual.fechaFin:
+        if modificar_fase.fechaInicio < str(proyecto_actual.fechaInicio) or modificar_fase.fechaFin > str(proyecto_actual.fechaFin):
             diccionario['fase']= modificar_fase
             diccionario['error']= 'ERROR - Alguna fecha esta fuera de los limites del proyecto'
             return render(request, super(EditarFaseConfirm, self).template_name, diccionario)
