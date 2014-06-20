@@ -42,8 +42,16 @@ class EditarFase(FaseView):
         if len(Rol.objects.filter(nombre= 'Lider del Proyecto', usuario= usuario_logueado, proyecto= proyecto_actual)):
             fase_actual= Fase.objects.get(id= request.POST['fase'])
             if fase_actual.estado=='N':
-                diccionario['fase']= fase_actual
-                return render(request, self.template_name, diccionario)
+                if fase_actual.numeroSecuencia==1:
+                    diccionario['fase']= fase_actual
+                    return render(request, self.template_name, diccionario)
+                else:
+                    fase_anterior= Fase.objects.get(proyecto= proyecto_actual, numeroSecuencia= fase_actual.numeroSecuencia-1)
+                    if fase_anterior.estado == 'N':
+                        diccionario['error']= 'Error - Fase Anterior No Inicializada'
+                    else:
+                        diccionario['fase']= fase_actual
+                        return render(request, self.template_name, diccionario)
             else:
                 diccionario['error']= 'La fase ya fue inicializada'
         else:
@@ -64,6 +72,14 @@ class EditarFaseConfirm(EditarFase):
         modificar_fase.descripcion= request.POST['descripcion_fase']
         modificar_fase.fechaInicio= request.POST['fechaInicio_fase']
         modificar_fase.fechaFin=request.POST['fechaFin_fase']
+        if modificar_fase.fechaInicio > modificar_fase.fechaFin:
+            diccionario['fase']= modificar_fase
+            diccionario['error']= 'ERROR - Fecha Inicio supera a Fecha Fin'
+            return render(request, super(EditarFaseConfirm, self).template_name, diccionario)
+        if modificar_fase.fechaInicio < proyecto_actual.fechaInicio or modificar_fase.fechaFin > proyecto_actual.fechaFin:
+            diccionario['fase']= modificar_fase
+            diccionario['error']= 'ERROR - Alguna fecha esta fuera de los limites del proyecto'
+            return render(request, super(EditarFaseConfirm, self).template_name, diccionario)
         modificar_fase.estado= 'I'
         modificar_fase.save()
         return render(request, self.template_name, diccionario)
@@ -191,7 +207,6 @@ class AsignarNuevosMiembrosConfirm(FaseView):
             usuario= Usuario.objects.get(nick= usuario)
             proyecto_actual.miembros.add(usuario)
         return render(request, self.template_name, diccionario)
-
 
 class Graficar(FaseView):
     template_name = 'Fase/Graficar.html'
