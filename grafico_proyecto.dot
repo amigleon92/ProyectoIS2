@@ -1,0 +1,39 @@
+digraph G {
+     // Informacion de Proyecto
+     subgraph cluster0 {
+         label = "Estados de Item";
+         color=black;
+         Bloqueado[style=filled, width="1", color=blue, fontsize=10];
+         Desaprobado[style=filled, width="1", color=yellow,fontsize=8];
+         Aprobado[style=filled, width="1", color=green,fontsize=10];
+         Revisión[style=filled, width="1", color=red,fontsize=10];
+     }
+     // Fases
+     rankdir=LR;//orientacion
+     ranksep=1.0;//separacion
+     subgraph cluster1 {
+         label = "Fase Nro 0 - Fase Inicial (Iniciada) ";
+         style=bold;
+         color=blue;
+             A[style=filled, color=yellow];
+     }
+     subgraph cluster2 {
+         label = "Fase Nro 0 - Fase Desarrollo (Iniciada) ";
+         style=bold;
+         color=blue;
+         //Lineas Bases
+             subgraph cluster3 {
+                 label = "PrimeraLB (Cerrada) ";
+                 style=bold;
+                 color=black;
+                 item[style=filled, color=blue];
+             }
+             Nuevo Item[style=filled, color=yellow];
+     }
+     subgraph cluster4 {
+         label = "Fase Nro 0 - Fase Final (Iniciada) ";
+         style=bold;
+         color=blue;
+             A[style=filled, color=yellow];
+     }
+}

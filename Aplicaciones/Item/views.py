@@ -309,6 +309,14 @@ class EditarItemConfirm(CrearItem):
                 item_sc_desaprobado= version_desaprobada,
                 usuario= usuario_logueado
             )
+            if version_aprobada.nombre != version_desaprobada.nombre:
+                nueva_solicitud.descripcion += ' .Nombre modificado -> ' + version_aprobada.nombre
+            if version_aprobada.prioridad != version_desaprobada.prioridad:
+                nueva_solicitud.descripcion += ' .Prioridad modificada -> ' + version_aprobada.prioridad
+            if version_aprobada.descripcion != version_desaprobada.descripcion:
+                nueva_solicitud.descripcion += ' .Descripcion modificada -> ' + version_aprobada.descripcion
+            if version_aprobada.costo != version_desaprobada.costo:
+                nueva_solicitud.descripcion += ' .Costo modificado -> ' + version_aprobada.costo
             nueva_solicitud.save()
             #Generamos los votos
             for miembro in Rol.objects.filter(nombre= 'Miembro del Comite', proyecto= proyecto_actual, activo= True):
