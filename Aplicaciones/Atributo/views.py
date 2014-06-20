@@ -225,25 +225,39 @@ class CompletarAtributoConfirm(CompletarAtributo):
             #Creamos el atributo para el Aprobado
             atributo_aprobado= Atributo.objects.get(nombre= atributo_actual.nombre, activo= True, item= version_aprobada)
             #Completamos Atributo
+            op=0
             if atributo_aprobado.tipo_de_atributo_tipo == 'N':
                 atributo_aprobado.tipo_numerico= request.POST['tipo_numerico']
+                op=1
             elif atributo_aprobado.tipo_de_atributo_tipo == 'T':
                 atributo_aprobado.tipo_texto= request.POST['tipo_texto']
+                op=2
             elif atributo_aprobado.tipo_de_atributo_tipo == 'B':
                 if 'tipo_buleano' in request.POST: atributo_aprobado.tipo_boolean= True
                 else: atributo_aprobado.tipo_boolean= False
+                op= 3
             elif atributo_aprobado.tipo_de_atributo_tipo == 'F':
                 atributo_aprobado.tipo_fecha=request.POST['tipo_fecha']
+                op= 4
             atributo_aprobado.save()
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
-                descripcion= 'Editar Item ' + version_desaprobada.nombre,
+                descripcion= 'Editar Item ' + version_desaprobada.nombre + '. Atributo modificado -> Nombre: ' + atributo_aprobado.nombre + ' -> Valor: ',
                 costo_del_impacto= self.impacto(item_actual,0)+item_actual.costo,
                 proyecto= proyecto_actual,
                 fase= fase_actual,
                 item_sc_aprobado= version_aprobada,
                 item_sc_desaprobado= version_desaprobada,
+                usuario= usuario_logueado,
             )
+            if op==1:
+                nueva_solicitud.descripcion += str(atributo_actual.tipo_numerico)
+            elif op==2:
+                nueva_solicitud.descripcion += atributo_actual.tipo_texto
+            elif op==3:
+                nueva_solicitud.descripcion +=  str(atributo_actual.tipo_boolean)
+            else:
+                nueva_solicitud.descripcion += str(atributo_actual.tipo_fecha)
             nueva_solicitud.save()
             #Generamos los votos
             for miembro in Rol.objects.filter(nombre= 'Miembro del Comite', proyecto= proyecto_actual, activo= True):
