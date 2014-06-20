@@ -8,6 +8,7 @@ from Aplicaciones.Proyecto.views import ProyectoView
 from Aplicaciones.Item.models import Item
 from Aplicaciones.Relacion.models import Relacion
 from Aplicaciones.Linea_Base.models import LineaBase
+from Aplicaciones.Solicitud_de_Cambios.models import Solicitud_de_Cambios, Voto
 import os
 
 
@@ -301,7 +302,6 @@ class Graficar(FaseView):
 # reportes de items
 class Reporte_items(FaseView):
     def post(self, request, *args, **kwargs):
-        print('faergvbfds')
         proyecto_actual= Proyecto.objects.get(id=request.POST['proyecto'])
         from django.http import HttpResponse
         import os
@@ -404,7 +404,6 @@ class Reporte_items(FaseView):
 
         parrafo = Paragraph('-'*193,cabecera)
         story.append(parrafo)
-        print ('a')
         parrafo = Paragraph('Fin del Informe' + ' '*100 + '('+str(datetime.date.today()) + ')' ,cabecera)
         story.append(parrafo)
 
@@ -412,4 +411,120 @@ class Reporte_items(FaseView):
         doc.build(story)
 
         image_data = open("Rep_items.pdf", "rb").read()
+        return HttpResponse(image_data, mimetype="application/pdf")
+
+
+# reportes de Solicitud de cambio
+class Reporte_SC(FaseView):
+    def post(self, request, *args, **kwargs):
+        from django.http import HttpResponse
+        import datetime
+        # Obtenemos de platypus las clases Paragraph, para escribir parrafos Image, para insertar imagenes y SimpleDocTemplate para definir el DocTemplate. Ademas importamos Spacer, para incluir espacios .
+        from reportlab.platypus import Paragraph
+        from reportlab.platypus import SimpleDocTemplate
+        from reportlab.platypus import Spacer
+        from reportlab.platypus import Table
+
+        # Importamos clase de hoja de estilo de ejemplo.
+        from reportlab.lib.styles import getSampleStyleSheet
+
+        # Se importa el tamanho de la hoja y los colores
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib import colors
+        diccionario={}
+        usuario_logueado= Usuario.objects.get(id=request.POST['login'])
+        proyecto_actual= Proyecto.objects.get(id=request.POST['proyecto'])
+        diccionario['logueado']=usuario_logueado
+        diccionario['proyecto']=proyecto_actual
+        if not proyecto_actual.lider == usuario_logueado:
+            diccionario['error']= 'No puedes realizar esta accion'
+            diccionario['lista_fases']= Fase.objects.filter(proyecto= proyecto_actual)
+            return render(request, super(Reporte_SC, self).template_name, diccionario)
+
+        # Creamos un PageTemplate de ejemplo.
+        estiloHoja = getSampleStyleSheet()
+
+        #Inicializamos la lista Platypus Story.
+        story = []
+
+        #Definimos como queremos que sea el estilo de la PageTemplate.
+        cabecera = estiloHoja['Heading5']
+
+        #No se hara un salto de pagina despues de escribir la cabecera (valor 1 en caso contrario).
+        cabecera.pageBreakBefore=0
+
+        # Se quiere que se empiece en la primera pagina a escribir. Si es distinto de 0 deja la primera hoja en blanco.
+        cabecera.keepWithNext=0
+
+        # Color de la cabecera.
+        cabecera.backColor=colors.white
+        cabecera.spaceAfter = 0
+        cabecera.spaceBefore = 0
+
+        parrafo = Paragraph('.',cabecera)
+        story.append(parrafo)
+        parrafo = Paragraph('REPORTE DE SOLICITUDES DE CAMBIO DEL PROYECTO: '+ proyecto_actual.nombre,cabecera)
+        story.append(parrafo)
+        parrafo = Paragraph('-'*193,cabecera)
+        story.append(parrafo)
+
+        # Incluimos un Flowable, que en este caso es un parrafo.
+
+        cabecera2 = estiloHoja['Heading3']
+        cabecera2.pageBreakBefore=0
+        cabecera2.keepWithNext=0
+        cabecera2.backColor=colors.white
+
+        parrafo = Paragraph('   ',cabecera2)
+        # Lo incluimos en el Platypus story.
+        story.append(parrafo)
+
+        # Definimos un parrafo. Vamos a crear un texto largo para demostrar como se genera mas de una hoja.
+        lista = []
+        lista.append(['LISTA DE SOLICITUDES DE CAMBIO','','','','', '', ''])
+        lista.append([' ',' ',' ',' ',' ', ' ', ' '])
+        lista.append(['ID','LINEA BASE','DETALLES','ESTADO','USUARIO', 'COSTO', 'VOTO DEL LIDER'])
+        solicitudes= (Solicitud_de_Cambios.objects.filter(proyecto=proyecto_actual)).order_by('id')
+        for solicitud in solicitudes:
+            voto=Voto.objects.fiter(usuario=proyecto_actual.lider)
+            if len(voto):
+                if voto.voto=='Pe':
+                    lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Pendiente'])
+                else:
+                    lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Realizado'])
+            else:
+                lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Lider NO es Miembro'])
+        t=Table( lista, style = [
+                       ('GRID',(0,0),(-1,-1),0.5,colors.white),
+                       ('BOX',(0,0),(-1,-1),2,colors.white),
+                       ('SPAN',(0,0),(-1,0)),
+                       ('ROWBACKGROUNDS', (0, 3), (-1, -1), (colors.Color(0.9, 0.9, 0.9),colors.white)),
+                       ('BACKGROUND', (0, 2), (-1, 2), colors.rgb2cmyk(r=6,g=62,b=193)),
+                       ('BACKGROUND', (0, 1), (-1, 1), colors.white),
+                       ('LINEABOVE',(0,0),(-1,0),1.5,colors.black),
+                       ('LINEBELOW',(0,0),(-1,0),1.5,colors.black),
+                       ('SIZE',(0,0),(-1,0),12),
+                       ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+                       ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
+                       ('TEXTCOLOR', (0, 2), (-1, 2), colors.white),
+                       ]
+              )
+        # Y lo incluimos en el story.
+        story.append(t)
+
+        # Dejamos espacio.
+        story.append(Spacer(0,20))
+
+        # Creamos un DocTemplate en una hoja DIN A4, en la que se muestra el texto enmarcado (showBoundary=1) por un recuadro.
+        doc=SimpleDocTemplate("Rep_Solc_Camb.pdf",pagesize=A4, rightMargin=1, leftMargin=1, topMargin=0, bottomMargin=0)
+
+        parrafo = Paragraph('-'*193,cabecera)
+        story.append(parrafo)
+        parrafo = Paragraph('Fin del Informe' + ' '*100 + '('+str(datetime.date.today()) + ')' ,cabecera)
+        story.append(parrafo)
+
+        # Construimos el Platypus story.
+        doc.build(story)
+
+        image_data = open("Rep_Solc_Camb.pdf", "rb").read()
         return HttpResponse(image_data, mimetype="application/pdf")

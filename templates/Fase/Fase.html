@@ -75,7 +75,7 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Reporte Ítems" >
     </form>
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/fase/reporteSC/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Reporte Solicitudes" >
