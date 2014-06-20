@@ -307,6 +307,7 @@ class EditarItemConfirm(CrearItem):
                 fase= fase_actual,
                 item_sc_aprobado= version_aprobada,
                 item_sc_desaprobado= version_desaprobada,
+                usuario= usuario_logueado
             )
             nueva_solicitud.save()
             #Generamos los votos
