@@ -377,7 +377,7 @@ class Reporte_items(FaseView):
                     else:
                         lista.append(['',item.id,item.nombre,item.tipodeItemAsociado,'NO',item.version,item.costo])
             else:
-                lista.append([fase.nombre,' - ',' - ',' - ',' - ',' - ',' - '])
+                lista.append(['',' - ',' - ',' - ',' - ',' - ',' - '])
         t=Table( lista, style = [
                        ('GRID',(0,0),(-1,-1),0.5,colors.white),
                        ('BOX',(0,0),(-1,-1),2,colors.white),
