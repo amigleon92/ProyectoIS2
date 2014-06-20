@@ -63,17 +63,27 @@
     <form action="/proyecto/fase/rol/" method="POST">{% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" id="submitt" value="Administracion Roles">
+        <input type="submit" id="submitt" value="Administrar Roles">
     </form>
     <form action="/proyecto/fase/tipoDeItem/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Administrar Tipo de Ítem" >
     </form>
+    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" id="submitt" value="Reporte Ítems" >
+    </form>
+    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+        <input type="hidden" name='proyecto' value={{ proyecto.id }} >
+        <input type="hidden" name='login' value={{ logueado.id }} >
+        <input type="submit" id="submitt" value="Reporte Solicitudes" >
+    </form>
     <form action="/proyecto/fase/graficar/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
-        <input type="submit" id="submitt" value="Grafo del Proyecto"><br>
+        <input type="submit" id="submitt" value="Grafo"><br>
     </form><br>
     <form action="/proyecto/fase/asignar_nuevos_miembros/" method="POST"> {% csrf_token %}
         <input type="hidden" name='login' value={{ logueado.id }} >

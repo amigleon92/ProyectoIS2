@@ -3,6 +3,7 @@ from Aplicaciones.Proyecto.models import Proyecto
 from Aplicaciones.Fase.models import Fase
 from Aplicaciones.Item.models import Item
 from Aplicaciones.Usuario.models import Usuario
+
 # Create your models here.
 
 
