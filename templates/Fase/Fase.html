@@ -70,7 +70,7 @@
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Administrar Tipo de Ítem" >
     </form>
-    <form action="/proyecto/construccion/" method="POST"> {% csrf_token %}
+    <form action="/proyecto/fase/reporteItem/" method="POST"> {% csrf_token %}
         <input type="hidden" name='proyecto' value={{ proyecto.id }} >
         <input type="hidden" name='login' value={{ logueado.id }} >
         <input type="submit" id="submitt" value="Reporte Ítems" >
