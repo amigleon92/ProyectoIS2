@@ -175,7 +175,7 @@ class InicializarProyectoConfirm(InicializarProyecto):
             nueva_fase.numeroSecuencia= i
             nueva_fase.numero= i
             nueva_fase.proyecto= proyecto_detalles
-            if i==1: nueva_fase.estado='I'
+            #if i==1: nueva_fase.estado='I'
             nueva_fase.save()
         return render(request, self.template_name, diccionario)
 
