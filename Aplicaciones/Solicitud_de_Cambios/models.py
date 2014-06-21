@@ -30,7 +30,7 @@ class Solicitud_de_Cambios(models.Model):
     )
     estado= models.CharField ( max_length = 1 ,  choices = estados_probables, default='V')
     costo_del_impacto= models.IntegerField(default=0)
-    descripcion= models.CharField(max_length=50, null=False)
+    descripcion= models.CharField(max_length=300, null=False)
     proyecto=models.ForeignKey(Proyecto, related_name='fkProyectoSC')
     fase=models.ForeignKey(Fase, related_name='fkFaseSC')
     item_sc_aprobado=models.ForeignKey(Item, related_name='fkItemSCA')
