@@ -469,7 +469,6 @@ class Reporte_SC(FaseView):
         story.append(parrafo)
 
         # Incluimos un Flowable, que en este caso es un parrafo.
-
         cabecera2 = estiloHoja['Heading3']
         cabecera2.pageBreakBefore=0
         cabecera2.keepWithNext=0
