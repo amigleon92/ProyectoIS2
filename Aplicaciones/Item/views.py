@@ -311,7 +311,7 @@ class EditarItemConfirm(CrearItem):
             )
             if version_aprobada.nombre != version_desaprobada.nombre:
                 nueva_solicitud.descripcion += ' .Nombre -> ' + version_aprobada.nombre
-            if version_aprobada.prioridad != version_desaprobada.prioridad:
+            if str(version_aprobada.prioridad) != str(version_desaprobada.prioridad):
                 nueva_solicitud.descripcion += ' .Prioridad -> ' + version_aprobada.prioridad
             if version_aprobada.descripcion != version_desaprobada.descripcion:
                 nueva_solicitud.descripcion += ' .Descripcion -> ' + version_aprobada.descripcion
