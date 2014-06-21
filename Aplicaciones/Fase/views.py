@@ -424,7 +424,6 @@ class Reporte_SC(FaseView):
         from reportlab.platypus import SimpleDocTemplate
         from reportlab.platypus import Spacer
         from reportlab.platypus import Table
-
         # Importamos clase de hoja de estilo de ejemplo.
         from reportlab.lib.styles import getSampleStyleSheet
 
