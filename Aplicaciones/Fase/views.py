@@ -497,7 +497,10 @@ class Reporte_SC(FaseView):
                     else:
                         lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Pendiente'])
             else:
-                lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Lider NO es Miembro'])
+                if solicitud.estado=='A':
+                    lista.append([solicitud.id,solicitud.item_sc_aprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Lider NO es Miembro'])
+                else:
+                    lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Lider NO es Miembro'])
         t=Table( lista, style = [
                        ('GRID',(0,0),(-1,-1),0.5,colors.white),
                        ('BOX',(0,0),(-1,-1),2,colors.white),
