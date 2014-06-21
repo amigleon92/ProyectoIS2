@@ -481,7 +481,7 @@ class Reporte_SC(FaseView):
         lista = []
         lista.append(['LISTA DE SOLICITUDES DE CAMBIO','','','','', '', ''])
         lista.append([' ',' ',' ',' ',' ', ' ', ' '])
-        lista.append(['ID','LINEA BASE','DETALLES','ESTADO','USUARIO', 'COSTO', 'VOTO DEL LIDER'])
+        lista.append(['ID','LINEA BASE','DETALLES','ESTADO','USUARIO', 'COSTO','VOTO LIDER'])
         solicitudes= (Solicitud_de_Cambios.objects.filter(proyecto=proyecto_actual)).order_by('id')
         for solicitud in solicitudes:
             voto=Voto.objects.filter(usuario=proyecto_actual.lider, solicitud_de_cambios=solicitud)
@@ -493,9 +493,9 @@ class Reporte_SC(FaseView):
                         lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Pendiente'])
                 else:
                     if solicitud.estado=='A':
-                        lista.append([solicitud.id,solicitud.item_sc_aprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Pendiente'])
+                        lista.append([solicitud.id,solicitud.item_sc_aprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Realizado'])
                     else:
-                        lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Pendiente'])
+                        lista.append([solicitud.id,solicitud.item_sc_desaprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Realizado'])
             else:
                 if solicitud.estado=='A':
                     lista.append([solicitud.id,solicitud.item_sc_aprobado.lineaBase.nombre,solicitud.descripcion,solicitud.estado,solicitud.usuario.nombre,solicitud.costo_del_impacto,'Lider NO es Miembro'])
