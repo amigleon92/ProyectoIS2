@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'u9lvrfu5f8^k0zy5y9*$)!_#b9#@*y^@kuu4b72^4t0drw8ulf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django_extensions',
+    'django_extensions',
     'Aplicaciones.Fase',
     'Aplicaciones.Login',
     'Aplicaciones.Proyecto',

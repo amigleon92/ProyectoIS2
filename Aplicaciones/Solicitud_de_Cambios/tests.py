@@ -44,7 +44,7 @@ class TestSolicitud_de_Cambios(TestCase):
 
     def crear_solicitud(self, descrip, proyect, faseP, Us, nLineaB, item_name):
         item= self.crear_item(nombre=item_name, nombrelB=nLineaB, nombreF=faseP, nombreP=proyect, nombreU=Us)
-        return Solicitud_de_Cambios.objects.create(descripcion= descrip, proyecto=item.fase.proyecto, fase=item.fase, item_sc_aprobado=item, item_sc_desaprobado=item)
+        return Solicitud_de_Cambios.objects.create(descripcion= descrip, proyecto=item.fase.proyecto, fase=item.fase, item_sc_aprobado=item, item_sc_desaprobado=item,usuario= item.fase.proyecto.lider)
 
     def test_crea_relacion_ciclos(self):
          test = self.crear_solicitud(descrip='esto es una solicitud', proyect='proyecto', faseP='fase', Us='us', nLineaB='Linea de solicitud',item_name='item_a_cambiar')
