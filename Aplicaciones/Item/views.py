@@ -315,7 +315,7 @@ class EditarItemConfirm(CrearItem):
                 nueva_solicitud.descripcion += ' .Prioridad -> ' + version_aprobada.prioridad
             if version_aprobada.descripcion != version_desaprobada.descripcion:
                 nueva_solicitud.descripcion += ' .Descripcion -> ' + version_aprobada.descripcion
-            if version_aprobada.costo != version_desaprobada.costo:
+            if str(version_aprobada.costo) != str(version_desaprobada.costo):
                 nueva_solicitud.descripcion += ' .Costo -> ' + version_aprobada.costo
             nueva_solicitud.save()
             #Generamos los votos
