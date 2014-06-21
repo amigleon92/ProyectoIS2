@@ -301,22 +301,22 @@ class EditarItemConfirm(CrearItem):
             version_aprobada.save()
             #Generamos la Solicitud de Cambios
             nueva_solicitud= Solicitud_de_Cambios(
-                descripcion= 'Editar Item ' + version_desaprobada.nombre,
+                descripcion= 'Editar Item ' + version_desaprobada.nombre + ' .Cambios:',
                 costo_del_impacto= self.impacto(item_actual,0)+item_actual.costo,
                 proyecto= proyecto_actual,
                 fase= fase_actual,
                 item_sc_aprobado= version_aprobada,
                 item_sc_desaprobado= version_desaprobada,
-                usuario= usuario_logueado
+                usuario= usuario_logueado,
             )
             if version_aprobada.nombre != version_desaprobada.nombre:
-                nueva_solicitud.descripcion += ' .Nombre modificado -> ' + version_aprobada.nombre
+                nueva_solicitud.descripcion += ' .Nombre -> ' + version_aprobada.nombre
             if version_aprobada.prioridad != version_desaprobada.prioridad:
-                nueva_solicitud.descripcion += ' .Prioridad modificada -> ' + version_aprobada.prioridad
+                nueva_solicitud.descripcion += ' .Prioridad -> ' + version_aprobada.prioridad
             if version_aprobada.descripcion != version_desaprobada.descripcion:
-                nueva_solicitud.descripcion += ' .Descripcion modificada -> ' + version_aprobada.descripcion
+                nueva_solicitud.descripcion += ' .Descripcion -> ' + version_aprobada.descripcion
             if version_aprobada.costo != version_desaprobada.costo:
-                nueva_solicitud.descripcion += ' .Costo modificado -> ' + version_aprobada.costo
+                nueva_solicitud.descripcion += ' .Costo -> ' + version_aprobada.costo
             nueva_solicitud.save()
             #Generamos los votos
             for miembro in Rol.objects.filter(nombre= 'Miembro del Comite', proyecto= proyecto_actual, activo= True):
